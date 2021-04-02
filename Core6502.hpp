@@ -11,17 +11,12 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <map>
+#include "Core6502Operations.hpp"
 
-struct Core6502 {
+namespace {
+
+    struct CPU {
     
-    // Operation struct
-    struct Operation {
-        bool protectedOperation;
-        uint8_t opcode;
-        uint8_t cycles;
-        void (*operationFunction)(Core6502&, Operation&);
-    };
-
     // Map of operations.  Can be used to overload default operations or add functionality
     // to undocumented operations like the NES Processor.
     std::map<uint8_t, struct Operation> operations;
@@ -48,5 +43,8 @@ struct Core6502 {
     } status;
     
 };
+
+
+}
 
 #endif /* Core6502_hpp */
