@@ -21,7 +21,14 @@ namespace Core6502 {
     };
 
     // LDA Operations
-    
+    void LDA_Immediate(struct CPU&, struct Operation&);
+    void LDA_Zero_Page(struct CPU&, struct Operation&);
+    void LDA_Zero_Page_X(struct CPU&, struct Operation&);
+    void LDA_Absolute(struct CPU&, struct Operation&);
+    void LDA_Absolute_X(struct CPU&, struct Operation&);
+    void LDA_Absolute_Y(struct CPU&, struct Operation&);
+    void LDA_Indirect_X(struct CPU&, struct Operation&);
+    void LDA_Indirect_Y(struct CPU&, struct Operation&);
 
 }
 

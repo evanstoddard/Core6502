@@ -15,8 +15,10 @@
 
 namespace {
 
-    struct CPU {
+    class CPU {
     
+    public:
+
     // Map of operations.  Can be used to overload default operations or add functionality
     // to undocumented operations like the NES Processor.
     std::map<uint8_t, struct Operation> operations;
@@ -41,6 +43,10 @@ namespace {
         uint8_t NegativeFlag:1;
         uint8_t UserFlag:1;
     } status;
+    
+    private:
+
+    
     
 };
 
