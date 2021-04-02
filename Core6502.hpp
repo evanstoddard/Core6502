@@ -10,8 +10,22 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <map>
+
 struct Core6502 {
     
+    // Operation struct
+    struct Operation {
+        bool protectedOperation;
+        uint8_t opcode;
+        uint8_t cycles;
+        void (*operationFunction)(Core6502&, Operation&);
+    };
+
+    // Map of operations.  Can be used to overload default operations or add functionality
+    // to undocumented operations like the NES Processor.
+    std::map<uint8_t, struct Operation> operations;
+
     // Registers
     struct {
         uint16_t PC;
@@ -23,15 +37,16 @@ struct Core6502 {
     
     // Processor Status
     struct {
-        uint8_t CF:1;
-        uint8_t ZF:1;
-        uint8_t ID:1;
-        uint8_t DM:1;
-        uint8_t BR:1;
-        uint8_t OF:1;
-        uint8_t NF:1;
+        uint8_t CarryFlag:1;
+        uint8_t ZeroFlag:1;
+        uint8_t InterruptDisable:1;
+        uint8_t DecimalMode:1;
+        uint8_t BreakCommand:1;
+        uint8_t OverflowFlag:1;
+        uint8_t NegativeFlag:1;
+        uint8_t UserFlag:1;
     } status;
     
-}
+};
 
 #endif /* Core6502_hpp */
