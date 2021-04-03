@@ -13,15 +13,17 @@
 #include <map>
 #include "Core6502Operations.hpp"
 
-namespace {
+namespace Core6502{
 
     class CPU {
     
     public:
+    CPU();
+    CPU(uint8_t * memPtr);
 
     // Map of operations.  Can be used to overload default operations or add functionality
     // to undocumented operations like the NES Processor.
-    std::map<uint8_t, struct Operation> operations;
+    std::map<uint8_t, struct Instruction> instructions;
 
     // Registers
     struct {
@@ -43,10 +45,14 @@ namespace {
         uint8_t NegativeFlag:1;
         uint8_t UserFlag:1;
     } status;
-    
-    private:
 
-    
+    // Methods
+    uint8_t fetchByte(); // Fetches current byte and increments PC
+
+    volatile uint8_t * mem;
+
+    private:
+    void setupInstructionMap();
     
 };
 

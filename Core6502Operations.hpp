@@ -12,23 +12,25 @@
 
 namespace Core6502 {
     
+    class CPU;
+
     // Operation struct
-    struct Operation {
-        bool protectedOperation;
+    struct Instruction {
+        bool protectedInstruction;
         uint8_t opcode;
         uint8_t cycles;
-        void (*operationFunction)(struct CPU&, struct Operation&);
+        void (*instructionFunction)(Core6502::CPU&, struct Instruction&);
     };
 
-    // LDA Operations
-    void LDA_Immediate(struct CPU&, struct Operation&);
-    void LDA_Zero_Page(struct CPU&, struct Operation&);
-    void LDA_Zero_Page_X(struct CPU&, struct Operation&);
-    void LDA_Absolute(struct CPU&, struct Operation&);
-    void LDA_Absolute_X(struct CPU&, struct Operation&);
-    void LDA_Absolute_Y(struct CPU&, struct Operation&);
-    void LDA_Indirect_X(struct CPU&, struct Operation&);
-    void LDA_Indirect_Y(struct CPU&, struct Operation&);
+    // LDA Instruction
+    void LDA_Immediate(Core6502::CPU&, struct Instruction&);
+    void LDA_Zero_Page(Core6502::CPU&, struct Instruction&);
+    void LDA_Zero_Page_X(Core6502::CPU&, struct Instruction&);
+    void LDA_Absolute(Core6502::CPU&, struct Instruction&);
+    void LDA_Absolute_X(Core6502::CPU&, struct Instruction&);
+    void LDA_Absolute_Y(Core6502::CPU&, struct Instruction&);
+    void LDA_Indirect_X(Core6502::CPU&, struct Instruction&);
+    void LDA_Indirect_Y(Core6502::CPU&, struct Instruction&);
 
 }
 
