@@ -22,7 +22,7 @@ namespace Core6502 {
         void (*instructionFunction)(Core6502::CPU&, struct Instruction&);
     };
 
-    // LDA Instruction
+    // LDA Instructions
     void LDA_Immediate(Core6502::CPU&, struct Instruction&);
     void LDA_Zero_Page(Core6502::CPU&, struct Instruction&);
     void LDA_Zero_Page_X(Core6502::CPU&, struct Instruction&);
@@ -31,6 +31,21 @@ namespace Core6502 {
     void LDA_Absolute_Y(Core6502::CPU&, struct Instruction&);
     void LDA_Indirect_X(Core6502::CPU&, struct Instruction&);
     void LDA_Indirect_Y(Core6502::CPU&, struct Instruction&);
+
+    // LDX Instructions
+    void LDX_Immediate(Core6502::CPU&, struct Instruction&);
+    void LDX_Zero_Page(Core6502::CPU&, struct Instruction&);
+    void LDX_Zero_Page_Y(Core6502::CPU&, struct Instruction&);
+    void LDX_Absolute(Core6502::CPU&, struct Instruction&);
+    void LDX_Absolute_Y(Core6502::CPU&, struct Instruction&);
+
+    // LDY Instructions
+    void LDY_Immediate(Core6502::CPU&, struct Instruction&);
+    void LDY_Zero_Page(Core6502::CPU&, struct Instruction&);
+    void LDY_Zero_Page_X(Core6502::CPU&, struct Instruction&);
+    void LDY_Absolute(Core6502::CPU&, struct Instruction&);
+    void LDY_Absolute_X(Core6502::CPU&, struct Instruction&);
+
 
 }
 
