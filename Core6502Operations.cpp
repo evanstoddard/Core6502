@@ -87,7 +87,37 @@ void Core6502::LDA_Absolute_Y(Core6502::CPU& cpu, struct Instruction& op) {
 }
 void Core6502::LDA_Indirect_X(Core6502::CPU& cpu, struct Instruction& op) {
 
-    // Fetch 
+    // Fetch offset and add value in register X
+    uint8_t zero_addr =  cpu.fetchByte();
+            zero_addr += cpu.registers.X;
+    
+    // Read 16-bit address from zero page address
+    uint16_t effective_addr =  cpu.mem[zero_addr];
+             effective_addr += (cpu.mem[zero_addr + 1] << 8);
+
+    // Load value from effective address into accumulator
+    cpu.registers.A = cpu.mem[effective_addr];
+
+    // Set Zero & Negative Flags appropriately
+    if (cpu.registers.A & 0b10000000)   cpu.status.NegativeFlag = 1;
+    if (cpu.registers.A == 0)           cpu.status.ZeroFlag = 1;
 
 }
-// void LDA_Indirect_Y(struct CPU&, struct Operation&);
+void Core6502::LDA_Indirect_Y(Core6502::CPU& cpu, struct Instruction&) {
+
+    // Fetch 16-bit address from zero page memory
+    uint8_t offset = cpu.fetchByte();
+    uint16_t effective_addr =  cpu.mem[offset];
+             effective_addr += (cpu.mem[offset + 1] << 8);
+
+    // Add Y to effecting address
+    effective_addr += cpu.registers.Y;
+
+    // Load value at effective address into accumulator
+    cpu.registers.A = cpu.mem[effective_addr];
+
+    // Set Zero & Negative Flags appropriately
+    if (cpu.registers.A & 0b10000000)   cpu.status.NegativeFlag = 1;
+    if (cpu.registers.A == 0)           cpu.status.ZeroFlag = 1;
+
+}
