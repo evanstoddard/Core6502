@@ -62,4 +62,19 @@ void Core6502::CPU::setupInstructionMap() {
     instructions[0xAC] = (Core6502::Instruction){false, 0xAC, 4, Core6502::LDY_Absolute};
     instructions[0xBC] = (Core6502::Instruction){false, 0xBC, 4, Core6502::LDY_Absolute_X};
 
+    // Transfer Instructions
+    instructions[0xAA] = (Core6502::Instruction){false, 0xAA, 2, Core6502::TAX};
+    instructions[0xA8] = (Core6502::Instruction){false, 0xA8, 2, Core6502::TAY};
+    instructions[0x8A] = (Core6502::Instruction){false, 0x8A, 2, Core6502::TXA};
+    instructions[0x98] = (Core6502::Instruction){false, 0x98, 2, Core6502::TYA};
+
+    // Status Flag Instructions
+    instructions[0x18] = (Core6502::Instruction){false, 0x18, 2, Core6502::CLC};
+    instructions[0xD8] = (Core6502::Instruction){false, 0xD8, 2, Core6502::CLD};
+    instructions[0x58] = (Core6502::Instruction){false, 0x58, 2, Core6502::CLI};
+    instructions[0xB8] = (Core6502::Instruction){false, 0xB8, 2, Core6502::CLV};
+    instructions[0x38] = (Core6502::Instruction){false, 0x38, 2, Core6502::SEC};
+    instructions[0xF8] = (Core6502::Instruction){false, 0xF8, 2, Core6502::SED};
+    instructions[0x78] = (Core6502::Instruction){false, 0x78, 2, Core6502::SEI};
+
 }

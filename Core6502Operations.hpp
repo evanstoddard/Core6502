@@ -46,6 +46,26 @@ namespace Core6502 {
     void LDY_Absolute(Core6502::CPU&, struct Instruction&);
     void LDY_Absolute_X(Core6502::CPU&, struct Instruction&);
 
+    // STA Instructions
+
+    // STX Instructions
+
+    // STY Instructions
+
+    // Transfer Instructions
+    void TAX(Core6502::CPU&, struct Instruction&);
+    void TAY(Core6502::CPU&, struct Instruction&);
+    void TXA(Core6502::CPU&, struct Instruction&);
+    void TYA(Core6502::CPU&, struct Instruction&);
+
+    // Status Flag Instructions
+    void CLC(Core6502::CPU&, struct Instruction&);
+    void CLD(Core6502::CPU&, struct Instruction&);
+    void CLI(Core6502::CPU&, struct Instruction&);
+    void CLV(Core6502::CPU&, struct Instruction&);
+    void SEC(Core6502::CPU&, struct Instruction&);
+    void SED(Core6502::CPU&, struct Instruction&);
+    void SEI(Core6502::CPU&, struct Instruction&);
 
 }
 
