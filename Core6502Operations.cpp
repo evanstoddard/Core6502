@@ -253,6 +253,194 @@ void Core6502::LDY_Absolute_X(Core6502::CPU& cpu, struct Instruction& op) {
     cpu.status.ZeroFlag     = (bool)(cpu.registers.Y == 0);
 }
 
+// STA Operations
+void Core6502::STA_Zero_Page(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Zero Page address
+    uint8_t addr = cpu.fetchByte();
+
+    // Store Accumulator to index
+    cpu.mem[addr] = cpu.registers.A;
+    
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+}
+void Core6502::STA_Zero_Page_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch Offset and add value of X register
+    uint8_t addr =  cpu.fetchByte();
+            addr += cpu.registers.X;
+
+    // Load value from Accumulator into RAM
+    cpu.mem[addr] = cpu.registers.A;
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.mem[addr] == 0);
+
+}
+void Core6502::STA_Absolute(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch 16-bit address
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+    
+    // Load value from Accumulator into RAM
+    cpu.mem[addr] = cpu.registers.A;
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.mem[addr] == 0);
+
+}
+void Core6502::STA_Absolute_X(Core6502::CPU& cpu, struct Instruction& op) {
+    
+    // Fetch 16-bit address and add offset from X register
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+             addr += cpu.registers.X;
+
+    // Load value from Accumulator into RAM
+    cpu.mem[addr] = cpu.registers.A;
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.mem[addr] == 0);
+
+}
+void Core6502::STA_Absolute_Y(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch 16-bit address and add offset from Y register
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+             addr += cpu.registers.Y;
+
+    // Load value from Accumulator into RAM
+    cpu.mem[addr] = cpu.registers.A;
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.mem[addr] == 0);
+}
+void Core6502::STA_Indirect_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch offset and add value in register X
+    uint8_t zero_addr =  cpu.fetchByte();
+            zero_addr += cpu.registers.X;
+    
+    // Read 16-bit address from zero page address
+    uint16_t effective_addr =  cpu.mem[zero_addr];
+             effective_addr += (cpu.mem[zero_addr + 1] << 8);
+
+    // Load value from Accumulator into RAM
+    cpu.mem[effective_addr] = cpu.registers.A;
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.mem[effective_addr] & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.mem[effective_addr] == 0);
+
+}
+void Core6502::STA_Indirect_Y(Core6502::CPU& cpu, struct Instruction&) {
+
+    // Fetch 16-bit address from zero page memory
+    uint8_t offset = cpu.fetchByte();
+    uint16_t effective_addr =  cpu.mem[offset];
+             effective_addr += (cpu.mem[offset + 1] << 8);
+
+    // Add Y to effecting address
+    effective_addr += cpu.registers.Y;
+
+    // Load value from Accumulator into RAM
+    cpu.mem[effective_addr] = cpu.registers.A;
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.mem[effective_addr] & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.mem[effective_addr] == 0);
+
+}
+
+// STX Operations
+void Core6502::STX_Zero_Page(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Zero Page address
+    uint8_t addr = cpu.fetchByte();
+
+    // Write X register to RAM
+    cpu.mem[addr] = cpu.registers.X;
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.mem[addr] == 0);
+}
+void Core6502::STX_Zero_Page_Y(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch Offset and add value of Y register
+    uint8_t addr =  cpu.fetchByte();
+            addr += cpu.registers.Y;
+
+    // Write X register to RAM
+    cpu.mem[addr] = cpu.registers.X;
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.mem[addr] == 0);
+
+}
+void Core6502::STX_Absolute(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch 16-bit address
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+    
+    // Write X register to RAM
+    cpu.mem[addr] = cpu.registers.X;
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr]& 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.mem[addr] == 0);
+
+}
+
+// STY Operations
+void Core6502::STY_Zero_Page(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Zero Page address
+    uint8_t addr = cpu.fetchByte();
+
+    // Load value at index into Y
+    // Can directly index memory with fetched addr
+    cpu.registers.Y = cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.Y & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.Y == 0);
+}
+void Core6502::STY_Zero_Page_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch Offset and add value of X register
+    uint8_t addr =  cpu.fetchByte();
+            addr += cpu.registers.X;
+
+    // Load value at addr into Y
+    cpu.registers.Y = cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.Y & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.Y == 0);
+
+}
+void Core6502::STY_Absolute(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch 16-bit address
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+    
+    // Load value at address into Y
+    cpu.registers.Y = cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.Y & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.Y == 0);
+
+}
+
 // Transfer Instructions
 void Core6502::TAX(Core6502::CPU& cpu, struct Instruction& op) {
 

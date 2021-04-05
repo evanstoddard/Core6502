@@ -62,6 +62,25 @@ void Core6502::CPU::setupInstructionMap() {
     instructions[0xAC] = (Core6502::Instruction){false, 0xAC, 4, Core6502::LDY_Absolute};
     instructions[0xBC] = (Core6502::Instruction){false, 0xBC, 4, Core6502::LDY_Absolute_X};
 
+    // STA Instructions
+    instructions[0x85] = (Core6502::Instruction){false, 0x85, 3, Core6502::STA_Zero_Page};
+    instructions[0x95] = (Core6502::Instruction){false, 0x95, 4, Core6502::STA_Zero_Page_X};
+    instructions[0x8D] = (Core6502::Instruction){false, 0x8D, 4, Core6502::STA_Absolute};
+    instructions[0x9D] = (Core6502::Instruction){false, 0x9D, 5, Core6502::STA_Absolute_X};
+    instructions[0x99] = (Core6502::Instruction){false, 0x99, 5, Core6502::STA_Absolute_Y};
+    instructions[0x81] = (Core6502::Instruction){false, 0x81, 6, Core6502::STA_Indirect_X};
+    instructions[0x91] = (Core6502::Instruction){false, 0x91, 6, Core6502::STA_Indirect_Y};
+
+    // STX Instructions
+    instructions[0x86] = (Core6502::Instruction){false, 0x86, 3, Core6502::STX_Zero_Page};
+    instructions[0x96] = (Core6502::Instruction){false, 0x96, 4, Core6502::STX_Zero_Page_Y};
+    instructions[0x8E] = (Core6502::Instruction){false, 0x8E, 4, Core6502::STX_Absolute};
+    
+    // STY Instructions
+    instructions[0x84] = (Core6502::Instruction){false, 0x84, 3, Core6502::STY_Zero_Page};
+    instructions[0x94] = (Core6502::Instruction){false, 0x94, 4, Core6502::STY_Zero_Page_X};
+    instructions[0x8C] = (Core6502::Instruction){false, 0x8C, 4, Core6502::STY_Absolute};
+
     // Transfer Instructions
     instructions[0xAA] = (Core6502::Instruction){false, 0xAA, 2, Core6502::TAX};
     instructions[0xA8] = (Core6502::Instruction){false, 0xA8, 2, Core6502::TAY};

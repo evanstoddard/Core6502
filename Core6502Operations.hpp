@@ -47,10 +47,23 @@ namespace Core6502 {
     void LDY_Absolute_X(Core6502::CPU&, struct Instruction&);
 
     // STA Instructions
-
+    void STA_Zero_Page(Core6502::CPU&, struct Instruction&);
+    void STA_Zero_Page_X(Core6502::CPU&, struct Instruction&);
+    void STA_Absolute(Core6502::CPU&, struct Instruction&);
+    void STA_Absolute_X(Core6502::CPU&, struct Instruction&);
+    void STA_Absolute_Y(Core6502::CPU&, struct Instruction&);
+    void STA_Indirect_X(Core6502::CPU&, struct Instruction&);
+    void STA_Indirect_Y(Core6502::CPU&, struct Instruction&);
+    
     // STX Instructions
+    void STX_Zero_Page(Core6502::CPU&, struct Instruction&);
+    void STX_Zero_Page_Y(Core6502::CPU&, struct Instruction&);
+    void STX_Absolute(Core6502::CPU&, struct Instruction&);
 
     // STY Instructions
+    void STY_Zero_Page(Core6502::CPU&, struct Instruction&);
+    void STY_Zero_Page_X(Core6502::CPU&, struct Instruction&);
+    void STY_Absolute(Core6502::CPU&, struct Instruction&);
 
     // Transfer Instructions
     void TAX(Core6502::CPU&, struct Instruction&);
