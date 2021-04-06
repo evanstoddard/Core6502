@@ -65,6 +65,36 @@ namespace Core6502 {
     void STY_Zero_Page_X(Core6502::CPU&, struct Instruction&);
     void STY_Absolute(Core6502::CPU&, struct Instruction&);
 
+    // AND Instructions
+    void AND_Immediate(Core6502::CPU&, struct Instruction&);
+    void AND_Zero_Page(Core6502::CPU&, struct Instruction&);
+    void AND_Zero_Page_X(Core6502::CPU&, struct Instruction&);
+    void AND_Absolute(Core6502::CPU&, struct Instruction&);
+    void AND_Absolute_X(Core6502::CPU&, struct Instruction&);
+    void AND_Absolute_Y(Core6502::CPU&, struct Instruction&);
+    void AND_Indirect_X(Core6502::CPU&, struct Instruction&);
+    void AND_Indirect_Y(Core6502::CPU&, struct Instruction&);
+
+     // ORA Instructions
+    void ORA_Immediate(Core6502::CPU&, struct Instruction&);
+    void ORA_Zero_Page(Core6502::CPU&, struct Instruction&);
+    void ORA_Zero_Page_X(Core6502::CPU&, struct Instruction&);
+    void ORA_Absolute(Core6502::CPU&, struct Instruction&);
+    void ORA_Absolute_X(Core6502::CPU&, struct Instruction&);
+    void ORA_Absolute_Y(Core6502::CPU&, struct Instruction&);
+    void ORA_Indirect_X(Core6502::CPU&, struct Instruction&);
+    void ORA_Indirect_Y(Core6502::CPU&, struct Instruction&);
+
+    // EOR Instructions
+    void EOR_Immediate(Core6502::CPU&, struct Instruction&);
+    void EOR_Zero_Page(Core6502::CPU&, struct Instruction&);
+    void EOR_Zero_Page_X(Core6502::CPU&, struct Instruction&);
+    void EOR_Absolute(Core6502::CPU&, struct Instruction&);
+    void EOR_Absolute_X(Core6502::CPU&, struct Instruction&);
+    void EOR_Absolute_Y(Core6502::CPU&, struct Instruction&);
+    void EOR_Indirect_X(Core6502::CPU&, struct Instruction&);
+    void EOR_Indirect_Y(Core6502::CPU&, struct Instruction&);
+
     // Transfer Instructions
     void TAX(Core6502::CPU&, struct Instruction&);
     void TAY(Core6502::CPU&, struct Instruction&);

@@ -483,6 +483,353 @@ void Core6502::TYA(Core6502::CPU& cpu, struct Instruction& op) {
 
 }
 
+// AND Operations
+void Core6502::AND_Immediate(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch Value AND with Accumulator
+    cpu.registers.A &= cpu.fetchByte();
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::AND_Zero_Page(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Zero Page address
+    uint8_t addr = cpu.fetchByte();
+
+    // And value with accumulator
+    cpu.registers.A &= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+}
+void Core6502::AND_Zero_Page_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch Offset and add value of X register
+    uint8_t addr =  cpu.fetchByte();
+            addr += cpu.registers.X;
+
+    // AND value with Accumulator
+    cpu.registers.A &= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::AND_Absolute(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch 16-bit address
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+    
+    // And value with Accumulator
+    cpu.registers.A &= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::AND_Absolute_X(Core6502::CPU& cpu, struct Instruction& op) {
+    
+    // Fetch 16-bit address and add offset from X register
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+             addr += cpu.registers.X;
+
+    // AND value with Accumulator
+    cpu.registers.A &= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::AND_Absolute_Y(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch 16-bit address and add offset from Y register
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+             addr += cpu.registers.Y;
+
+    // AND value with Accumulator
+    cpu.registers.A &= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+}
+void Core6502::AND_Indirect_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch offset and add value in register X
+    uint8_t zero_addr =  cpu.fetchByte();
+            zero_addr += cpu.registers.X;
+    
+    // Read 16-bit address from zero page address
+    uint16_t effective_addr =  cpu.mem[zero_addr];
+             effective_addr += (cpu.mem[zero_addr + 1] << 8);
+
+    // AND value with Accumulator
+    cpu.registers.A &= cpu.mem[effective_addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::AND_Indirect_Y(Core6502::CPU& cpu, struct Instruction&) {
+
+    // Fetch 16-bit address from zero page memory
+    uint8_t offset = cpu.fetchByte();
+    uint16_t effective_addr =  cpu.mem[offset];
+             effective_addr += (cpu.mem[offset + 1] << 8);
+
+    // Add Y to effecting address
+    effective_addr += cpu.registers.Y;
+
+    // AND value with Accumulator
+    cpu.registers.A &= cpu.mem[effective_addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+
+// OR Operations
+void Core6502::ORA_Immediate(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch Value OR with Accumulator
+    cpu.registers.A |= cpu.fetchByte();
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::ORA_Zero_Page(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Zero Page address
+    uint8_t addr = cpu.fetchByte();
+
+    // OR value with accumulator
+    cpu.registers.A |= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+}
+void Core6502::ORA_Zero_Page_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch Offset and add value of X register
+    uint8_t addr =  cpu.fetchByte();
+            addr += cpu.registers.X;
+
+    // OR value with Accumulator
+    cpu.registers.A |= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::ORA_Absolute(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch 16-bit address
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+    
+    // OR value with Accumulator
+    cpu.registers.A |= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::ORA_Absolute_X(Core6502::CPU& cpu, struct Instruction& op) {
+    
+    // Fetch 16-bit address and add offset from X register
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+             addr += cpu.registers.X;
+
+    // OR value with Accumulator
+    cpu.registers.A |= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::ORA_Absolute_Y(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch 16-bit address and add offset from Y register
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+             addr += cpu.registers.Y;
+
+    // OR value with Accumulator
+    cpu.registers.A |= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+}
+void Core6502::ORA_Indirect_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch offset and add value in register X
+    uint8_t zero_addr =  cpu.fetchByte();
+            zero_addr += cpu.registers.X;
+    
+    // Read 16-bit address from zero page address
+    uint16_t effective_addr =  cpu.mem[zero_addr];
+             effective_addr += (cpu.mem[zero_addr + 1] << 8);
+
+    // OR value with Accumulator
+    cpu.registers.A |= cpu.mem[effective_addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::ORA_Indirect_Y(Core6502::CPU& cpu, struct Instruction&) {
+
+    // Fetch 16-bit address from zero page memory
+    uint8_t offset = cpu.fetchByte();
+    uint16_t effective_addr =  cpu.mem[offset];
+             effective_addr += (cpu.mem[offset + 1] << 8);
+
+    // Add Y to effecting address
+    effective_addr += cpu.registers.Y;
+
+    // OR value with Accumulator
+    cpu.registers.A |= cpu.mem[effective_addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+
+// OR Operations
+void Core6502::EOR_Immediate(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch Value EOR with Accumulator
+    cpu.registers.A ^= cpu.fetchByte();
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::EOR_Zero_Page(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Zero Page address
+    uint8_t addr = cpu.fetchByte();
+
+    // EOR value with accumulator
+    cpu.registers.A ^= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+}
+void Core6502::EOR_Zero_Page_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch Offset and add value of X register
+    uint8_t addr =  cpu.fetchByte();
+            addr += cpu.registers.X;
+
+    // EOR value with Accumulator
+    cpu.registers.A ^= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::EOR_Absolute(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch 16-bit address
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+    
+    // EOR value with Accumulator
+    cpu.registers.A ^= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::EOR_Absolute_X(Core6502::CPU& cpu, struct Instruction& op) {
+    
+    // Fetch 16-bit address and add offset from X register
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+             addr += cpu.registers.X;
+
+    // EOR value with Accumulator
+    cpu.registers.A ^= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::EOR_Absolute_Y(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch 16-bit address and add offset from Y register
+    uint16_t addr  = cpu.fetchByte();
+             addr += (cpu.fetchByte() << 8);
+             addr += cpu.registers.Y;
+
+    // EOR value with Accumulator
+    cpu.registers.A ^= cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+}
+void Core6502::EOR_Indirect_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch offset and add value in register X
+    uint8_t zero_addr =  cpu.fetchByte();
+            zero_addr += cpu.registers.X;
+    
+    // Read 16-bit address from zero page address
+    uint16_t effective_addr =  cpu.mem[zero_addr];
+             effective_addr += (cpu.mem[zero_addr + 1] << 8);
+
+    // EOR value with Accumulator
+    cpu.registers.A ^= cpu.mem[effective_addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+void Core6502::EOR_Indirect_Y(Core6502::CPU& cpu, struct Instruction&) {
+
+    // Fetch 16-bit address from zero page memory
+    uint8_t offset = cpu.fetchByte();
+    uint16_t effective_addr =  cpu.mem[offset];
+             effective_addr += (cpu.mem[offset + 1] << 8);
+
+    // Add Y to effecting address
+    effective_addr += cpu.registers.Y;
+
+    // EOR value with Accumulator
+    cpu.registers.A ^= cpu.mem[effective_addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
+    cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+
+
+
 // Status Flag Instructions
 void Core6502::CLC(Core6502::CPU& cpu, struct Instruction& op) {
     // Clear Carry flag

@@ -81,6 +81,36 @@ void Core6502::CPU::setupInstructionMap() {
     instructions[0x94] = (Core6502::Instruction){false, 0x94, 4, Core6502::STY_Zero_Page_X};
     instructions[0x8C] = (Core6502::Instruction){false, 0x8C, 4, Core6502::STY_Absolute};
 
+    // AND Instructions
+    instructions[0x29] = (Core6502::Instruction){false, 0x29, 2, Core6502::AND_Immediate};
+    instructions[0x25] = (Core6502::Instruction){false, 0x25, 3, Core6502::AND_Zero_Page};
+    instructions[0x35] = (Core6502::Instruction){false, 0x35, 4, Core6502::AND_Zero_Page_X};
+    instructions[0x2D] = (Core6502::Instruction){false, 0x2D, 4, Core6502::AND_Absolute};
+    instructions[0x3D] = (Core6502::Instruction){false, 0x3D, 4, Core6502::AND_Absolute_X};
+    instructions[0x39] = (Core6502::Instruction){false, 0x39, 4, Core6502::AND_Absolute_Y};
+    instructions[0x21] = (Core6502::Instruction){false, 0x21, 6, Core6502::AND_Indirect_X};
+    instructions[0x31] = (Core6502::Instruction){false, 0x31, 5, Core6502::AND_Indirect_Y};
+
+    // OR Instructions
+    instructions[0x09] = (Core6502::Instruction){false, 0x09, 2, Core6502::ORA_Immediate};
+    instructions[0x05] = (Core6502::Instruction){false, 0x05, 3, Core6502::ORA_Zero_Page};
+    instructions[0x15] = (Core6502::Instruction){false, 0x15, 4, Core6502::ORA_Zero_Page_X};
+    instructions[0x0D] = (Core6502::Instruction){false, 0x0D, 4, Core6502::ORA_Absolute};
+    instructions[0x1D] = (Core6502::Instruction){false, 0x1D, 4, Core6502::ORA_Absolute_X};
+    instructions[0x19] = (Core6502::Instruction){false, 0x19, 4, Core6502::ORA_Absolute_Y};
+    instructions[0x01] = (Core6502::Instruction){false, 0x01, 6, Core6502::ORA_Indirect_X};
+    instructions[0x11] = (Core6502::Instruction){false, 0x11, 5, Core6502::ORA_Indirect_Y};
+
+    // EOR Instructions
+    instructions[0x49] = (Core6502::Instruction){false, 0x49, 2, Core6502::EOR_Immediate};
+    instructions[0x45] = (Core6502::Instruction){false, 0x45, 3, Core6502::EOR_Zero_Page};
+    instructions[0x55] = (Core6502::Instruction){false, 0x55, 4, Core6502::EOR_Zero_Page_X};
+    instructions[0x4D] = (Core6502::Instruction){false, 0x4D, 4, Core6502::EOR_Absolute};
+    instructions[0x5D] = (Core6502::Instruction){false, 0x5D, 4, Core6502::EOR_Absolute_X};
+    instructions[0x59] = (Core6502::Instruction){false, 0x59, 4, Core6502::EOR_Absolute_Y};
+    instructions[0x41] = (Core6502::Instruction){false, 0x41, 6, Core6502::EOR_Indirect_X};
+    instructions[0x51] = (Core6502::Instruction){false, 0x51, 5, Core6502::EOR_Indirect_Y};
+
     // Transfer Instructions
     instructions[0xAA] = (Core6502::Instruction){false, 0xAA, 2, Core6502::TAX};
     instructions[0xA8] = (Core6502::Instruction){false, 0xA8, 2, Core6502::TAY};
