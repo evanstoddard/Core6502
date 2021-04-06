@@ -828,8 +828,6 @@ void Core6502::EOR_Indirect_Y(Core6502::CPU& cpu, struct Instruction&) {
 
 }
 
-
-
 // Status Flag Instructions
 void Core6502::CLC(Core6502::CPU& cpu, struct Instruction& op) {
     // Clear Carry flag
