@@ -48,6 +48,7 @@ namespace Core6502{
 
     // Methods
     uint8_t fetchByte(); // Fetches current byte and increments PC
+    void reset();        // Resets Processor
 
     volatile uint8_t * mem;
 

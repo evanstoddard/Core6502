@@ -26,6 +26,30 @@ Core6502::CPU::CPU(uint8_t * memPtr) {
 
 }
 
+void Core6502::CPU::reset() {
+
+    // Set PC to 0xFFFC and all other registers to 0
+    registers.PC    = 0xFFFC;
+    registers.SP    = 0x0;
+    registers.A     = 0x0;
+    registers.X     = 0x0;
+    registers.Y     = 0x0;
+
+    // Set flags to a default state and disable interrupts
+    status.BreakCommand = 0;
+    status.CarryFlag = 0;
+    status.DecimalMode = 0;
+    status.InterruptDisable = 1;
+    status.NegativeFlag = 0;
+    status.OverflowFlag = 0;
+    status.UserFlag = 0;
+    status.ZeroFlag = 0;
+
+    // Set the program counter to address at reset vector
+    uint16_t effective_addr  = fetchByte() | (fetchByte() << 8);
+    
+}
+
 uint8_t Core6502::CPU::fetchByte() {
 
     // Grab value from memory at PC index and increment PC
