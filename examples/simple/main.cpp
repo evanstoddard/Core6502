@@ -11,11 +11,21 @@ void MyInstruction(Core6502::CPU &cpu, Core6502::Instruction & instruction) {
 
 int main(int argc, char ** argv) {
 
+	// Create memory
 	uint8_t mem[0xFFFF];
+	
+	// Set reset vector to 0xBEEF
+	mem[0xFFFC] = 0xEF;
+	mem[0xFFFD] = 0xBE;
 
+	// Create CPU instance
 	Core6502::CPU cpu(mem);
 
-	
+	// Reset CPU
+	cpu.reset();
+
+	// Print out program counter
+	std::cout << "CPU Program Counter: 0x" << cpu.registers.PC << std::endl;
 	
 	cpu.instructions[0xFF] = (Core6502::Instruction){false, 0xFF, 2, MyInstruction};
 

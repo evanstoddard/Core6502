@@ -47,7 +47,8 @@ void Core6502::CPU::reset() {
 
     // Set the program counter to address at reset vector
     uint16_t effective_addr  = fetchByte() | (fetchByte() << 8);
-    
+    registers.PC = effective_addr;
+
 }
 
 uint8_t Core6502::CPU::fetchByte() {

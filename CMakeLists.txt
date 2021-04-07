@@ -6,3 +6,4 @@ set(PROJECT_BINARY_DIR ${CMAKE_BINARY_DIR}/build)
 
 add_subdirectory(src)
 add_subdirectory(tests)
+add_subdirectory(examples)
