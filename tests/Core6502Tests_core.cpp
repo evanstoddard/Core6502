@@ -4,21 +4,24 @@
 class Core6502Tests_Core : public testing::Test
 {
 public:
-
-	Core6502::CPU cpu();
-
+    uint8_t mem[0xFFFF];
+	Core6502::CPU *cpu;
+    
 	virtual void SetUp()
-	{
-		
+	{   
+        mem[0xFFFC] = 0xEF;
+        mem[0xFFFD] = 0xBE;
+        cpu = new Core6502::CPU(mem);
 	}
 
 	virtual void TearDown()
 	{
+        delete cpu;
 	}
 };
 
 TEST_F(Core6502Tests_Core, Test_CPU_Reset) {
     
-
-    EXPECT_EQ(1,1);
+    cpu->reset();
+    EXPECT_EQ(cpu->registers.PC,0xBEEF);
 }
