@@ -1,4 +1,4 @@
-main.cpp
-a.out
 .vscode/
 .DS_Store
+build/
+lib/*
