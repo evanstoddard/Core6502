@@ -43,7 +43,7 @@ void Core6502::CPU::reset() {
     status.NegativeFlag = 0;
     status.OverflowFlag = 0;
     status.UserFlag = 0;
-    status.ZeroFlag = 0;
+    status.ZeroFlag = 1;
 
     // Set the program counter to address at reset vector
     uint16_t effective_addr  = fetchByte() | (fetchByte() << 8);
