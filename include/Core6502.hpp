@@ -18,15 +18,15 @@ namespace Core6502{
     class CPU {
     
     public:
-    CPU();
-    CPU(uint8_t * memPtr);
+        CPU();
+        CPU(uint8_t * memPtr);
 
-    // Map of operations.  Can be used to overload default operations or add functionality
-    // to undocumented operations like the NES Processor.
-    std::map<uint8_t, struct Instruction> instructions;
+        // Map of operations.  Can be used to overload default operations or add functionality
+        // to undocumented operations like the NES Processor.
+        std::map<uint8_t, struct Instruction> instructions;
 
-    // Registers
-    struct {
+        // Registers
+        struct {
         uint16_t PC;
         uint8_t  SP;
         uint8_t  A;
@@ -34,8 +34,8 @@ namespace Core6502{
         uint8_t  Y;
     } registers;
     
-    // Processor Status
-    struct {
+        // Processor Status
+        struct {
         uint8_t CarryFlag:1;
         uint8_t ZeroFlag:1;
         uint8_t InterruptDisable:1;
@@ -46,16 +46,26 @@ namespace Core6502{
         uint8_t UserFlag:1;
     } status;
 
-    // Methods
-    uint8_t fetchByte(); // Fetches current byte and increments PC
-    void reset();        // Resets Processor
+        // Methods
+        uint8_t fetchByte(); // Fetches current byte and increments PC
+        void reset();        // Resets Processor
+        
+        // Addressing methods
+        uint8_t zeroPageAddr();
+        uint8_t zeroPageXAddr();
+        uint8_t zeroPageYAddr();
+        uint16_t absoluteAddr();
+        uint16_t absoluteXAddr();
+        uint16_t absoluteYAddr();
+        uint16_t indirectXAddr();
+        uint16_t indirectYAddr();
 
-    volatile uint8_t * mem;
+        volatile uint8_t * mem;
 
     private:
-    void setupInstructionMap();
+        void setupInstructionMap();
     
-};
+    };
 
 
 }

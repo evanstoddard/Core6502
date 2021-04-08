@@ -61,6 +61,66 @@ uint8_t Core6502::CPU::fetchByte() {
 
 }
 
+uint8_t Core6502::CPU::zeroPageAddr() {
+    // Return fetched byte
+    return fetchByte();
+}
+
+uint8_t Core6502::CPU::zeroPageXAddr() {
+    // Fetch Offset and add value of X register
+    return fetchByte() + registers.X;
+}
+
+uint8_t Core6502::CPU::zeroPageXAddr() {
+    // Fetch Offset and add value of Y register
+    return fetchByte() + registers.Y;
+}
+
+uint16_t Core6502::CPU::absoluteAddr() {
+    // Fetch 16-bit address
+    return fetchByte() + (fetchByte() << 8);
+}
+
+uint16_t Core6502::CPU::absoluteXAddr() {
+    // Fetch 16-bit address and add offset from X register
+    uint16_t addr  = fetchByte();
+             addr += (fetchByte() << 8);
+             addr += registers.X;
+
+    return addr;
+}
+
+uint16_t Core6502::CPU::absoluteYAddr() {
+    // Fetch 16-bit address and add offset from Y register
+    uint16_t addr  = fetchByte();
+             addr += (fetchByte() << 8);
+             addr += registers.Y;
+
+    return addr;
+}
+uint16_t Core6502::CPU::indirectXAddr() {
+    // Fetch offset and add value in register X
+    uint8_t zero_addr =  fetchByte();
+            zero_addr += registers.X;
+    
+    // Read 16-bit address from zero page address
+    uint16_t effective_addr =  mem[zero_addr];
+             effective_addr += (mem[zero_addr + 1] << 8);
+
+    return effective_addr;
+}
+uint16_t Core6502::CPU::indirectYAddr() {
+    // Fetch 16-bit address from zero page memory
+    uint8_t offset = fetchByte();
+    uint16_t effective_addr =  mem[offset];
+             effective_addr += (mem[offset + 1] << 8);
+
+    // Add Y to effecting address
+    effective_addr += registers.Y;
+
+    return effective_addr;
+}
+
 void Core6502::CPU::setupInstructionMap() {
     
     // LDA Instructions
