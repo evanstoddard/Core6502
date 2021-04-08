@@ -71,7 +71,7 @@ uint8_t Core6502::CPU::zeroPageXAddr() {
     return fetchByte() + registers.X;
 }
 
-uint8_t Core6502::CPU::zeroPageXAddr() {
+uint8_t Core6502::CPU::zeroPageYAddr() {
     // Fetch Offset and add value of Y register
     return fetchByte() + registers.Y;
 }
