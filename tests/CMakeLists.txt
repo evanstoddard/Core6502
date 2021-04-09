@@ -38,6 +38,7 @@ set (TEST_SOURCES
     "Core6502Tests_STA.cpp"
     "Core6502Tests_STX.cpp"
     "Core6502Tests_STY.cpp"
+    "Core6502Tests_StatusFlags.cpp"
 )
 
 source_group("src" FILES ${TEST_SOURCES})
