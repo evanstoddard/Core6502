@@ -80,14 +80,17 @@ TEST_F(Core6502Tests_Core, Test_Absolute_Addressing) {
 
     // Initial values
     uint16_t pcVal = 0x4000;
-    uint8_t memVal = 0xBE;
+    uint8_t memValLB = 0xEF;
+    uint8_t memValUB = 0xBE;
+    uint16_t memVal = memValLB + (memValUB << 8);
 
     // Set program counter and mem to known value
     cpu->registers.PC = pcVal;
-    cpu->mem[pcVal] = memVal;
+    cpu->mem[pcVal] = memValLB;
+    cpu->mem[pcVal+1] = memValUB;
 
     // Fetch address
-    uint8_t addr = cpu->absoluteAddr();
+    uint16_t addr = cpu->absoluteAddr();
 
     // Validate fetched address is what we expect
     EXPECT_EQ(addr, memVal);
@@ -97,16 +100,19 @@ TEST_F(Core6502Tests_Core, Test_Absolute_X_Addressing) {
 
     // Initial values
     uint16_t pcVal = 0x4000;
-    uint8_t xVal = 0x2;
-    uint8_t memVal = 0xBE;
+    uint8_t memValLB = 0xEF;
+    uint8_t memValUB = 0xBE;
+    uint16_t memVal = memValLB + (memValUB << 8);
+    uint8_t xVal = 0x6;
 
-    // Set registers & memory
+    // Set program counter and mem to known value
     cpu->registers.PC = pcVal;
     cpu->registers.X = xVal;
-    cpu->mem[pcVal] = memVal;
+    cpu->mem[pcVal] = memValLB;
+    cpu->mem[pcVal+1] = memValUB;
 
     // Fetch address
-    uint8_t addr = cpu->absoluteXAddr();
+    uint16_t addr = cpu->absoluteXAddr();
 
     // Validate fetched address is what we expect
     EXPECT_EQ(addr, memVal + xVal);
@@ -114,20 +120,118 @@ TEST_F(Core6502Tests_Core, Test_Absolute_X_Addressing) {
 }
 TEST_F(Core6502Tests_Core, Test_Absolute_Y_Addressing) {
 
-    // Initial values
+   // Initial values
     uint16_t pcVal = 0x4000;
-    uint8_t yVal = 0x2;
-    uint8_t memVal = 0xBE;
+    uint8_t memValLB = 0xEF;
+    uint8_t memValUB = 0xBE;
+    uint16_t memVal = memValLB + (memValUB << 8);
+    uint8_t yVal = 0x6;
 
-    // Set registers & memory
+    // Set program counter and mem to known value
     cpu->registers.PC = pcVal;
     cpu->registers.Y = yVal;
-    cpu->mem[pcVal] = memVal;
+    cpu->mem[pcVal] = memValLB;
+    cpu->mem[pcVal+1] = memValUB;
 
     // Fetch address
-    uint8_t addr = cpu->absoluteYAddr();
+    uint16_t addr = cpu->absoluteYAddr();
 
     // Validate fetched address is what we expect
     EXPECT_EQ(addr, memVal + yVal);
+
+}
+TEST_F(Core6502Tests_Core, Test_Zero_Page) {
+
+   // Initial values
+    uint16_t pcVal = 0x4000;
+    uint8_t memVal = 0x40;
+
+    // Set program counter and mem to known value
+    cpu->registers.PC = pcVal;
+    cpu->mem[pcVal] = memVal;
+   
+    // Fetch address
+    uint8_t addr = cpu->zeroPageAddr();
+
+    // Validate fetched address is what we expect
+    EXPECT_EQ(addr, memVal);
+
+}
+TEST_F(Core6502Tests_Core, Test_Zero_Page_X) {
+
+   // Initial values
+    uint16_t pcVal = 0x4000;
+    uint8_t memVal = 0x40;
+    uint8_t xVal = 0x20;
+
+    // Set program counter and mem to known value
+    cpu->registers.PC = pcVal;
+    cpu->registers.X = xVal;
+    cpu->mem[pcVal] = memVal;
+   
+    // Fetch address
+    uint8_t addr = cpu->zeroPageXAddr();
+
+    // Validate fetched address is what we expect
+    EXPECT_EQ(addr, memVal + xVal);
+
+}
+TEST_F(Core6502Tests_Core, Test_Zero_Page_X_Wrap_Around) {
+
+   // Initial values
+    uint16_t pcVal = 0x4000;
+    uint8_t memVal = 0xFF;
+    uint8_t xVal = 0x20;
+
+    // Set program counter and mem to known value
+    cpu->registers.PC = pcVal;
+    cpu->registers.X = xVal;
+    cpu->mem[pcVal] = memVal;
+   
+    // Fetch address
+    uint16_t addr = cpu->zeroPageXAddr();
+
+    // Validate fetched address is what we expect
+    EXPECT_LT(addr, 0x100);
+    EXPECT_EQ(addr, (uint8_t)(memVal + xVal));
+
+}
+TEST_F(Core6502Tests_Core, Test_Zero_Page_Y) {
+
+   // Initial values
+    uint16_t pcVal = 0x4000;
+    uint8_t memVal = 0x40;
+    uint8_t yVal = 0x20;
+
+    // Set program counter and mem to known value
+    cpu->registers.PC = pcVal;
+    cpu->registers.Y = yVal;
+    cpu->mem[pcVal] = memVal;
+   
+    // Fetch address
+    uint8_t addr = cpu->zeroPageYAddr();
+
+    // Validate fetched address is what we expect
+    EXPECT_EQ(addr, memVal + yVal);
+
+}
+TEST_F(Core6502Tests_Core, Test_Zero_Page_Y_Wrap_Around) {
+
+   // Initial values
+    uint16_t pcVal = 0x4000;
+    uint8_t memVal = 0xFF;
+    uint8_t yVal = 0x20;
+
+    // Set program counter and mem to known value
+    cpu->registers.PC = pcVal;
+    cpu->registers.Y = yVal;
+    cpu->mem[pcVal] = memVal;
+   
+    // Fetch address
+    uint16_t addr = cpu->zeroPageYAddr();
+
+    // Validate fetched address is what we expect
+    EXPECT_LT(addr, 0x100);
+    EXPECT_EQ(addr, (uint8_t)(memVal + yVal));
 
 }

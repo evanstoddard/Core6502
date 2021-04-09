@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "Core6502.hpp"
 
-class Core6502Tests_LDA : public testing::Test
+class Core6502Tests_LDY : public testing::Test
 {
 public:
     uint8_t mem[0xFFFF];
@@ -19,13 +19,13 @@ public:
 	}
 };
 
-// Checks all LDA instructions
+// Checks all LDY instructions
 
-// LDA Immediate
-TEST_F(Core6502Tests_LDA, Test_LDA_Immediate_Positive) {
+// LDY Immediate
+TEST_F(Core6502Tests_LDY, Test_LDY_Immediate_Positive) {
     
     // Create test values
-    uint8_t opCode = 0xA9;
+    uint8_t opCode = 0xA0;
     uint16_t pcVal = 0x4000;
     uint8_t aTestVal = 0x0A;
 
@@ -37,16 +37,16 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Immediate_Positive) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 0);
     EXPECT_EQ(cpu->status.ZeroFlag, 0);
 
     
 }
-TEST_F(Core6502Tests_LDA, Test_LDA_Immediate_Negative) {
+TEST_F(Core6502Tests_LDY, Test_LDY_Immediate_Negative) {
     
     // Create test values
-    uint8_t opCode = 0xA9;
+    uint8_t opCode = 0xA0;
     uint16_t pcVal = 0x4000;
     uint8_t aTestVal = 0x80;
 
@@ -58,15 +58,15 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Immediate_Negative) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 1);
     EXPECT_EQ(cpu->status.ZeroFlag, 0);
 
 }
-TEST_F(Core6502Tests_LDA, Test_LDA_Immediate_Zero) {
+TEST_F(Core6502Tests_LDY, Test_LDY_Immediate_Zero) {
     
     // Create test values
-    uint8_t opCode = 0xA9;
+    uint8_t opCode = 0xA0;
     uint16_t pcVal = 0x4000;
     uint8_t aTestVal = 0x0;
 
@@ -78,17 +78,17 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Immediate_Zero) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 0);
     EXPECT_EQ(cpu->status.ZeroFlag, 1);
 
 }
 
-// LDA Zero Page
-TEST_F(Core6502Tests_LDA, Test_LDA_Zero_Page_Positive) {
+// LDY Zero Page
+TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_Positive) {
     
     // Create test values
-    uint8_t opCode = 0xA5;
+    uint8_t opCode = 0xA4;
     uint16_t pcVal = 0x4000;
     uint8_t addr = 0xFF;
     uint8_t aTestVal = 0x0A;
@@ -102,16 +102,16 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Zero_Page_Positive) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 0);
     EXPECT_EQ(cpu->status.ZeroFlag, 0);
 
     
 }
-TEST_F(Core6502Tests_LDA, Test_LDA_Zero_Page_Negative) {
+TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_Negative) {
     
     // Create test values
-    uint8_t opCode = 0xA5;
+    uint8_t opCode = 0xA4;
     uint16_t pcVal = 0x4000;
     uint8_t addr = 0xFF;
     uint8_t aTestVal = 0x80;
@@ -125,15 +125,15 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Zero_Page_Negative) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 1);
     EXPECT_EQ(cpu->status.ZeroFlag, 0);
 
 }
-TEST_F(Core6502Tests_LDA, Test_LDA_Zero_Page_Zero) {
+TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_Zero) {
     
     // Create test values
-    uint8_t opCode = 0xA5;
+    uint8_t opCode = 0xA4;
     uint16_t pcVal = 0x4000;
     uint8_t addr = 0xFF;
     uint8_t aTestVal = 0x0;
@@ -147,17 +147,17 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Zero_Page_Zero) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 0);
     EXPECT_EQ(cpu->status.ZeroFlag, 1);
 
 }
 
-// LDA Zero Page X
-TEST_F(Core6502Tests_LDA, Test_LDA_Zero_Page_X_Positive) {
+// LDY Zero Page X
+TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_X_Positive) {
     
     // Create test values
-    uint8_t opCode = 0xB5;
+    uint8_t opCode = 0xB4;
     uint16_t pcVal = 0x4000;
     uint8_t zeroPageAddr = 0x80;
     uint8_t xVal = 0x10;
@@ -174,16 +174,16 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Zero_Page_X_Positive) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 0);
     EXPECT_EQ(cpu->status.ZeroFlag, 0);
 
     
 }
-TEST_F(Core6502Tests_LDA, Test_LDA_Zero_Page_X_Negative) {
+TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_X_Negative) {
     
     // Create test values
-    uint8_t opCode = 0xB5;
+    uint8_t opCode = 0xB4;
     uint16_t pcVal = 0x4000;
     uint8_t zeroPageAddr = 0x80;
     uint8_t xVal = 0x10;
@@ -200,15 +200,15 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Zero_Page_X_Negative) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 1);
     EXPECT_EQ(cpu->status.ZeroFlag, 0);
 
 }
-TEST_F(Core6502Tests_LDA, Test_LDA_Zero_Page_X_Zero) {
+TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_X_Zero) {
     
     // Create test values
-    uint8_t opCode = 0xB5;
+    uint8_t opCode = 0xB4;
     uint16_t pcVal = 0x4000;
     uint8_t zeroPageAddr = 0x80;
     uint8_t xVal = 0x10;
@@ -225,17 +225,17 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Zero_Page_X_Zero) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 0);
     EXPECT_EQ(cpu->status.ZeroFlag, 1);
 
 }
 
-// LDA Absolute
-TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_Positive) {
+// LDY Absolute
+TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_Positive) {
     
     // Create test values
-    uint8_t opCode = 0xAD;
+    uint8_t opCode = 0xAC;
     uint16_t pcVal = 0x4000;
     uint8_t absoluteLB = 0xEF;
     uint8_t absoluteUB = 0xBE;
@@ -252,16 +252,16 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_Positive) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 0);
     EXPECT_EQ(cpu->status.ZeroFlag, 0);
 
     
 }
-TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_Negative) {
+TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_Negative) {
     
     // Create test values
-   uint8_t opCode = 0xAD;
+   uint8_t opCode = 0xAC;
     uint16_t pcVal = 0x4000;
     uint8_t absoluteLB = 0xEF;
     uint8_t absoluteUB = 0xBE;
@@ -278,15 +278,15 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_Negative) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 1);
     EXPECT_EQ(cpu->status.ZeroFlag, 0);
 
 }
-TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_Zero) {
+TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_Zero) {
     
     // Create test values
-   uint8_t opCode = 0xAD;
+   uint8_t opCode = 0xAC;
     uint16_t pcVal = 0x4000;
     uint8_t absoluteLB = 0xEF;
     uint8_t absoluteUB = 0xBE;
@@ -303,17 +303,17 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_Zero) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 0);
     EXPECT_EQ(cpu->status.ZeroFlag, 1);
 
 }
 
-// LDA Absolute X
-TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_X_Positive) {
+// LDY Absolute X
+TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_X_Positive) {
     
     // Create test values
-    uint8_t opCode = 0xBD;
+    uint8_t opCode = 0xBC;
     uint16_t pcVal = 0x4000;
     uint8_t absoluteLB = 0xEF;
     uint8_t absoluteUB = 0xBE;
@@ -332,16 +332,16 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_X_Positive) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 0);
     EXPECT_EQ(cpu->status.ZeroFlag, 0);
 
     
 }
-TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_X_Negative) {
+TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_X_Negative) {
     
     // Create test values
-    uint8_t opCode = 0xBD;
+    uint8_t opCode = 0xBC;
     uint16_t pcVal = 0x4000;
     uint8_t absoluteLB = 0xEF;
     uint8_t absoluteUB = 0xBE;
@@ -360,15 +360,15 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_X_Negative) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 1);
     EXPECT_EQ(cpu->status.ZeroFlag, 0);
 
 }
-TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_X_Zero) {
+TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_X_Zero) {
     
     // Create test values
-    uint8_t opCode = 0xBD;
+    uint8_t opCode = 0xBC;
     uint16_t pcVal = 0x4000;
     uint8_t absoluteLB = 0xEF;
     uint8_t absoluteUB = 0xBE;
@@ -387,91 +387,7 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_X_Zero) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
-
-}
-
-// LDA Absolute Y
-TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_Y_Positive) {
-    
-    // Create test values
-    uint8_t opCode = 0xB9;
-    uint16_t pcVal = 0x4000;
-    uint8_t absoluteLB = 0xEF;
-    uint8_t absoluteUB = 0xBE;
-    uint8_t yVal = 0x10;
-    uint16_t addr = absoluteLB + (absoluteUB << 8) + yVal;
-    uint8_t aTestVal = 0x0A;
-
-    // Set Registers and memory
-    cpu->registers.PC = pcVal;
-    cpu->registers.Y = yVal;
-    cpu->mem[pcVal] = absoluteLB;
-    cpu->mem[pcVal+1] = absoluteUB;
-    cpu->mem[addr] = aTestVal;
-
-    // Perform instruction
-    cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
-
-    // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
-
-    
-}
-TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_Y_Negative) {
-    
-    // Create test values
-    uint8_t opCode = 0xB9;
-    uint16_t pcVal = 0x4000;
-    uint8_t absoluteLB = 0xEF;
-    uint8_t absoluteUB = 0xBE;
-    uint8_t yVal = 0x10;
-    uint16_t addr = absoluteLB + (absoluteUB << 8) + yVal;
-    uint8_t aTestVal = 0x80;
-
-    // Set Registers and memory
-    cpu->registers.PC = pcVal;
-    cpu->registers.Y = yVal;
-    cpu->mem[pcVal] = absoluteLB;
-    cpu->mem[pcVal+1] = absoluteUB;
-    cpu->mem[addr] = aTestVal;
-
-    // Perform instruction
-    cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
-
-    // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
-
-}
-TEST_F(Core6502Tests_LDA, Test_LDA_Absolute_Y_Zero) {
-    
-    // Create test values
-    uint8_t opCode = 0xB9;
-    uint16_t pcVal = 0x4000;
-    uint8_t absoluteLB = 0xEF;
-    uint8_t absoluteUB = 0xBE;
-    uint8_t yVal = 0x10;
-    uint16_t addr = absoluteLB + (absoluteUB << 8) + yVal;
-    uint8_t aTestVal = 0x0;
-
-    // Set Registers and memory
-    cpu->registers.PC = pcVal;
-    cpu->registers.Y = yVal;
-    cpu->mem[pcVal] = absoluteLB;
-    cpu->mem[pcVal+1] = absoluteUB;
-    cpu->mem[addr] = aTestVal;
-
-    // Perform instruction
-    cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
-
-    // Check Program Counter has been set 
-    EXPECT_EQ(cpu->registers.A,aTestVal);
+    EXPECT_EQ(cpu->registers.Y,aTestVal);
     EXPECT_EQ(cpu->status.NegativeFlag, 0);
     EXPECT_EQ(cpu->status.ZeroFlag, 1);
 

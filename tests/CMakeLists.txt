@@ -31,7 +31,10 @@ include_directories(${Core6502_SOURCE_DIR}/include)
 
 set (TEST_SOURCES
     "Core6502Tests_core.cpp"
-    "Core6502Tests_main.cpp"    
+    "Core6502Tests_main.cpp" 
+    "Core6502Tests_LDA.cpp"  
+    "Core6502Tests_LDX.cpp" 
+    "Core6502Tests_LDY.cpp" 
 )
 
 source_group("src" FILES ${TEST_SOURCES})
