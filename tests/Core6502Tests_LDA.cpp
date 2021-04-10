@@ -31,6 +31,8 @@ TEST_F(Core6502Tests_LDA, Test_LDA_Immediate_Positive) {
 
     // Set Registers and memory
     cpu->registers.PC = pcVal;
+    cpu->status.ZeroFlag = 1;
+    cpu->status.NegativeFlag = 1;
     cpu->mem[pcVal] = aTestVal;
 
     // Perform instruction

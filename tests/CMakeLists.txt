@@ -39,6 +39,10 @@ set (TEST_SOURCES
     "Core6502Tests_STX.cpp"
     "Core6502Tests_STY.cpp"
     "Core6502Tests_StatusFlags.cpp"
+    "Core6502Tests_Transfer.cpp"
+    "Core6502Tests_AND.cpp"
+    "Core6502Tests_EOR.cpp"
+    "Core6502Tests_ORA.cpp"
 )
 
 source_group("src" FILES ${TEST_SOURCES})
