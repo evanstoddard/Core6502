@@ -95,6 +95,10 @@ namespace Core6502 {
     void EOR_Indirect_X(Core6502::CPU&, struct Instruction&);
     void EOR_Indirect_Y(Core6502::CPU&, struct Instruction&);
 
+    // BIT Instructions
+    void BIT_Zero_Page(Core6502::CPU&, struct Instruction&);
+    void BIT_Absolute(Core6502::CPU&, struct Instruction&);
+
     // Transfer Instructions
     void TAX(Core6502::CPU&, struct Instruction&);
     void TAY(Core6502::CPU&, struct Instruction&);

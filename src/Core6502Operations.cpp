@@ -635,7 +635,7 @@ void Core6502::ORA_Indirect_Y(Core6502::CPU& cpu, struct Instruction&) {
 
 }
 
-// OR Operations
+// EOR Operations
 void Core6502::EOR_Immediate(Core6502::CPU& cpu, struct Instruction& op) {
 
     // Fetch Value EOR with Accumulator
@@ -731,6 +731,34 @@ void Core6502::EOR_Indirect_Y(Core6502::CPU& cpu, struct Instruction&) {
     // Set Zero & Negative Flags appropriately
     cpu.status.NegativeFlag = (bool)(cpu.registers.A & 0b10000000);
     cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
+
+}
+
+// BIT Operations
+void Core6502::BIT_Zero_Page(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Zero Page address
+    uint8_t addr = cpu.zeroPageAddr();
+
+    // And value with Accumulator
+    uint8_t val = cpu.registers.A & cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+    cpu.status.OverflowFlag = (bool)(cpu.mem[addr] & 0b01000000);
+    cpu.status.ZeroFlag     = (bool)(val == 0);
+}
+void Core6502::BIT_Absolute(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch 16-bit address
+    uint16_t addr = cpu.absoluteAddr();
+
+    // AND value with Accumulator
+    uint8_t val = cpu.registers.A & cpu.mem[addr];
+
+    // Set Zero & Negative Flags appropriately
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+    cpu.status.OverflowFlag = (bool)(cpu.mem[addr] & 0b01000000);
+    cpu.status.ZeroFlag     = (bool)(val == 0);
 
 }
 
