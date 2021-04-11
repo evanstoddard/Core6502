@@ -1,5 +1,5 @@
 # Template:
-[![<evanstoddard>](https://circleci.com/gh/evanstoddard/Core6502.svg?style=svg)]
+Build: ![<evanstoddard>](https://circleci.com/gh/evanstoddard/Core6502.svg?style=svg)
 
 <br />
 <p align="center">
