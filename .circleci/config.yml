@@ -27,7 +27,7 @@ jobs:
           name: Execute Tests
           command: |
             cd build/tests
-            ./Core6502Tests --gtest_output=XML
+            ./Core6502Tests --gtest_output=json
       - store_test_results:
           path: build
 workflows:
