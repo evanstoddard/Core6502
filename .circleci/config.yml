@@ -29,7 +29,7 @@ jobs:
             cd build/tests
             ./Core6502Tests --gtest_output=json
       - store_test_results:
-          path: build
+          path: build/tests
 workflows:
   version: 2
   build-and-test:
