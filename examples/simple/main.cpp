@@ -3,39 +3,36 @@
 #include <iomanip>
 #include "Core6502.hpp"
 
-void MyInstruction(Core6502::CPU &cpu, Core6502::Instruction & instruction) {
-	std::cout << "Inside user defined instruction..." << std::endl;
-	std::cout << "Address of CPU from instruction: " << std::hex << &cpu << std::endl;
-	std::cout << "Address of Instruction from instruction: " << std::hex << &instruction << std::endl;
-}
 
 int main(int argc, char ** argv) {
 
 	// Create memory
 	uint8_t mem[0xFFFF];
 	
-	// Set reset vector to 0xBEEF
-	mem[0xFFFC] = 0xEF;
-	mem[0xFFFD] = 0xBE;
-
-	// Create CPU instance
+	// Create CPU
 	Core6502::CPU cpu(mem);
 
-	// Reset CPU
-	cpu.reset();
+	// Create test values
+    uint8_t opCode = 0x2D;
+    uint16_t pcVal = 0x4000;
+    uint8_t absoluteLB = 0xFE;
+    uint8_t absoluteUB = 0xCA;
+    uint16_t addr = absoluteLB + (absoluteUB << 8);
+    uint8_t aTestVal = 0xFF;
+    uint8_t mask = 0x0F;
 
-	// Print out program counter
-	std::cout << "CPU Program Counter: 0x" << cpu.registers.PC << std::endl;
+    // Set Registers and memory
+    cpu.registers.PC = pcVal;
+    cpu.mem[pcVal] = absoluteLB;
+    cpu.mem[pcVal+1] = absoluteUB;
+    cpu.mem[addr] = mask;
+    cpu.registers.A = aTestVal;
+
+   
+    // Perform instruction
+    cpu.instructions[opCode].instructionFunction(cpu, cpu.instructions[opCode]);
+	std::cout << "Zero: " << (uint16_t)cpu.status.ZeroFlag << std::endl;
 	
-	cpu.instructions[0xFF] = (Core6502::Instruction){false, 0xFF, 2, MyInstruction};
-
-	std::cout << "Address of CPU from Main: " << std::hex << &cpu << std::endl;
-	std::cout << "Address of Instruction from Main: " << std::hex << &cpu.instructions[0xFF] << std::endl;
-	std::cout << std::endl;
-
-	// Call instruction
-	std::cout << "Calling newly defined instruction...\n" << std::endl;
-	cpu.instructions[0xFF].instructionFunction(cpu, cpu.instructions[0xFF]);
 
 	return 0;
 

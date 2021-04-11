@@ -6,6 +6,8 @@
 //
 #include "Core6502.hpp"
 #include "Core6502Operations.hpp"
+#include <iomanip>
+#include <iostream>
 
 // LDA Operations
 void Core6502::LDA_Immediate(Core6502::CPU& cpu, struct Instruction& op) {
@@ -720,7 +722,7 @@ void Core6502::EOR_Indirect_X(Core6502::CPU& cpu, struct Instruction& op) {
     cpu.status.ZeroFlag     = (bool)(cpu.registers.A == 0);
 
 }
-void Core6502::EOR_Indirect_Y(Core6502::CPU& cpu, struct Instruction&) {
+void Core6502::EOR_Indirect_Y(Core6502::CPU& cpu, struct Instruction& op) {
 
     // Fetch 16-bit address from zero page memory
     uint16_t addr = cpu.indirectYAddr();
