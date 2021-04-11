@@ -28,7 +28,6 @@ jobs:
           command: |
             cd build/tests
             ./Core6502Tests --gtest_output=xml
-            mv test_detail.json ..
       - store_test_results:
           path: build
 workflows:
