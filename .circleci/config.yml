@@ -2,7 +2,7 @@ version: 2.1
 executors:
   exectr:
     docker:
-      - image: evanstoddard/DockerC-:latest
+      - image: evanstoddard/dockercpp:latest
 jobs:
   build:
     executor: exectr
