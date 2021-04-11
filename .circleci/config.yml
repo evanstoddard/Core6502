@@ -1,41 +1,26 @@
-version: 2.1
-executors:
-  exectr:
-    docker:
-      - image: evanstoddard/dockercpp:latest
+version: 2
+
 jobs:
   build:
-    executor: exectr
+    docker:
+      - image: "ubuntu:latest"
     steps:
       - checkout
       - run:
-          name: Setup cmake and build artifacts
-          command: |
-            mkdir build
-            cd build
-            cmake ..
-            make
-      - persist_to_workspace:
-          root: .
-          paths: build
-  test:
-    executor: exectr
-    steps:
-      - attach_workspace:
-          at: .
+          name: Installing SUDO
+          command: 'apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*'
       - run:
-          name: Execute Tests
-          command: |
-            cd build
-            cd tests
-            ./Core6502Tests --gtest_output=XML
-      - store_test_results:
-          path: build
-workflows:
-  version: 2
-  build-and-test:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
+          name: Installing GCC
+          command: 'apt-get update && apt-get install -y gcc g++'
+      - run:
+          name: Install CMAKE
+          command: 'apt-get update && sudo apt-get install -y cmake'
+      - run:
+          name: Creating Build Files
+          command: 'mkdir build && cd build && cmake ..'
+      - run:
+          name: Build
+          command: 'make'
+      - run:
+          name: Unit Tests
+          command: 'cd testing && ./Core6502Tests'
