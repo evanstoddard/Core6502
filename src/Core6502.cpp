@@ -208,9 +208,21 @@ void Core6502::CPU::setupInstructionMap() {
 
     // INX Instructions
     instructions[0xE8] = (Core6502::Instruction){false, 0xE8, 2, Core6502::INX_Implied};
+    
+    // INY Instructions
     instructions[0xC8] = (Core6502::Instruction){false, 0xC8, 2, Core6502::INY_Implied};
 
-    // INY Instructions
+    // DEC Instructions
+    instructions[0xC6] = (Core6502::Instruction){false, 0xC6, 5, Core6502::DEC_Zero_Page};
+    instructions[0xD6] = (Core6502::Instruction){false, 0xD6, 6, Core6502::DEC_Zero_Page_X};
+    instructions[0xCE] = (Core6502::Instruction){false, 0xCE, 6, Core6502::DEC_Absolute};
+    instructions[0xDE] = (Core6502::Instruction){false, 0xDE, 7, Core6502::DEC_Absolute_X};
+
+    // DEX Instructions
+    instructions[0xCA] = (Core6502::Instruction){false, 0xCA, 2, Core6502::DEX_Implied};
+    
+    // DEY Instructions
+    instructions[0x88] = (Core6502::Instruction){false, 0x88, 2, Core6502::DEY_Implied};
 
     // Transfer Instructions
     instructions[0xAA] = (Core6502::Instruction){false, 0xAA, 2, Core6502::TAX};

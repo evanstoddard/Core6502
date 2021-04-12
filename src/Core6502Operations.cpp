@@ -670,7 +670,7 @@ void Core6502::INC_Absolute(Core6502::CPU& cpu, struct Instruction& op) {
     uint16_t addr = cpu.absoluteAddr();
 
     // Increment value at address
-    cpu.mem[addr] = cpu.mem[addr] + 1;
+    cpu.mem[addr]++;
 
     // Set flags
     cpu.status.ZeroFlag = (cpu.mem[addr] == 0);
@@ -683,7 +683,7 @@ void Core6502::INC_Absolute_X(Core6502::CPU& cpu, struct Instruction& op) {
     uint16_t addr = cpu.absoluteXAddr();
 
     // Increment value at address
-    cpu.mem[addr] = cpu.mem[addr] + 1;
+    cpu.mem[addr]++;
 
     // Set flags
     cpu.status.ZeroFlag = (cpu.mem[addr] == 0);
@@ -714,6 +714,85 @@ void Core6502::INY_Implied(Core6502::CPU& cpu, struct Instruction& op) {
     cpu.status.NegativeFlag = (bool)(cpu.registers.Y & 0b10000000);
 
 }
+
+// DEC Operations
+void Core6502::DEC_Zero_Page(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Get address
+    uint8_t addr = cpu.zeroPageAddr();
+
+    // Decrement value at address
+    cpu.mem[addr]--;
+
+    // Set flags
+    cpu.status.ZeroFlag = (cpu.mem[addr] == 0);
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+
+}
+void Core6502::DEC_Zero_Page_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Get address
+    uint8_t addr = cpu.zeroPageXAddr();
+
+    // Decrement value at address
+    cpu.mem[addr]--;
+
+    // Set flags
+    cpu.status.ZeroFlag = (cpu.mem[addr] == 0);
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+
+}
+void Core6502::DEC_Absolute(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Get address
+    uint16_t addr = cpu.absoluteAddr();
+
+    // Decrement value at address
+    cpu.mem[addr]--;
+
+    // Set flags
+    cpu.status.ZeroFlag = (cpu.mem[addr] == 0);
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+
+}
+void Core6502::DEC_Absolute_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Get address
+    uint16_t addr = cpu.absoluteXAddr();
+
+    // Decrement value at address
+    cpu.mem[addr]--;
+
+    // Set flags
+    cpu.status.ZeroFlag = (cpu.mem[addr] == 0);
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+
+}
+
+// DEX Operation
+void Core6502::DEX_Implied(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Decrement X register
+    cpu.registers.X--;
+
+    // Set flags
+    cpu.status.ZeroFlag = (cpu.registers.X == 0);
+    cpu.status.NegativeFlag = (bool)(cpu.registers.X & 0b10000000);
+
+}
+
+// DEY Operation
+void Core6502::DEY_Implied(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Decrement Y register
+    cpu.registers.Y--;
+
+    // Set flags
+    cpu.status.ZeroFlag = (cpu.registers.Y == 0);
+    cpu.status.NegativeFlag = (bool)(cpu.registers.Y & 0b10000000);
+
+}
+
 
 // EOR Operations
 void Core6502::EOR_Immediate(Core6502::CPU& cpu, struct Instruction& op) {

@@ -111,6 +111,18 @@ namespace Core6502 {
     // INY Instruction
     void INY_Implied(Core6502::CPU&, struct Instruction&);
 
+    // DEC Instructions
+    void DEC_Zero_Page(Core6502::CPU&, struct Instruction&);
+    void DEC_Zero_Page_X(Core6502::CPU&, struct Instruction&);
+    void DEC_Absolute(Core6502::CPU&, struct Instruction&);
+    void DEC_Absolute_X(Core6502::CPU&, struct Instruction&);
+
+    // DEX Instruction
+    void DEX_Implied(Core6502::CPU&, struct Instruction&);
+
+    // DEY Instruction
+    void DEY_Implied(Core6502::CPU&, struct Instruction&);
+
     // Transfer Instructions
     void TAX(Core6502::CPU&, struct Instruction&);
     void TAY(Core6502::CPU&, struct Instruction&);
