@@ -691,6 +691,30 @@ void Core6502::INC_Absolute_X(Core6502::CPU& cpu, struct Instruction& op) {
 
 }
 
+// INX Operation
+void Core6502::INX_Implied(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Increment X register
+    cpu.registers.X++;
+
+    // Set flags
+    cpu.status.ZeroFlag = (cpu.registers.X == 0);
+    cpu.status.NegativeFlag = (bool)(cpu.registers.X & 0b10000000);
+
+}
+
+// INY Operation
+void Core6502::INY_Implied(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Increment Y register
+    cpu.registers.Y++;
+
+    // Set flags
+    cpu.status.ZeroFlag = (cpu.registers.Y == 0);
+    cpu.status.NegativeFlag = (bool)(cpu.registers.Y & 0b10000000);
+
+}
+
 // EOR Operations
 void Core6502::EOR_Immediate(Core6502::CPU& cpu, struct Instruction& op) {
 

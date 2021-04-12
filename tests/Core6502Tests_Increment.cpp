@@ -328,3 +328,131 @@ TEST_F(Core6502Tests_Increment, Test_INC_Absolute_X_Zero) {
     EXPECT_EQ(cpu->status.ZeroFlag, 1);
 
 }
+
+// INX  
+TEST_F(Core6502Tests_Increment, Test_INX_Positive) {
+    
+    // Create test values
+    uint8_t opCode = 0xE8;
+    uint16_t pcVal = 0x4000;
+    uint8_t testVal = 0x0F;
+
+    // Set Registers and memory
+    cpu->registers.PC = pcVal;
+    cpu->registers.X = testVal;
+
+    // Perform instruction
+    cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
+
+    // Check test case
+    EXPECT_EQ(cpu->registers.X, testVal + 1);
+    EXPECT_EQ(cpu->status.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+
+    
+}
+TEST_F(Core6502Tests_Increment, Test_INX_Negative) {
+    
+    // Create test values
+    uint8_t opCode = 0xE8;
+    uint16_t pcVal = 0x4000;
+    uint8_t testVal = 0x7F;
+
+    // Set Registers and memory
+    cpu->registers.PC = pcVal;
+    cpu->registers.X = testVal;
+
+    // Perform instruction
+    cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
+
+    // Check test case
+    EXPECT_EQ(cpu->registers.X, testVal + 1);
+    EXPECT_EQ(cpu->status.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+
+    
+}
+TEST_F(Core6502Tests_Increment, Test_INX_Zero) {
+    
+    // Create test values
+    uint8_t opCode = 0xE8;
+    uint16_t pcVal = 0x4000;
+    uint8_t testVal = 0xFF;
+
+    // Set Registers and memory
+    cpu->registers.PC = pcVal;
+    cpu->registers.X = testVal;
+
+    // Perform instruction
+    cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
+
+    // Check test case
+    EXPECT_EQ(cpu->registers.X, 0);
+    EXPECT_EQ(cpu->status.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+
+}
+
+// INXY 
+TEST_F(Core6502Tests_Increment, Test_INY_Positive) {
+    
+    // Create test values
+    uint8_t opCode = 0xC8;
+    uint16_t pcVal = 0x4000;
+    uint8_t testVal = 0x0F;
+
+    // Set Registers and memory
+    cpu->registers.PC = pcVal;
+    cpu->registers.Y = testVal;
+
+    // Perform instruction
+    cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
+
+    // Check test case
+    EXPECT_EQ(cpu->registers.Y, testVal + 1);
+    EXPECT_EQ(cpu->status.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+
+    
+}
+TEST_F(Core6502Tests_Increment, Test_INY_Negative) {
+    
+    // Create test values
+    uint8_t opCode = 0xC8;
+    uint16_t pcVal = 0x4000;
+    uint8_t testVal = 0x7F;
+
+    // Set Registers and memory
+    cpu->registers.PC = pcVal;
+    cpu->registers.Y = testVal;
+
+    // Perform instruction
+    cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
+
+    // Check test case
+    EXPECT_EQ(cpu->registers.Y, testVal + 1);
+    EXPECT_EQ(cpu->status.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+
+    
+}
+TEST_F(Core6502Tests_Increment, Test_INY_Zero) {
+    
+    // Create test values
+    uint8_t opCode = 0xC8;
+    uint16_t pcVal = 0x4000;
+    uint8_t testVal = 0xFF;
+
+    // Set Registers and memory
+    cpu->registers.PC = pcVal;
+    cpu->registers.Y = testVal;
+
+    // Perform instruction
+    cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
+
+    // Check test case
+    EXPECT_EQ(cpu->registers.Y, 0);
+    EXPECT_EQ(cpu->status.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+
+}

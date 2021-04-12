@@ -105,6 +105,12 @@ namespace Core6502 {
     void INC_Absolute(Core6502::CPU&, struct Instruction&);
     void INC_Absolute_X(Core6502::CPU&, struct Instruction&);
 
+    // INX Instruction
+    void INX_Implied(Core6502::CPU&, struct Instruction&);
+
+    // INY Instruction
+    void INY_Implied(Core6502::CPU&, struct Instruction&);
+
     // Transfer Instructions
     void TAX(Core6502::CPU&, struct Instruction&);
     void TAY(Core6502::CPU&, struct Instruction&);
