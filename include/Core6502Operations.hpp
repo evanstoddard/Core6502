@@ -99,6 +99,12 @@ namespace Core6502 {
     void BIT_Zero_Page(Core6502::CPU&, struct Instruction&);
     void BIT_Absolute(Core6502::CPU&, struct Instruction&);
 
+    // INC Instructions
+    void INC_Zero_Page(Core6502::CPU&, struct Instruction&);
+    void INC_Zero_Page_X(Core6502::CPU&, struct Instruction&);
+    void INC_Absolute(Core6502::CPU&, struct Instruction&);
+    void INC_Absolute_X(Core6502::CPU&, struct Instruction&);
+
     // Transfer Instructions
     void TAX(Core6502::CPU&, struct Instruction&);
     void TAY(Core6502::CPU&, struct Instruction&);

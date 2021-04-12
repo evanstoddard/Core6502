@@ -200,6 +200,12 @@ void Core6502::CPU::setupInstructionMap() {
     instructions[0x24] = (Core6502::Instruction){false, 0x24, 3, Core6502::BIT_Zero_Page};
     instructions[0x2C] = (Core6502::Instruction){false, 0x2C, 4, Core6502::BIT_Absolute};
 
+    // INC Instructions
+    instructions[0xE6] = (Core6502::Instruction){false, 0xE6, 5, Core6502::INC_Zero_Page};
+    instructions[0xF6] = (Core6502::Instruction){false, 0xF6, 6, Core6502::INC_Zero_Page_X};
+    instructions[0xEE] = (Core6502::Instruction){false, 0xEE, 6, Core6502::INC_Absolute};
+    instructions[0xFE] = (Core6502::Instruction){false, 0xFE, 7, Core6502::INC_Absolute_X};
+
     // Transfer Instructions
     instructions[0xAA] = (Core6502::Instruction){false, 0xAA, 2, Core6502::TAX};
     instructions[0xA8] = (Core6502::Instruction){false, 0xA8, 2, Core6502::TAY};

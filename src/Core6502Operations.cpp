@@ -637,6 +637,60 @@ void Core6502::ORA_Indirect_Y(Core6502::CPU& cpu, struct Instruction&) {
 
 }
 
+// INC Operations
+void Core6502::INC_Zero_Page(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Get address
+    uint8_t addr = cpu.zeroPageAddr();
+
+    // Increment value at address
+    cpu.mem[addr]++;
+
+    // Set flags
+    cpu.status.ZeroFlag = (cpu.mem[addr] == 0);
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+
+}
+void Core6502::INC_Zero_Page_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Get address
+    uint8_t addr = cpu.zeroPageXAddr();
+
+    // Increment value at address
+    cpu.mem[addr]++;
+
+    // Set flags
+    cpu.status.ZeroFlag = (cpu.mem[addr] == 0);
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+
+}
+void Core6502::INC_Absolute(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Get address
+    uint16_t addr = cpu.absoluteAddr();
+
+    // Increment value at address
+    cpu.mem[addr] = cpu.mem[addr] + 1;
+
+    // Set flags
+    cpu.status.ZeroFlag = (cpu.mem[addr] == 0);
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+
+}
+void Core6502::INC_Absolute_X(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Get address
+    uint16_t addr = cpu.absoluteXAddr();
+
+    // Increment value at address
+    cpu.mem[addr] = cpu.mem[addr] + 1;
+
+    // Set flags
+    cpu.status.ZeroFlag = (cpu.mem[addr] == 0);
+    cpu.status.NegativeFlag = (bool)(cpu.mem[addr] & 0b10000000);
+
+}
+
 // EOR Operations
 void Core6502::EOR_Immediate(Core6502::CPU& cpu, struct Instruction& op) {
 

@@ -13,25 +13,24 @@ int main(int argc, char ** argv) {
 	Core6502::CPU cpu(mem);
 
 	// Create test values
-    uint8_t opCode = 0x2D;
+    uint8_t opCode = 0xFE;
     uint16_t pcVal = 0x4000;
-    uint8_t absoluteLB = 0xFE;
     uint8_t absoluteUB = 0xCA;
+    uint8_t absoluteLB = 0xFE;
+	uint8_t xVal = 0x10;
     uint16_t addr = absoluteLB + (absoluteUB << 8);
-    uint8_t aTestVal = 0xFF;
-    uint8_t mask = 0x0F;
+    uint8_t testVal = 0x0F;
 
     // Set Registers and memory
     cpu.registers.PC = pcVal;
+	cpu.registers.X = xVal;
     cpu.mem[pcVal] = absoluteLB;
     cpu.mem[pcVal+1] = absoluteUB;
-    cpu.mem[addr] = mask;
-    cpu.registers.A = aTestVal;
-
+    cpu.mem[addr + xVal] = testVal;
    
     // Perform instruction
     cpu.instructions[opCode].instructionFunction(cpu, cpu.instructions[opCode]);
-	std::cout << "Zero: " << (uint16_t)cpu.status.ZeroFlag << std::endl;
+	std::cout << "Val: " << (uint16_t)cpu.mem[addr + xVal] << std::endl;
 	
 
 	return 0;
