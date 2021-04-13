@@ -28,6 +28,7 @@ TEST_F(Core6502Tests_Branch, Test_BCC_True_Positive_Positive) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.CarryFlag = flag;
 
@@ -35,7 +36,7 @@ TEST_F(Core6502Tests_Branch, Test_BCC_True_Positive_Positive) {
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
 	// Check test cases
-	EXPECT_EQ(cpu->registers.PC, pcVal + 1 + offset);
+	EXPECT_EQ(cpu->registers.PC, (pcVal + 1 + offset));
 }
 TEST_F(Core6502Tests_Branch, Test_BCC_True_Positive_Negative) {
 	// Test Values
@@ -45,6 +46,7 @@ TEST_F(Core6502Tests_Branch, Test_BCC_True_Positive_Negative) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.CarryFlag = flag;
 
@@ -62,6 +64,7 @@ TEST_F(Core6502Tests_Branch, Test_BCC_True_Negative_Positive) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.CarryFlag = flag;
 
@@ -79,6 +82,7 @@ TEST_F(Core6502Tests_Branch, Test_BCC_True_Negative_Negative) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.CarryFlag = flag;
 
@@ -96,6 +100,7 @@ TEST_F(Core6502Tests_Branch, Test_BCC_False) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.CarryFlag = flag;
 
@@ -115,6 +120,7 @@ TEST_F(Core6502Tests_Branch, Test_BCS_True_Positive_Positive) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.CarryFlag = flag;
 
@@ -132,6 +138,7 @@ TEST_F(Core6502Tests_Branch, Test_BCS_True_Positive_Negative) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.CarryFlag = flag;
 
@@ -149,6 +156,7 @@ TEST_F(Core6502Tests_Branch, Test_BCS_True_Negative_Positive) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.CarryFlag = flag;
 
@@ -166,6 +174,7 @@ TEST_F(Core6502Tests_Branch, Test_BCS_True_Negative_Negative) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.CarryFlag = flag;
 
@@ -183,6 +192,7 @@ TEST_F(Core6502Tests_Branch, Test_BCS_False) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.CarryFlag = flag;
 
@@ -190,7 +200,7 @@ TEST_F(Core6502Tests_Branch, Test_BCS_False) {
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
 	// Check test cases
-	EXPECT_EQ(cpu->registers.PC, pcVal + 1 + offset);
+	EXPECT_EQ(cpu->registers.PC, pcVal+1);
 }
 
 // BEQ Tests
@@ -202,6 +212,7 @@ TEST_F(Core6502Tests_Branch, Test_BEQ_True_Positive_Positive) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.ZeroFlag = flag;
 
@@ -219,6 +230,7 @@ TEST_F(Core6502Tests_Branch, Test_BEQ_True_Positive_Negative) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.ZeroFlag = flag;
 
@@ -236,6 +248,7 @@ TEST_F(Core6502Tests_Branch, Test_BEQ_True_Negative_Positive) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.ZeroFlag = flag;
 
@@ -253,6 +266,7 @@ TEST_F(Core6502Tests_Branch, Test_BEQ_True_Negative_Negative) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.ZeroFlag = flag;
 
@@ -270,6 +284,7 @@ TEST_F(Core6502Tests_Branch, Test_BEQ_False) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.ZeroFlag = flag;
 
@@ -277,7 +292,7 @@ TEST_F(Core6502Tests_Branch, Test_BEQ_False) {
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
 	// Check test cases
-	EXPECT_EQ(cpu->registers.PC, pcVal + 1 + offset);
+	EXPECT_EQ(cpu->registers.PC, pcVal + 1);
 }
 
 // BNE Tests
@@ -289,6 +304,7 @@ TEST_F(Core6502Tests_Branch, Test_BNE_True_Positive_Positive) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.ZeroFlag = flag;
 
@@ -306,6 +322,7 @@ TEST_F(Core6502Tests_Branch, Test_BNE_True_Positive_Negative) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.ZeroFlag = flag;
 
@@ -323,6 +340,7 @@ TEST_F(Core6502Tests_Branch, Test_BNE_True_Negative_Positive) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.ZeroFlag = flag;
 
@@ -340,6 +358,7 @@ TEST_F(Core6502Tests_Branch, Test_BNE_True_Negative_Negative) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.ZeroFlag = flag;
 
@@ -357,6 +376,7 @@ TEST_F(Core6502Tests_Branch, Test_BNE_False) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.ZeroFlag = flag;
 
@@ -364,7 +384,7 @@ TEST_F(Core6502Tests_Branch, Test_BNE_False) {
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
 	// Check test cases
-	EXPECT_EQ(cpu->registers.PC, pcVal + 1 + offset);
+	EXPECT_EQ(cpu->registers.PC, pcVal + 1);
 }
 
 // BPL Tests
@@ -376,6 +396,7 @@ TEST_F(Core6502Tests_Branch, Test_BPL_True_Positive_Positive) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.NegativeFlag = flag;
 
@@ -393,6 +414,7 @@ TEST_F(Core6502Tests_Branch, Test_BPL_True_Positive_Negative) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.NegativeFlag = flag;
 
@@ -410,6 +432,7 @@ TEST_F(Core6502Tests_Branch, Test_BPL_True_Negative_Positive) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.NegativeFlag = flag;
 
@@ -427,6 +450,7 @@ TEST_F(Core6502Tests_Branch, Test_BPL_True_Negative_Negative) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.NegativeFlag = flag;
 
@@ -444,6 +468,7 @@ TEST_F(Core6502Tests_Branch, Test_BPL_False) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.NegativeFlag = flag;
 
@@ -451,7 +476,7 @@ TEST_F(Core6502Tests_Branch, Test_BPL_False) {
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
 	// Check test cases
-	EXPECT_EQ(cpu->registers.PC, pcVal + 1 + offset);
+	EXPECT_EQ(cpu->registers.PC, pcVal + 1);
 }
 
 // BMI Tests
@@ -463,6 +488,7 @@ TEST_F(Core6502Tests_Branch, Test_BMI_True_Positive_Positive) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.NegativeFlag = flag;
 
@@ -480,6 +506,7 @@ TEST_F(Core6502Tests_Branch, Test_BMI_True_Positive_Negative) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.NegativeFlag = flag;
 
@@ -497,6 +524,7 @@ TEST_F(Core6502Tests_Branch, Test_BMI_True_Negative_Positive) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.NegativeFlag = flag;
 
@@ -514,6 +542,7 @@ TEST_F(Core6502Tests_Branch, Test_BMI_True_Negative_Negative) {
 	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.NegativeFlag = flag;
 
@@ -531,6 +560,7 @@ TEST_F(Core6502Tests_Branch, Test_BMI_False) {
 	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.NegativeFlag = flag;
 
@@ -538,7 +568,7 @@ TEST_F(Core6502Tests_Branch, Test_BMI_False) {
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
 	// Check test cases
-	EXPECT_EQ(cpu->registers.PC, pcVal + 1 + offset);
+	EXPECT_EQ(cpu->registers.PC, pcVal + 1);
 }
 
 // BVC Tests
@@ -547,9 +577,10 @@ TEST_F(Core6502Tests_Branch, Test_BVC_True_Positive_Positive) {
 	uint8_t opCode = 0x50;
 	uint16_t pcVal = 0x4000;
     int8_t offset = 0x40;
-	uint8_t flag = 0x1;
+	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.OverflowFlag = flag;
 
@@ -564,9 +595,10 @@ TEST_F(Core6502Tests_Branch, Test_BVC_True_Positive_Negative) {
 	uint8_t opCode = 0x50;
 	uint16_t pcVal = 0x4000;
     int8_t offset = -0x40;
-	uint8_t flag = 0x1;
+	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.OverflowFlag = flag;
 
@@ -581,9 +613,10 @@ TEST_F(Core6502Tests_Branch, Test_BVC_True_Negative_Positive) {
 	uint8_t opCode = 0x50;
 	uint16_t pcVal = 0x8000;
     int8_t offset = 0x40;
-	uint8_t flag = 0x1;
+	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.OverflowFlag = flag;
 
@@ -598,9 +631,10 @@ TEST_F(Core6502Tests_Branch, Test_BVC_True_Negative_Negative) {
 	uint8_t opCode = 0x50;
 	uint16_t pcVal = 0x8000;
     int8_t offset = -0x40;
-	uint8_t flag = 0x1;
+	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.OverflowFlag = flag;
 
@@ -615,9 +649,10 @@ TEST_F(Core6502Tests_Branch, Test_BVC_False) {
 	uint8_t opCode = 0x50;
 	uint16_t pcVal = 0x4000;
     int8_t offset = 0x40;
-	uint8_t flag = 0x0;
+	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.OverflowFlag = flag;
 
@@ -625,7 +660,7 @@ TEST_F(Core6502Tests_Branch, Test_BVC_False) {
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
 	// Check test cases
-	EXPECT_EQ(cpu->registers.PC, pcVal + 1 + offset);
+	EXPECT_EQ(cpu->registers.PC, pcVal + 1);
 }
 
 // BVS Tests
@@ -634,9 +669,10 @@ TEST_F(Core6502Tests_Branch, Test_BVS_True_Positive_Positive) {
 	uint8_t opCode = 0x70;
 	uint16_t pcVal = 0x4000;
     int8_t offset = 0x40;
-	uint8_t flag = 0x0;
+	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.OverflowFlag = flag;
 
@@ -651,9 +687,10 @@ TEST_F(Core6502Tests_Branch, Test_BVS_True_Positive_Negative) {
 	uint8_t opCode = 0x70;
 	uint16_t pcVal = 0x4000;
     int8_t offset = -0x40;
-	uint8_t flag = 0x0;
+	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.OverflowFlag = flag;
 
@@ -668,9 +705,10 @@ TEST_F(Core6502Tests_Branch, Test_BVS_True_Negative_Positive) {
 	uint8_t opCode = 0x70;
 	uint16_t pcVal = 0x8000;
     int8_t offset = 0x40;
-	uint8_t flag = 0x0;
+	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.OverflowFlag = flag;
 
@@ -685,9 +723,10 @@ TEST_F(Core6502Tests_Branch, Test_BVS_True_Negative_Negative) {
 	uint8_t opCode = 0x70;
 	uint16_t pcVal = 0x8000;
     int8_t offset = -0x40;
-	uint8_t flag = 0x0;
+	uint8_t flag = 0x1;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.OverflowFlag = flag;
 
@@ -702,9 +741,10 @@ TEST_F(Core6502Tests_Branch, Test_BVS_False) {
 	uint8_t opCode = 0x70;
 	uint16_t pcVal = 0x4000;
     int8_t offset = 0x40;
-	uint8_t flag = 0x1;
+	uint8_t flag = 0x0;
 
 	// Set memory and flags
+	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
 	cpu->status.OverflowFlag = flag;
 
@@ -712,5 +752,5 @@ TEST_F(Core6502Tests_Branch, Test_BVS_False) {
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
 	// Check test cases
-	EXPECT_EQ(cpu->registers.PC, pcVal + 1 + offset);
+	EXPECT_EQ(cpu->registers.PC, pcVal + 1);
 }
