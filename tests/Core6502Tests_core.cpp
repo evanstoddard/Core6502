@@ -235,3 +235,49 @@ TEST_F(Core6502Tests_Core, Test_Zero_Page_Y_Wrap_Around) {
     EXPECT_EQ(addr, (uint8_t)(memVal + yVal));
 
 }
+TEST_F(Core6502Tests_Core, Test_Indirect) {
+
+    // Initial values
+    uint16_t pcVal = 0x4000;
+    uint8_t indirectLB = 0xFE;
+    uint8_t indirectUB = 0xCA;
+    uint8_t memLB = 0xBE;
+    uint8_t memUB = 0xBA;
+    uint16_t indirectAddr = indirectLB + (indirectUB << 8);
+    uint16_t memAddr = memLB + (memUB << 8);
+
+    // Set PC and memory
+    cpu->registers.PC = pcVal;
+    cpu->mem[pcVal] = indirectLB;
+    cpu->mem[pcVal + 1] = indirectUB;
+    cpu->mem[indirectAddr] = memLB;
+    cpu->mem[indirectAddr + 1] = memUB;
+
+    // Validate fetched address is expected
+    uint16_t addr = cpu->indirectAddr();
+
+    EXPECT_EQ(addr, memAddr);
+}
+TEST_F(Core6502Tests_Core, Test_Indirect_Page_Boundary_Bug) {
+
+    // Initial values
+    uint16_t pcVal = 0x4000;
+    uint8_t indirectLB = 0xFF;
+    uint8_t indirectUB = 0xCA;
+    uint8_t memLB = 0xBE;
+    uint8_t memUB = 0xBA;
+    uint16_t indirectAddr = indirectLB + (indirectUB << 8);
+    uint16_t memAddr = memLB + (memUB << 8);
+
+    // Set PC and memory
+    cpu->registers.PC = pcVal;
+    cpu->mem[pcVal] = indirectLB;
+    cpu->mem[pcVal + 1] = indirectUB;
+    cpu->mem[indirectAddr] = memLB;
+    cpu->mem[indirectAddr & 0xFF00] = memUB;
+
+    // Validate fetched address is expected
+    uint16_t addr = cpu->indirectAddr();
+
+    EXPECT_EQ(addr, memAddr);
+}
