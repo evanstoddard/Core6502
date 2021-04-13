@@ -46,6 +46,7 @@ set (TEST_SOURCES
     "Core6502Tests_BIT.cpp"
     "Core6502Tests_Increment.cpp"
     "Core6502Tests_Decrement.cpp"
+    "Core6502Tests_Jump.cpp"
 )
 
 source_group("src" FILES ${TEST_SOURCES})
