@@ -120,6 +120,27 @@ uint16_t Core6502::CPU::indirectYAddr() {
 
     return effective_addr;
 }
+uint16_t Core6502::CPU::indirectAddr() {
+    // Fetch 16-bit address from address specified by passed in address
+    // Note.  This implementation contains the page boundary bug in the
+    // Original 6502.  See http://obelisk.me.uk/6502/reference.html#JMP
+    // for details.
+    uint8_t LB = fetchByte();
+    uint8_t UB = fetchByte();
+
+    // Get final address
+    uint16_t memAddr =  LB + (UB << 8);
+    
+    uint16_t effectiveAddr =  mem[memAddr];
+    
+    // Implement page boundary bug
+    if (LB == 0xFF) effectiveAddr += (mem[(memAddr & 0xFF00)] << 8);    
+    else effectiveAddr += (mem[memAddr + 1] << 8);
+             
+
+    return effectiveAddr;
+
+}
 
 void Core6502::CPU::setupInstructionMap() {
     
@@ -229,6 +250,10 @@ void Core6502::CPU::setupInstructionMap() {
     instructions[0xA8] = (Core6502::Instruction){false, 0xA8, 2, Core6502::TAY};
     instructions[0x8A] = (Core6502::Instruction){false, 0x8A, 2, Core6502::TXA};
     instructions[0x98] = (Core6502::Instruction){false, 0x98, 2, Core6502::TYA};
+
+    // JMP Instructions
+    instructions[0x4C] = (Core6502::Instruction){false, 0x4C, 3, Core6502::JMP_Absolute};
+    instructions[0x6C] = (Core6502::Instruction){false, 0x6C, 5, Core6502::JMP_Indirect}; 
 
     // Status Flag Instructions
     instructions[0x18] = (Core6502::Instruction){false, 0x18, 2, Core6502::CLC};

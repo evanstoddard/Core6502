@@ -129,6 +129,10 @@ namespace Core6502 {
     void TXA(Core6502::CPU&, struct Instruction&);
     void TYA(Core6502::CPU&, struct Instruction&);
 
+    // JMP Instructions
+    void JMP_Absolute(Core6502::CPU&, struct Instruction&);
+    void JMP_Indirect(Core6502::CPU&, struct Instruction&);
+
     // Status Flag Instructions
     void CLC(Core6502::CPU&, struct Instruction&);
     void CLD(Core6502::CPU&, struct Instruction&);

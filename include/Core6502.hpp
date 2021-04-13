@@ -59,6 +59,7 @@ namespace Core6502{
         uint16_t absoluteYAddr();
         uint16_t indirectXAddr();
         uint16_t indirectYAddr();
+        uint16_t indirectAddr();
 
         volatile uint8_t * mem;
 

@@ -921,6 +921,27 @@ void Core6502::BIT_Absolute(Core6502::CPU& cpu, struct Instruction& op) {
 
 }
 
+// JMP Operations
+void Core6502::JMP_Absolute(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Get get absolute address
+    uint16_t addr = cpu.absoluteAddr();
+
+    // Set program counter to address
+    cpu.registers.PC = addr;
+
+}
+void Core6502::JMP_Indirect(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Get get absolute address
+    uint16_t addr = cpu.indirectAddr();
+
+    // Set program counter to address
+    cpu.registers.PC = addr;
+
+}
+
+
 // Status Flag Instructions
 void Core6502::CLC(Core6502::CPU& cpu, struct Instruction& op) {
     // Clear Carry flag
