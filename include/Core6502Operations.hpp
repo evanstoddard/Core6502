@@ -133,6 +133,16 @@ namespace Core6502 {
     void JMP_Absolute(Core6502::CPU&, struct Instruction&);
     void JMP_Indirect(Core6502::CPU&, struct Instruction&);
 
+    // Branch Instructions
+    void BCC(Core6502::CPU&, struct Instruction&);
+    void BCS(Core6502::CPU&, struct Instruction&);
+    void BEQ(Core6502::CPU&, struct Instruction&);
+    void BMI(Core6502::CPU&, struct Instruction&);
+    void BNE(Core6502::CPU&, struct Instruction&);
+    void BPL(Core6502::CPU&, struct Instruction&);
+    void BVC(Core6502::CPU&, struct Instruction&);
+    void BVS(Core6502::CPU&, struct Instruction&);
+
     // Status Flag Instructions
     void CLC(Core6502::CPU&, struct Instruction&);
     void CLD(Core6502::CPU&, struct Instruction&);

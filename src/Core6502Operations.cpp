@@ -941,6 +941,55 @@ void Core6502::JMP_Indirect(Core6502::CPU& cpu, struct Instruction& op) {
 
 }
 
+ // Branch Instructions
+void Core6502::BCC(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Branch Address
+    uint16_t addr = cpu.relativeAddr();
+
+    if (cpu.status.CarryFlag == 0) cpu.registers.PC = addr;
+}
+void Core6502::BCS(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Branch Address
+    uint16_t addr = cpu.relativeAddr();
+
+    if (cpu.status.CarryFlag) cpu.registers.PC = addr;
+}
+void Core6502::BEQ(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Branch Address
+    uint16_t addr = cpu.relativeAddr();
+
+    if (cpu.status.ZeroFlag) cpu.registers.PC = addr;
+}
+void Core6502::BMI(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Branch Address
+    uint16_t addr = cpu.relativeAddr();
+
+    if (cpu.status.NegativeFlag) cpu.registers.PC = addr;
+}
+void Core6502::BNE(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Branch Address
+    uint16_t addr = cpu.relativeAddr();
+
+    if (cpu.status.ZeroFlag == 0) cpu.registers.PC = addr;
+}
+void Core6502::BPL(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Branch Address
+    uint16_t addr = cpu.relativeAddr();
+
+    if (cpu.status.NegativeFlag == 0) cpu.registers.PC = addr;
+}
+void Core6502::BVC(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Branch Address
+    uint16_t addr = cpu.relativeAddr();
+
+    if (cpu.status.OverflowFlag == 0) cpu.registers.PC = addr;
+}
+void Core6502::BVS(Core6502::CPU& cpu, struct Instruction& op) {
+    // Fetch Branch Address
+    uint16_t addr = cpu.relativeAddr();
+
+    if (cpu.status.OverflowFlag) cpu.registers.PC = addr;
+}
 
 // Status Flag Instructions
 void Core6502::CLC(Core6502::CPU& cpu, struct Instruction& op) {

@@ -281,3 +281,63 @@ TEST_F(Core6502Tests_Core, Test_Indirect_Page_Boundary_Bug) {
 
     EXPECT_EQ(addr, memAddr);
 }
+TEST_F(Core6502Tests_Core, Test_Relative_Positive_Positive) {
+
+    // Initial values
+    uint16_t pcVal = 0x4000;
+    int8_t offset = 0x40;
+
+    // Set PC and memory
+    cpu->registers.PC = pcVal;
+    cpu->mem[pcVal] = offset;
+    
+    // Validate fetched address is expected
+    uint16_t addr = cpu->relativeAddr();
+
+    EXPECT_EQ(addr, 0x4040 + 1);
+}
+TEST_F(Core6502Tests_Core, Test_Relative_Positive_Negative) {
+
+    // Initial values
+    uint16_t pcVal = 0x4000;
+    int8_t offset = -0x40;
+
+    // Set PC and memory
+    cpu->registers.PC = pcVal;
+    cpu->mem[pcVal] = offset;
+    
+    // Validate fetched address is expected
+    uint16_t addr = cpu->relativeAddr();
+
+    EXPECT_EQ(addr, 0x3FC0 + 1);
+}
+TEST_F(Core6502Tests_Core, Test_Relative_Negative_Positive) {
+
+    // Initial values
+    uint16_t pcVal = 0x8000;
+    int8_t offset = 0x40;
+
+    // Set PC and memory
+    cpu->registers.PC = pcVal;
+    cpu->mem[pcVal] = offset;
+    
+    // Validate fetched address is expected
+    uint16_t addr = cpu->relativeAddr();
+
+    EXPECT_EQ(addr, 0x8040 + 1);
+}
+TEST_F(Core6502Tests_Core, Test_Relative_Negative_Negative) {
+
+    // Initial values
+    uint16_t pcVal = 0x8000;
+    int8_t offset = -0x40;
+
+    // Set PC and memory
+    cpu->registers.PC = pcVal;
+    cpu->mem[pcVal] = offset;
+    
+    // Validate fetched address is expected
+    uint16_t addr = cpu->relativeAddr();
+
+    EXPECT_EQ(addr, 0x7FC0 + 1);
+}

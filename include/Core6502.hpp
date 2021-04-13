@@ -47,8 +47,9 @@ namespace Core6502{
     } status;
 
         // Methods
-        uint8_t fetchByte(); // Fetches current byte and increments PC
-        void reset();        // Resets Processor
+        uint8_t fetchByte();        // Fetches current byte and increments PC
+        int8_t fetchByteSigned();   // Fetches current byte as signed and increments PC
+        void reset();               // Resets Processor
         
         // Addressing methods
         uint8_t zeroPageAddr();
@@ -60,6 +61,7 @@ namespace Core6502{
         uint16_t indirectXAddr();
         uint16_t indirectYAddr();
         uint16_t indirectAddr();
+        uint16_t relativeAddr();
 
         volatile uint8_t * mem;
 

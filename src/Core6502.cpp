@@ -61,6 +61,15 @@ uint8_t Core6502::CPU::fetchByte() {
 
 }
 
+int8_t Core6502::CPU::fetchByteSigned() {
+
+    // Grab signed value from memory at PC index and increment PC
+    int8_t value = mem[registers.PC];
+    registers.PC++;
+
+    return value;
+}
+
 uint8_t Core6502::CPU::zeroPageAddr() {
     // Return fetched byte
     return fetchByte();
@@ -140,6 +149,15 @@ uint16_t Core6502::CPU::indirectAddr() {
 
     return effectiveAddr;
 
+}
+uint16_t Core6502::CPU::relativeAddr() {
+    // Fetch signed byte and add to PC
+    int8_t offset = fetchByteSigned();
+    
+    uint16_t addr = registers.PC + offset;
+
+    return addr;
+    
 }
 
 void Core6502::CPU::setupInstructionMap() {
@@ -254,6 +272,16 @@ void Core6502::CPU::setupInstructionMap() {
     // JMP Instructions
     instructions[0x4C] = (Core6502::Instruction){false, 0x4C, 3, Core6502::JMP_Absolute};
     instructions[0x6C] = (Core6502::Instruction){false, 0x6C, 5, Core6502::JMP_Indirect}; 
+
+    // Branch Instructions
+    instructions[0x90] = (Core6502::Instruction){false, 0x90, 2, Core6502::BCC};
+    instructions[0xB0] = (Core6502::Instruction){false, 0xB0, 2, Core6502::BCS};
+    instructions[0xF0] = (Core6502::Instruction){false, 0xF0, 2, Core6502::BEQ};
+    instructions[0x30] = (Core6502::Instruction){false, 0x30, 2, Core6502::BMI};
+    instructions[0xD0] = (Core6502::Instruction){false, 0xD0, 2, Core6502::BNE};
+    instructions[0x10] = (Core6502::Instruction){false, 0x10, 2, Core6502::BPL};
+    instructions[0x50] = (Core6502::Instruction){false, 0x50, 2, Core6502::BVC};
+    instructions[0x70] = (Core6502::Instruction){false, 0x70, 2, Core6502::BVS};
 
     // Status Flag Instructions
     instructions[0x18] = (Core6502::Instruction){false, 0x18, 2, Core6502::CLC};
