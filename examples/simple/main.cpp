@@ -22,7 +22,7 @@ int main(int argc, char ** argv) {
 	// Set memory and flags
     cpu.registers.PC = pcVal;
 	cpu.mem[pcVal] = offset;
-	cpu.status.CarryFlag = flag;
+	cpu.status.bitfield.CarryFlag = flag;
 
 	// Perform Instruction
 	cpu.instructions[opCode].instructionFunction(cpu, cpu.instructions[opCode]);

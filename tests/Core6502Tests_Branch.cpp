@@ -30,7 +30,7 @@ TEST_F(Core6502Tests_Branch, Test_BCC_True_Positive_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.CarryFlag = flag;
+	cpu->status.bitfield.CarryFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -48,7 +48,7 @@ TEST_F(Core6502Tests_Branch, Test_BCC_True_Positive_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.CarryFlag = flag;
+	cpu->status.bitfield.CarryFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -66,7 +66,7 @@ TEST_F(Core6502Tests_Branch, Test_BCC_True_Negative_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.CarryFlag = flag;
+	cpu->status.bitfield.CarryFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -84,7 +84,7 @@ TEST_F(Core6502Tests_Branch, Test_BCC_True_Negative_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.CarryFlag = flag;
+	cpu->status.bitfield.CarryFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -102,7 +102,7 @@ TEST_F(Core6502Tests_Branch, Test_BCC_False) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.CarryFlag = flag;
+	cpu->status.bitfield.CarryFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -122,7 +122,7 @@ TEST_F(Core6502Tests_Branch, Test_BCS_True_Positive_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.CarryFlag = flag;
+	cpu->status.bitfield.CarryFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -140,7 +140,7 @@ TEST_F(Core6502Tests_Branch, Test_BCS_True_Positive_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.CarryFlag = flag;
+	cpu->status.bitfield.CarryFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -158,7 +158,7 @@ TEST_F(Core6502Tests_Branch, Test_BCS_True_Negative_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.CarryFlag = flag;
+	cpu->status.bitfield.CarryFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -176,7 +176,7 @@ TEST_F(Core6502Tests_Branch, Test_BCS_True_Negative_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.CarryFlag = flag;
+	cpu->status.bitfield.CarryFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -194,7 +194,7 @@ TEST_F(Core6502Tests_Branch, Test_BCS_False) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.CarryFlag = flag;
+	cpu->status.bitfield.CarryFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -214,7 +214,7 @@ TEST_F(Core6502Tests_Branch, Test_BEQ_True_Positive_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.ZeroFlag = flag;
+	cpu->status.bitfield.ZeroFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -232,7 +232,7 @@ TEST_F(Core6502Tests_Branch, Test_BEQ_True_Positive_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.ZeroFlag = flag;
+	cpu->status.bitfield.ZeroFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -250,7 +250,7 @@ TEST_F(Core6502Tests_Branch, Test_BEQ_True_Negative_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.ZeroFlag = flag;
+	cpu->status.bitfield.ZeroFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -268,7 +268,7 @@ TEST_F(Core6502Tests_Branch, Test_BEQ_True_Negative_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.ZeroFlag = flag;
+	cpu->status.bitfield.ZeroFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -286,7 +286,7 @@ TEST_F(Core6502Tests_Branch, Test_BEQ_False) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.ZeroFlag = flag;
+	cpu->status.bitfield.ZeroFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -306,7 +306,7 @@ TEST_F(Core6502Tests_Branch, Test_BNE_True_Positive_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.ZeroFlag = flag;
+	cpu->status.bitfield.ZeroFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -324,7 +324,7 @@ TEST_F(Core6502Tests_Branch, Test_BNE_True_Positive_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.ZeroFlag = flag;
+	cpu->status.bitfield.ZeroFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -342,7 +342,7 @@ TEST_F(Core6502Tests_Branch, Test_BNE_True_Negative_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.ZeroFlag = flag;
+	cpu->status.bitfield.ZeroFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -360,7 +360,7 @@ TEST_F(Core6502Tests_Branch, Test_BNE_True_Negative_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.ZeroFlag = flag;
+	cpu->status.bitfield.ZeroFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -378,7 +378,7 @@ TEST_F(Core6502Tests_Branch, Test_BNE_False) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.ZeroFlag = flag;
+	cpu->status.bitfield.ZeroFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -398,7 +398,7 @@ TEST_F(Core6502Tests_Branch, Test_BPL_True_Positive_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.NegativeFlag = flag;
+	cpu->status.bitfield.NegativeFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -416,7 +416,7 @@ TEST_F(Core6502Tests_Branch, Test_BPL_True_Positive_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.NegativeFlag = flag;
+	cpu->status.bitfield.NegativeFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -434,7 +434,7 @@ TEST_F(Core6502Tests_Branch, Test_BPL_True_Negative_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.NegativeFlag = flag;
+	cpu->status.bitfield.NegativeFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -452,7 +452,7 @@ TEST_F(Core6502Tests_Branch, Test_BPL_True_Negative_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.NegativeFlag = flag;
+	cpu->status.bitfield.NegativeFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -470,7 +470,7 @@ TEST_F(Core6502Tests_Branch, Test_BPL_False) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.NegativeFlag = flag;
+	cpu->status.bitfield.NegativeFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -490,7 +490,7 @@ TEST_F(Core6502Tests_Branch, Test_BMI_True_Positive_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.NegativeFlag = flag;
+	cpu->status.bitfield.NegativeFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -508,7 +508,7 @@ TEST_F(Core6502Tests_Branch, Test_BMI_True_Positive_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.NegativeFlag = flag;
+	cpu->status.bitfield.NegativeFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -526,7 +526,7 @@ TEST_F(Core6502Tests_Branch, Test_BMI_True_Negative_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.NegativeFlag = flag;
+	cpu->status.bitfield.NegativeFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -544,7 +544,7 @@ TEST_F(Core6502Tests_Branch, Test_BMI_True_Negative_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.NegativeFlag = flag;
+	cpu->status.bitfield.NegativeFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -562,7 +562,7 @@ TEST_F(Core6502Tests_Branch, Test_BMI_False) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.NegativeFlag = flag;
+	cpu->status.bitfield.NegativeFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -582,7 +582,7 @@ TEST_F(Core6502Tests_Branch, Test_BVC_True_Positive_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.OverflowFlag = flag;
+	cpu->status.bitfield.OverflowFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -600,7 +600,7 @@ TEST_F(Core6502Tests_Branch, Test_BVC_True_Positive_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.OverflowFlag = flag;
+	cpu->status.bitfield.OverflowFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -618,7 +618,7 @@ TEST_F(Core6502Tests_Branch, Test_BVC_True_Negative_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.OverflowFlag = flag;
+	cpu->status.bitfield.OverflowFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -636,7 +636,7 @@ TEST_F(Core6502Tests_Branch, Test_BVC_True_Negative_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.OverflowFlag = flag;
+	cpu->status.bitfield.OverflowFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -654,7 +654,7 @@ TEST_F(Core6502Tests_Branch, Test_BVC_False) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.OverflowFlag = flag;
+	cpu->status.bitfield.OverflowFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -674,7 +674,7 @@ TEST_F(Core6502Tests_Branch, Test_BVS_True_Positive_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.OverflowFlag = flag;
+	cpu->status.bitfield.OverflowFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -692,7 +692,7 @@ TEST_F(Core6502Tests_Branch, Test_BVS_True_Positive_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.OverflowFlag = flag;
+	cpu->status.bitfield.OverflowFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -710,7 +710,7 @@ TEST_F(Core6502Tests_Branch, Test_BVS_True_Negative_Positive) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.OverflowFlag = flag;
+	cpu->status.bitfield.OverflowFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -728,7 +728,7 @@ TEST_F(Core6502Tests_Branch, Test_BVS_True_Negative_Negative) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.OverflowFlag = flag;
+	cpu->status.bitfield.OverflowFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
@@ -746,7 +746,7 @@ TEST_F(Core6502Tests_Branch, Test_BVS_False) {
 	// Set memory and flags
 	cpu->registers.PC = pcVal;
 	cpu->mem[pcVal] = offset;
-	cpu->status.OverflowFlag = flag;
+	cpu->status.bitfield.OverflowFlag = flag;
 
 	// Perform Instruction
 	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);

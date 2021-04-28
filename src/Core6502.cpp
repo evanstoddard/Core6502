@@ -30,20 +30,20 @@ void Core6502::CPU::reset() {
 
     // Set PC to 0xFFFC and all other registers to 0
     registers.PC    = 0xFFFC;
-    registers.SP    = 0x0;
+    registers.SP    = 0xFF;
     registers.A     = 0x0;
     registers.X     = 0x0;
     registers.Y     = 0x0;
 
     // Set flags to a default state and disable interrupts
-    status.BreakCommand = 0;
-    status.CarryFlag = 0;
-    status.DecimalMode = 0;
-    status.InterruptDisable = 1;
-    status.NegativeFlag = 0;
-    status.OverflowFlag = 0;
-    status.UserFlag = 0;
-    status.ZeroFlag = 1;
+    status.bitfield.BreakCommand = 0;
+    status.bitfield.CarryFlag = 0;
+    status.bitfield.DecimalMode = 0;
+    status.bitfield.InterruptDisable = 1;
+    status.bitfield.NegativeFlag = 0;
+    status.bitfield.OverflowFlag = 0;
+    status.bitfield.UserFlag = 0;
+    status.bitfield.ZeroFlag = 1;
 
     // Set the program counter to address at reset vector
     uint16_t effective_addr  = fetchByte() | (fetchByte() << 8);
@@ -290,5 +290,16 @@ void Core6502::CPU::setupInstructionMap() {
     instructions[0x38] = (Core6502::Instruction){0x38, 2, Core6502::SEC};
     instructions[0xF8] = (Core6502::Instruction){0xF8, 2, Core6502::SED};
     instructions[0x78] = (Core6502::Instruction){0x78, 2, Core6502::SEI};
+
+    // Stack Instructions
+    instructions[0xBA] = (Core6502::Instruction){0xBA, 2, Core6502::TSX};
+    instructions[0x9A] = (Core6502::Instruction){0x9A, 2, Core6502::TXS};
+    instructions[0x48] = (Core6502::Instruction){0x48, 3, Core6502::PHA};
+    instructions[0x08] = (Core6502::Instruction){0x08, 3, Core6502::PHP};
+    instructions[0x68] = (Core6502::Instruction){0x68, 4, Core6502::PLA};
+    instructions[0x28] = (Core6502::Instruction){0x28, 4, Core6502::PLP};
+
+    // Misc.
+    instructions[0xEA] = (Core6502::Instruction){0xEA, 2, Core6502::NOP};
 
 }

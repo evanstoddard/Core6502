@@ -76,6 +76,15 @@ namespace Core6502 {
     void SED(Core6502::CPU&, Core6502::Instruction&);
     void SEI(Core6502::CPU&, Core6502::Instruction&);
 
+    // Stack Operations
+    void TSX(Core6502::CPU&, Core6502::Instruction&);
+    void TXS(Core6502::CPU&, Core6502::Instruction&);
+    void PHA(Core6502::CPU&, Core6502::Instruction&);
+    void PHP(Core6502::CPU&, Core6502::Instruction&);
+    void PLA(Core6502::CPU&, Core6502::Instruction&);
+    void PLP(Core6502::CPU&, Core6502::Instruction&);
+
+    void NOP(Core6502::CPU&, Core6502::Instruction&);
 }
 
 #endif

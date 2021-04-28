@@ -38,8 +38,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Immediate_Positive) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
     
 }
@@ -61,8 +61,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Immediate_Negative) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
     
 }
@@ -84,8 +84,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Immediate_Zero) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
     
 }
@@ -111,8 +111,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Zero_Page_Positive) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
     
 }
@@ -136,8 +136,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Zero_Page_Negative) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
 }
 TEST_F(Core6502Tests_ORA, Test_ORA_Zero_Page_Zero) {
@@ -160,8 +160,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Zero_Page_Zero) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
 }
 
@@ -189,8 +189,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Zero_Page_X_Positive) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
     
 }
@@ -217,8 +217,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Zero_Page_X_Negative) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
 }
 TEST_F(Core6502Tests_ORA, Test_ORA_Zero_Page_X_Zero) {
@@ -244,8 +244,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Zero_Page_X_Zero) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
 }
 
@@ -273,8 +273,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_Positive) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
 }
 TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_Negative) {
@@ -300,8 +300,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_Negative) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
 }
 TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_Zero) {
@@ -327,8 +327,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_Zero) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
 }
 
@@ -358,8 +358,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_X_Positive) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
     
 }
@@ -388,8 +388,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_X_Negative) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
 }
 TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_X_Zero) {
@@ -417,8 +417,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_X_Zero) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
 }
 
@@ -448,8 +448,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_Y_Positive) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
     
 }
@@ -478,8 +478,8 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_Y_Negative) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
 }
 TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_Y_Zero) {
@@ -507,7 +507,7 @@ TEST_F(Core6502Tests_ORA, Test_ORA_Absolute_Y_Zero) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.A, aTestVal | operand);
-    EXPECT_EQ(cpu->status.NegativeFlag, (bool)(cpu->registers.A & 0x80));
-    EXPECT_EQ(cpu->status.ZeroFlag, (cpu->registers.A == 0));
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)(cpu->registers.A & 0x80));
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (cpu->registers.A == 0));
 
 }

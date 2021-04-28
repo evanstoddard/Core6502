@@ -39,9 +39,9 @@ TEST_F(Core6502Tests_BIT, Test_BIT_Zero_Page_NonZero) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check test case
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.OverflowFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 0);
 
 }
 TEST_F(Core6502Tests_BIT, Test_BIT_Zero_Page_Zero) {
@@ -63,9 +63,9 @@ TEST_F(Core6502Tests_BIT, Test_BIT_Zero_Page_Zero) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check test case
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.OverflowFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 0);
 
 }
 TEST_F(Core6502Tests_BIT, Test_BIT_Zero_Set_Overflow) {
@@ -87,9 +87,9 @@ TEST_F(Core6502Tests_BIT, Test_BIT_Zero_Set_Overflow) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check test case
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.OverflowFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 1);
 
 }
 TEST_F(Core6502Tests_BIT, Test_BIT_Zero_Clear_Overflow) {
@@ -111,9 +111,9 @@ TEST_F(Core6502Tests_BIT, Test_BIT_Zero_Clear_Overflow) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check test case
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.OverflowFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 0);
 
 }
 TEST_F(Core6502Tests_BIT, Test_BIT_Zero_Set_Negative) {
@@ -135,9 +135,9 @@ TEST_F(Core6502Tests_BIT, Test_BIT_Zero_Set_Negative) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check test case
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.OverflowFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 0);
 
 }
 TEST_F(Core6502Tests_BIT, Test_BIT_Zero_Clear_Negative) {
@@ -159,9 +159,9 @@ TEST_F(Core6502Tests_BIT, Test_BIT_Zero_Clear_Negative) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check test case
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.OverflowFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 0);
 
 }
 
@@ -188,9 +188,9 @@ TEST_F(Core6502Tests_BIT, Test_BIT_Absolute_NonZero) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check test case
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.OverflowFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 0);
 
 }
 TEST_F(Core6502Tests_BIT, Test_BIT_Absolute_Page_Zero) {
@@ -215,9 +215,9 @@ TEST_F(Core6502Tests_BIT, Test_BIT_Absolute_Page_Zero) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check test case
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.OverflowFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 0);
 
 }
 TEST_F(Core6502Tests_BIT, Test_BIT_Absolute_Set_Overflow) {
@@ -242,9 +242,9 @@ TEST_F(Core6502Tests_BIT, Test_BIT_Absolute_Set_Overflow) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check test case
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.OverflowFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 1);
 
 }
 TEST_F(Core6502Tests_BIT, Test_BIT_Absolute_Clear_Overflow) {
@@ -269,9 +269,9 @@ TEST_F(Core6502Tests_BIT, Test_BIT_Absolute_Clear_Overflow) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check test case
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.OverflowFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 0);
 
 }
 TEST_F(Core6502Tests_BIT, Test_BIT_Absolute_Set_Negative) {
@@ -296,9 +296,9 @@ TEST_F(Core6502Tests_BIT, Test_BIT_Absolute_Set_Negative) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check test case
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.OverflowFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 0);
 
 }
 TEST_F(Core6502Tests_BIT, Test_BIT_Absolute_Clear_Negative) {
@@ -323,9 +323,9 @@ TEST_F(Core6502Tests_BIT, Test_BIT_Absolute_Clear_Negative) {
     cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
 
     // Check test case
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.OverflowFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 0);
 
 }
 

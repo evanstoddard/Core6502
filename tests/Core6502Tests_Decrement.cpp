@@ -38,8 +38,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEC_Zero_Page_Positive) {
 
     // Check test case
     EXPECT_EQ((uint8_t)cpu->mem[addr], (uint8_t)(testVal - 1));
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -61,8 +61,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEC_Zero_Page_Negative) {
 
     // Check test case
     EXPECT_EQ((uint8_t)cpu->mem[addr], (uint8_t)(testVal - 1));
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -84,8 +84,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEC_Zero_Page_Zero) {
 
     // Check test case
     EXPECT_EQ((uint8_t)cpu->mem[addr], 0);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
 
 }
 
@@ -110,8 +110,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEC_Zero_Page_X_Positive) {
 
     // Check test case
     EXPECT_EQ((uint8_t)cpu->mem[addr + xVal], (uint8_t)(testVal - 1));
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -135,8 +135,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEC_Zero_Page_X_Negative) {
 
     // Check test case
     EXPECT_EQ((uint8_t)cpu->mem[addr + xVal], (uint8_t)(testVal - 1));
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -160,8 +160,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEC_Zero_Page_X_Zero) {
 
     // Check test case
     EXPECT_EQ(cpu->mem[addr + xVal], 0);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
 
 }
 
@@ -187,8 +187,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEC_Absolute_Positive) {
 
     // Check test case
     EXPECT_EQ((uint8_t)cpu->mem[addr], (uint8_t)(testVal - 1));
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -213,8 +213,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEC_Absolute_Negative) {
 
     // Check test case
     EXPECT_EQ((uint8_t)cpu->mem[addr], (uint8_t)(testVal - 1));
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -239,8 +239,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEC_Absolute_Zero) {
 
     // Check test case
     EXPECT_EQ((uint8_t)cpu->mem[addr], 0);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
 
 }
 
@@ -268,8 +268,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEC_Absolute_X_Positive) {
 
     // Check test case
     EXPECT_EQ((uint8_t)cpu->mem[addr + xVal], (uint8_t)(testVal - 1));
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -296,8 +296,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEC_Absolute_X_Negative) {
 
     // Check test case
     EXPECT_EQ((uint8_t)cpu->mem[addr + xVal], (uint8_t)(testVal - 1));
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -324,8 +324,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEC_Absolute_X_Zero) {
 
     // Check test case
     EXPECT_EQ(cpu->mem[addr + xVal], 0);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
 
 }
 
@@ -346,8 +346,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEX_Positive) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.X, (uint8_t)(testVal - 1));
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -367,8 +367,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEX_Negative) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.X, (uint8_t)(testVal - 1));
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -388,8 +388,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEX_Zero) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.X, 0);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
 
 }
 
@@ -410,8 +410,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEY_Positive) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.Y, (uint8_t)(testVal - 1));
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -431,8 +431,8 @@ TEST_F(Core6502Tests_Decrement, Test_DEY_Negative) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.Y, (uint8_t)(testVal - 1));
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -452,7 +452,7 @@ TEST_F(Core6502Tests_Decrement, Test_DEY_Zero) {
 
     // Check test case
     EXPECT_EQ(cpu->registers.Y, 0);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
 
 }

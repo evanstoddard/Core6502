@@ -38,8 +38,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Immediate_Positive) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -59,8 +59,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Immediate_Negative) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
 }
 TEST_F(Core6502Tests_LDY, Test_LDY_Immediate_Zero) {
@@ -79,8 +79,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Immediate_Zero) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
 
 }
 
@@ -103,8 +103,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_Positive) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -126,8 +126,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_Negative) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
 }
 TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_Zero) {
@@ -148,8 +148,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_Zero) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
 
 }
 
@@ -175,8 +175,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_X_Positive) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -201,8 +201,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_X_Negative) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
 }
 TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_X_Zero) {
@@ -226,8 +226,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Zero_Page_X_Zero) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
 
 }
 
@@ -253,8 +253,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_Positive) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -279,8 +279,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_Negative) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
 }
 TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_Zero) {
@@ -304,8 +304,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_Zero) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
 
 }
 
@@ -333,8 +333,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_X_Positive) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
     
 }
@@ -361,8 +361,8 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_X_Negative) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 1);
-    EXPECT_EQ(cpu->status.ZeroFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 0);
 
 }
 TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_X_Zero) {
@@ -388,7 +388,7 @@ TEST_F(Core6502Tests_LDY, Test_LDY_Absolute_X_Zero) {
 
     // Check Program Counter has been set 
     EXPECT_EQ(cpu->registers.Y,aTestVal);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
 
 }

@@ -33,8 +33,8 @@ TEST_F(Core6502Tests_Transfer, TAX_Positive) {
 
     // Check Status
     EXPECT_EQ(testVal, cpu->registers.X);
-    EXPECT_EQ((testVal == 0), cpu->status.ZeroFlag);
-    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.NegativeFlag);
+    EXPECT_EQ((testVal == 0), cpu->status.bitfield.ZeroFlag);
+    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.bitfield.NegativeFlag);
     
 }
 TEST_F(Core6502Tests_Transfer, TAX_Negative) {
@@ -51,8 +51,8 @@ TEST_F(Core6502Tests_Transfer, TAX_Negative) {
 
     // Check Status
     EXPECT_EQ(testVal, cpu->registers.X);
-    EXPECT_EQ((testVal == 0), cpu->status.ZeroFlag);
-    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.NegativeFlag);
+    EXPECT_EQ((testVal == 0), cpu->status.bitfield.ZeroFlag);
+    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.bitfield.NegativeFlag);
     
 }
 TEST_F(Core6502Tests_Transfer, TAX_Zero) {
@@ -69,8 +69,8 @@ TEST_F(Core6502Tests_Transfer, TAX_Zero) {
 
     // Check Status
     EXPECT_EQ(testVal, cpu->registers.X);
-    EXPECT_EQ((testVal == 0), cpu->status.ZeroFlag);
-    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.NegativeFlag);
+    EXPECT_EQ((testVal == 0), cpu->status.bitfield.ZeroFlag);
+    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.bitfield.NegativeFlag);
     
 }
 
@@ -88,8 +88,8 @@ TEST_F(Core6502Tests_Transfer, TAY_Positive) {
 
     // Check Status
     EXPECT_EQ(testVal, cpu->registers.Y);
-    EXPECT_EQ((testVal == 0), cpu->status.ZeroFlag);
-    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.NegativeFlag);
+    EXPECT_EQ((testVal == 0), cpu->status.bitfield.ZeroFlag);
+    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.bitfield.NegativeFlag);
     
 }
 TEST_F(Core6502Tests_Transfer, TAY_Negative) {
@@ -106,8 +106,8 @@ TEST_F(Core6502Tests_Transfer, TAY_Negative) {
 
     // Check Status
     EXPECT_EQ(testVal, cpu->registers.Y);
-    EXPECT_EQ((testVal == 0), cpu->status.ZeroFlag);
-    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.NegativeFlag);
+    EXPECT_EQ((testVal == 0), cpu->status.bitfield.ZeroFlag);
+    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.bitfield.NegativeFlag);
     
 }
 TEST_F(Core6502Tests_Transfer, TAY_Zero) {
@@ -124,8 +124,8 @@ TEST_F(Core6502Tests_Transfer, TAY_Zero) {
 
     // Check Status
     EXPECT_EQ(testVal, cpu->registers.Y);
-    EXPECT_EQ((testVal == 0), cpu->status.ZeroFlag);
-    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.NegativeFlag);
+    EXPECT_EQ((testVal == 0), cpu->status.bitfield.ZeroFlag);
+    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.bitfield.NegativeFlag);
     
 }
 
@@ -143,8 +143,8 @@ TEST_F(Core6502Tests_Transfer, TXA_Positive) {
 
     // Check Status
     EXPECT_EQ(testVal, cpu->registers.A);
-    EXPECT_EQ((testVal == 0), cpu->status.ZeroFlag);
-    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.NegativeFlag);
+    EXPECT_EQ((testVal == 0), cpu->status.bitfield.ZeroFlag);
+    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.bitfield.NegativeFlag);
     
 }
 TEST_F(Core6502Tests_Transfer, TXA_Negative) {
@@ -161,8 +161,8 @@ TEST_F(Core6502Tests_Transfer, TXA_Negative) {
 
     // Check Status
     EXPECT_EQ(testVal, cpu->registers.A);
-    EXPECT_EQ((testVal == 0), cpu->status.ZeroFlag);
-    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.NegativeFlag);
+    EXPECT_EQ((testVal == 0), cpu->status.bitfield.ZeroFlag);
+    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.bitfield.NegativeFlag);
     
 }
 TEST_F(Core6502Tests_Transfer, TXA_Zero) {
@@ -179,8 +179,8 @@ TEST_F(Core6502Tests_Transfer, TXA_Zero) {
 
     // Check Status
     EXPECT_EQ(testVal, cpu->registers.A);
-    EXPECT_EQ((testVal == 0), cpu->status.ZeroFlag);
-    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.NegativeFlag);
+    EXPECT_EQ((testVal == 0), cpu->status.bitfield.ZeroFlag);
+    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.bitfield.NegativeFlag);
     
 }
 
@@ -198,8 +198,8 @@ TEST_F(Core6502Tests_Transfer, TYA_Positive) {
 
     // Check Status
     EXPECT_EQ(testVal, cpu->registers.A);
-    EXPECT_EQ((testVal == 0), cpu->status.ZeroFlag);
-    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.NegativeFlag);
+    EXPECT_EQ((testVal == 0), cpu->status.bitfield.ZeroFlag);
+    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.bitfield.NegativeFlag);
     
 }
 TEST_F(Core6502Tests_Transfer, TYA_Negative) {
@@ -216,8 +216,8 @@ TEST_F(Core6502Tests_Transfer, TYA_Negative) {
 
     // Check Status
     EXPECT_EQ(testVal, cpu->registers.A);
-    EXPECT_EQ((testVal == 0), cpu->status.ZeroFlag);
-    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.NegativeFlag);
+    EXPECT_EQ((testVal == 0), cpu->status.bitfield.ZeroFlag);
+    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.bitfield.NegativeFlag);
     
 }
 TEST_F(Core6502Tests_Transfer, TYA_Zero) {
@@ -234,7 +234,7 @@ TEST_F(Core6502Tests_Transfer, TYA_Zero) {
 
     // Check Status
     EXPECT_EQ(testVal, cpu->registers.A);
-    EXPECT_EQ((testVal == 0), cpu->status.ZeroFlag);
-    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.NegativeFlag);
+    EXPECT_EQ((testVal == 0), cpu->status.bitfield.ZeroFlag);
+    EXPECT_EQ((bool)(testVal & 0b10000000), cpu->status.bitfield.NegativeFlag);
     
 }

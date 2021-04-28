@@ -38,22 +38,21 @@ namespace Core6502{
         } registers;
 
         // Processor Status
-        struct {
-            uint8_t CarryFlag:1;
-            uint8_t ZeroFlag:1;
-            uint8_t InterruptDisable:1;
-            uint8_t DecimalMode:1;
-            uint8_t BreakCommand:1;
-            uint8_t OverflowFlag:1;
-            uint8_t NegativeFlag:1;
-            uint8_t UserFlag:1;
+        union{
+            struct {
+                uint8_t CarryFlag:1;
+                uint8_t ZeroFlag:1;
+                uint8_t InterruptDisable:1;
+                uint8_t DecimalMode:1;
+                uint8_t BreakCommand:1;
+                uint8_t OverflowFlag:1;
+                uint8_t NegativeFlag:1;
+                uint8_t UserFlag:1;
+            } bitfield;
+            uint8_t raw;
         } status;
 
         volatile uint8_t * mem;
-
-        // Stores address and fetched value from instruction
-        uint8_t  fetchedReg = 0x0;
-        uint16_t addrReg    = 0x0;
 
     // Fetch Methods
     public:

@@ -44,14 +44,14 @@ TEST_F(Core6502Tests_Core, Test_CPU_Reset) {
     // Zero should be 1
     // Interrupts should be disabled
     // All others 0
-    EXPECT_EQ(cpu->status.ZeroFlag, 1);
-    EXPECT_EQ(cpu->status.InterruptDisable, 1);
-    EXPECT_EQ(cpu->status.BreakCommand, 0);
-    EXPECT_EQ(cpu->status.CarryFlag, 0);
-    EXPECT_EQ(cpu->status.DecimalMode, 0);
-    EXPECT_EQ(cpu->status.NegativeFlag, 0);
-    EXPECT_EQ(cpu->status.OverflowFlag, 0);
-    EXPECT_EQ(cpu->status.UserFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.ZeroFlag, 1);
+    EXPECT_EQ(cpu->status.bitfield.InterruptDisable, 1);
+    EXPECT_EQ(cpu->status.bitfield.BreakCommand, 0);
+    EXPECT_EQ(cpu->status.bitfield.CarryFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.DecimalMode, 0);
+    EXPECT_EQ(cpu->status.bitfield.NegativeFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.OverflowFlag, 0);
+    EXPECT_EQ(cpu->status.bitfield.UserFlag, 0);
     
 }
 
