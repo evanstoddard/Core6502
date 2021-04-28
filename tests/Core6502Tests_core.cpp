@@ -90,7 +90,7 @@ TEST_F(Core6502Tests_Core, Test_Absolute_Addressing) {
     cpu->mem[pcVal+1] = memValUB;
 
     // Fetch address
-    uint16_t addr = cpu->absoluteAddr();
+    uint16_t addr = cpu->absoluteAddr(*cpu);
 
     // Validate fetched address is what we expect
     EXPECT_EQ(addr, memVal);
@@ -112,7 +112,7 @@ TEST_F(Core6502Tests_Core, Test_Absolute_X_Addressing) {
     cpu->mem[pcVal+1] = memValUB;
 
     // Fetch address
-    uint16_t addr = cpu->absoluteXAddr();
+    uint16_t addr = cpu->absoluteXAddr(*cpu);
 
     // Validate fetched address is what we expect
     EXPECT_EQ(addr, memVal + xVal);
@@ -134,7 +134,7 @@ TEST_F(Core6502Tests_Core, Test_Absolute_Y_Addressing) {
     cpu->mem[pcVal+1] = memValUB;
 
     // Fetch address
-    uint16_t addr = cpu->absoluteYAddr();
+    uint16_t addr = cpu->absoluteYAddr(*cpu);
 
     // Validate fetched address is what we expect
     EXPECT_EQ(addr, memVal + yVal);
@@ -151,7 +151,7 @@ TEST_F(Core6502Tests_Core, Test_Zero_Page) {
     cpu->mem[pcVal] = memVal;
    
     // Fetch address
-    uint8_t addr = cpu->zeroPageAddr();
+    uint8_t addr = cpu->zeroPageAddr(*cpu);
 
     // Validate fetched address is what we expect
     EXPECT_EQ(addr, memVal);
@@ -170,7 +170,7 @@ TEST_F(Core6502Tests_Core, Test_Zero_Page_X) {
     cpu->mem[pcVal] = memVal;
    
     // Fetch address
-    uint8_t addr = cpu->zeroPageXAddr();
+    uint8_t addr = cpu->zeroPageXAddr(*cpu);
 
     // Validate fetched address is what we expect
     EXPECT_EQ(addr, memVal + xVal);
@@ -189,7 +189,7 @@ TEST_F(Core6502Tests_Core, Test_Zero_Page_X_Wrap_Around) {
     cpu->mem[pcVal] = memVal;
    
     // Fetch address
-    uint16_t addr = cpu->zeroPageXAddr();
+    uint16_t addr = cpu->zeroPageXAddr(*cpu);
 
     // Validate fetched address is what we expect
     EXPECT_LT(addr, 0x100);
@@ -209,7 +209,7 @@ TEST_F(Core6502Tests_Core, Test_Zero_Page_Y) {
     cpu->mem[pcVal] = memVal;
    
     // Fetch address
-    uint8_t addr = cpu->zeroPageYAddr();
+    uint8_t addr = cpu->zeroPageYAddr(*cpu);
 
     // Validate fetched address is what we expect
     EXPECT_EQ(addr, memVal + yVal);
@@ -228,7 +228,7 @@ TEST_F(Core6502Tests_Core, Test_Zero_Page_Y_Wrap_Around) {
     cpu->mem[pcVal] = memVal;
    
     // Fetch address
-    uint16_t addr = cpu->zeroPageYAddr();
+    uint16_t addr = cpu->zeroPageYAddr(*cpu);
 
     // Validate fetched address is what we expect
     EXPECT_LT(addr, 0x100);
@@ -254,7 +254,7 @@ TEST_F(Core6502Tests_Core, Test_Indirect) {
     cpu->mem[indirectAddr + 1] = memUB;
 
     // Validate fetched address is expected
-    uint16_t addr = cpu->indirectAddr();
+    uint16_t addr = cpu->indirectAddr(*cpu);
 
     EXPECT_EQ(addr, memAddr);
 }
@@ -277,7 +277,7 @@ TEST_F(Core6502Tests_Core, Test_Indirect_Page_Boundary_Bug) {
     cpu->mem[indirectAddr & 0xFF00] = memUB;
 
     // Validate fetched address is expected
-    uint16_t addr = cpu->indirectAddr();
+    uint16_t addr = cpu->indirectAddr(*cpu);
 
     EXPECT_EQ(addr, memAddr);
 }
@@ -292,7 +292,7 @@ TEST_F(Core6502Tests_Core, Test_Relative_Positive_Positive) {
     cpu->mem[pcVal] = offset;
     
     // Validate fetched address is expected
-    uint16_t addr = cpu->relativeAddr();
+    uint16_t addr = cpu->relativeAddr(*cpu);
 
     EXPECT_EQ(addr, 0x4040 + 1);
 }
@@ -307,7 +307,7 @@ TEST_F(Core6502Tests_Core, Test_Relative_Positive_Negative) {
     cpu->mem[pcVal] = offset;
     
     // Validate fetched address is expected
-    uint16_t addr = cpu->relativeAddr();
+    uint16_t addr = cpu->relativeAddr(*cpu);
 
     EXPECT_EQ(addr, 0x3FC0 + 1);
 }
@@ -322,7 +322,7 @@ TEST_F(Core6502Tests_Core, Test_Relative_Negative_Positive) {
     cpu->mem[pcVal] = offset;
     
     // Validate fetched address is expected
-    uint16_t addr = cpu->relativeAddr();
+    uint16_t addr = cpu->relativeAddr(*cpu);
 
     EXPECT_EQ(addr, 0x8040 + 1);
 }
@@ -337,7 +337,7 @@ TEST_F(Core6502Tests_Core, Test_Relative_Negative_Negative) {
     cpu->mem[pcVal] = offset;
     
     // Validate fetched address is expected
-    uint16_t addr = cpu->relativeAddr();
+    uint16_t addr = cpu->relativeAddr(*cpu);
 
     EXPECT_EQ(addr, 0x7FC0 + 1);
 }

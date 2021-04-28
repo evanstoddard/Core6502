@@ -17,57 +17,70 @@ namespace Core6502{
 
     class CPU {
     
+    // Constructors/Destructors
     public:
         CPU();
         CPU(uint8_t * memPtr);
 
+    // Internals
+    public:
         // Map of operations.  Can be used to overload default operations or add functionality
         // to undocumented operations like the NES Processor.
         std::map<uint8_t, struct Instruction> instructions;
 
         // Registers
         struct {
-        uint16_t PC;
-        uint8_t  SP;
-        uint8_t  A;
-        uint8_t  X;
-        uint8_t  Y;
-    } registers;
-    
+            uint16_t PC;
+            uint8_t  SP;
+            uint8_t  A;
+            uint8_t  X;
+            uint8_t  Y;
+        } registers;
+
         // Processor Status
         struct {
-        uint8_t CarryFlag:1;
-        uint8_t ZeroFlag:1;
-        uint8_t InterruptDisable:1;
-        uint8_t DecimalMode:1;
-        uint8_t BreakCommand:1;
-        uint8_t OverflowFlag:1;
-        uint8_t NegativeFlag:1;
-        uint8_t UserFlag:1;
-    } status;
-
-        // Methods
-        uint8_t fetchByte();        // Fetches current byte and increments PC
-        int8_t fetchByteSigned();   // Fetches current byte as signed and increments PC
-        void reset();               // Resets Processor
-        
-        // Addressing methods
-        uint8_t zeroPageAddr();
-        uint8_t zeroPageXAddr();
-        uint8_t zeroPageYAddr();
-        uint16_t absoluteAddr();
-        uint16_t absoluteXAddr();
-        uint16_t absoluteYAddr();
-        uint16_t indirectXAddr();
-        uint16_t indirectYAddr();
-        uint16_t indirectAddr();
-        uint16_t relativeAddr();
+            uint8_t CarryFlag:1;
+            uint8_t ZeroFlag:1;
+            uint8_t InterruptDisable:1;
+            uint8_t DecimalMode:1;
+            uint8_t BreakCommand:1;
+            uint8_t OverflowFlag:1;
+            uint8_t NegativeFlag:1;
+            uint8_t UserFlag:1;
+        } status;
 
         volatile uint8_t * mem;
 
+        // Stores address and fetched value from instruction
+        uint8_t  fetchedReg = 0x0;
+        uint16_t addrReg    = 0x0;
+
+    // Fetch Methods
+    public:
+        uint8_t fetchByte();                            // Fetches current byte and increments PC
+        uint8_t fetchFromMemory(Core6502::Instruction& );  // Fetches value from address 
+
+    // Control Methods
+    public:
+        void reset();               // Resets Processor
+    
+    // Addressing methods
+    public:
+        static uint16_t immediate(Core6502::CPU&);
+        static uint16_t zeroPageAddr(Core6502::CPU&);
+        static uint16_t zeroPageXAddr(Core6502::CPU&);
+        static uint16_t zeroPageYAddr(Core6502::CPU&);
+        static uint16_t absoluteAddr(Core6502::CPU&);
+        static uint16_t absoluteXAddr(Core6502::CPU&);
+        static uint16_t absoluteYAddr(Core6502::CPU&);
+        static uint16_t indirectXAddr(Core6502::CPU&);
+        static uint16_t indirectYAddr(Core6502::CPU&);
+        static uint16_t indirectAddr(Core6502::CPU&);
+        static uint16_t relativeAddr(Core6502::CPU&);
+
     private:
         void setupInstructionMap();
-    
+ 
     };
 
 

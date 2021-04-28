@@ -16,141 +16,65 @@ namespace Core6502 {
 
     // Operation struct
     struct Instruction {
-        bool protectedInstruction;
-        uint8_t opcode;
+        uint8_t opCode;
         uint8_t cycles;
-        void (*instructionFunction)(Core6502::CPU&, struct Instruction&);
+        void (*instructionFunction)(Core6502::CPU&, Core6502::Instruction&);
+        uint16_t (*addressFunction)(Core6502::CPU&);
     };
 
-    // LDA Instructions
-    void LDA_Immediate(Core6502::CPU&, struct Instruction&);
-    void LDA_Zero_Page(Core6502::CPU&, struct Instruction&);
-    void LDA_Zero_Page_X(Core6502::CPU&, struct Instruction&);
-    void LDA_Absolute(Core6502::CPU&, struct Instruction&);
-    void LDA_Absolute_X(Core6502::CPU&, struct Instruction&);
-    void LDA_Absolute_Y(Core6502::CPU&, struct Instruction&);
-    void LDA_Indirect_X(Core6502::CPU&, struct Instruction&);
-    void LDA_Indirect_Y(Core6502::CPU&, struct Instruction&);
+    // Load Register Instructions
+    void LDA(Core6502::CPU&, Core6502::Instruction&);
+    void LDX(Core6502::CPU&, Core6502::Instruction&);
+    void LDY(Core6502::CPU&, Core6502::Instruction&);
 
-    // LDX Instructions
-    void LDX_Immediate(Core6502::CPU&, struct Instruction&);
-    void LDX_Zero_Page(Core6502::CPU&, struct Instruction&);
-    void LDX_Zero_Page_Y(Core6502::CPU&, struct Instruction&);
-    void LDX_Absolute(Core6502::CPU&, struct Instruction&);
-    void LDX_Absolute_Y(Core6502::CPU&, struct Instruction&);
+    // Store Register Instructions
+    void STA(Core6502::CPU&, Core6502::Instruction&);
+    void STX(Core6502::CPU&, Core6502::Instruction&);
+    void STY(Core6502::CPU&, Core6502::Instruction&);
 
-    // LDY Instructions
-    void LDY_Immediate(Core6502::CPU&, struct Instruction&);
-    void LDY_Zero_Page(Core6502::CPU&, struct Instruction&);
-    void LDY_Zero_Page_X(Core6502::CPU&, struct Instruction&);
-    void LDY_Absolute(Core6502::CPU&, struct Instruction&);
-    void LDY_Absolute_X(Core6502::CPU&, struct Instruction&);
+    // Logic Instructions
+    void AND(Core6502::CPU&, Core6502::Instruction&);
+    void ORA(Core6502::CPU&, Core6502::Instruction&);
+    void EOR(Core6502::CPU&, Core6502::Instruction&);
+    void BIT(Core6502::CPU&, Core6502::Instruction&);
 
-    // STA Instructions
-    void STA_Zero_Page(Core6502::CPU&, struct Instruction&);
-    void STA_Zero_Page_X(Core6502::CPU&, struct Instruction&);
-    void STA_Absolute(Core6502::CPU&, struct Instruction&);
-    void STA_Absolute_X(Core6502::CPU&, struct Instruction&);
-    void STA_Absolute_Y(Core6502::CPU&, struct Instruction&);
-    void STA_Indirect_X(Core6502::CPU&, struct Instruction&);
-    void STA_Indirect_Y(Core6502::CPU&, struct Instruction&);
+    // Increment Instructions
+    void INC(Core6502::CPU&, Core6502::Instruction&);
+    void INX(Core6502::CPU&, Core6502::Instruction&);
+    void INY(Core6502::CPU&, Core6502::Instruction&);
     
-    // STX Instructions
-    void STX_Zero_Page(Core6502::CPU&, struct Instruction&);
-    void STX_Zero_Page_Y(Core6502::CPU&, struct Instruction&);
-    void STX_Absolute(Core6502::CPU&, struct Instruction&);
-
-    // STY Instructions
-    void STY_Zero_Page(Core6502::CPU&, struct Instruction&);
-    void STY_Zero_Page_X(Core6502::CPU&, struct Instruction&);
-    void STY_Absolute(Core6502::CPU&, struct Instruction&);
-
-    // AND Instructions
-    void AND_Immediate(Core6502::CPU&, struct Instruction&);
-    void AND_Zero_Page(Core6502::CPU&, struct Instruction&);
-    void AND_Zero_Page_X(Core6502::CPU&, struct Instruction&);
-    void AND_Absolute(Core6502::CPU&, struct Instruction&);
-    void AND_Absolute_X(Core6502::CPU&, struct Instruction&);
-    void AND_Absolute_Y(Core6502::CPU&, struct Instruction&);
-    void AND_Indirect_X(Core6502::CPU&, struct Instruction&);
-    void AND_Indirect_Y(Core6502::CPU&, struct Instruction&);
-
-     // ORA Instructions
-    void ORA_Immediate(Core6502::CPU&, struct Instruction&);
-    void ORA_Zero_Page(Core6502::CPU&, struct Instruction&);
-    void ORA_Zero_Page_X(Core6502::CPU&, struct Instruction&);
-    void ORA_Absolute(Core6502::CPU&, struct Instruction&);
-    void ORA_Absolute_X(Core6502::CPU&, struct Instruction&);
-    void ORA_Absolute_Y(Core6502::CPU&, struct Instruction&);
-    void ORA_Indirect_X(Core6502::CPU&, struct Instruction&);
-    void ORA_Indirect_Y(Core6502::CPU&, struct Instruction&);
-
-    // EOR Instructions
-    void EOR_Immediate(Core6502::CPU&, struct Instruction&);
-    void EOR_Zero_Page(Core6502::CPU&, struct Instruction&);
-    void EOR_Zero_Page_X(Core6502::CPU&, struct Instruction&);
-    void EOR_Absolute(Core6502::CPU&, struct Instruction&);
-    void EOR_Absolute_X(Core6502::CPU&, struct Instruction&);
-    void EOR_Absolute_Y(Core6502::CPU&, struct Instruction&);
-    void EOR_Indirect_X(Core6502::CPU&, struct Instruction&);
-    void EOR_Indirect_Y(Core6502::CPU&, struct Instruction&);
-
-    // BIT Instructions
-    void BIT_Zero_Page(Core6502::CPU&, struct Instruction&);
-    void BIT_Absolute(Core6502::CPU&, struct Instruction&);
-
-    // INC Instructions
-    void INC_Zero_Page(Core6502::CPU&, struct Instruction&);
-    void INC_Zero_Page_X(Core6502::CPU&, struct Instruction&);
-    void INC_Absolute(Core6502::CPU&, struct Instruction&);
-    void INC_Absolute_X(Core6502::CPU&, struct Instruction&);
-
-    // INX Instruction
-    void INX_Implied(Core6502::CPU&, struct Instruction&);
-
-    // INY Instruction
-    void INY_Implied(Core6502::CPU&, struct Instruction&);
-
-    // DEC Instructions
-    void DEC_Zero_Page(Core6502::CPU&, struct Instruction&);
-    void DEC_Zero_Page_X(Core6502::CPU&, struct Instruction&);
-    void DEC_Absolute(Core6502::CPU&, struct Instruction&);
-    void DEC_Absolute_X(Core6502::CPU&, struct Instruction&);
-
-    // DEX Instruction
-    void DEX_Implied(Core6502::CPU&, struct Instruction&);
-
-    // DEY Instruction
-    void DEY_Implied(Core6502::CPU&, struct Instruction&);
-
+    // Decrement Instructions
+    void DEC(Core6502::CPU&, Core6502::Instruction&);
+    void DEX(Core6502::CPU&, Core6502::Instruction&);
+    void DEY(Core6502::CPU&, Core6502::Instruction&);
+    
     // Transfer Instructions
-    void TAX(Core6502::CPU&, struct Instruction&);
-    void TAY(Core6502::CPU&, struct Instruction&);
-    void TXA(Core6502::CPU&, struct Instruction&);
-    void TYA(Core6502::CPU&, struct Instruction&);
+    void TAX(Core6502::CPU&, Core6502::Instruction&);
+    void TAY(Core6502::CPU&, Core6502::Instruction&);
+    void TXA(Core6502::CPU&, Core6502::Instruction&);
+    void TYA(Core6502::CPU&, Core6502::Instruction&);
 
     // JMP Instructions
-    void JMP_Absolute(Core6502::CPU&, struct Instruction&);
-    void JMP_Indirect(Core6502::CPU&, struct Instruction&);
-
+    void JMP(Core6502::CPU&, Core6502::Instruction&);
+   
     // Branch Instructions
-    void BCC(Core6502::CPU&, struct Instruction&);
-    void BCS(Core6502::CPU&, struct Instruction&);
-    void BEQ(Core6502::CPU&, struct Instruction&);
-    void BMI(Core6502::CPU&, struct Instruction&);
-    void BNE(Core6502::CPU&, struct Instruction&);
-    void BPL(Core6502::CPU&, struct Instruction&);
-    void BVC(Core6502::CPU&, struct Instruction&);
-    void BVS(Core6502::CPU&, struct Instruction&);
+    void BCC(Core6502::CPU&, Core6502::Instruction&);
+    void BCS(Core6502::CPU&, Core6502::Instruction&);
+    void BEQ(Core6502::CPU&, Core6502::Instruction&);
+    void BMI(Core6502::CPU&, Core6502::Instruction&);
+    void BNE(Core6502::CPU&, Core6502::Instruction&);
+    void BPL(Core6502::CPU&, Core6502::Instruction&);
+    void BVC(Core6502::CPU&, Core6502::Instruction&);
+    void BVS(Core6502::CPU&, Core6502::Instruction&);
 
     // Status Flag Instructions
-    void CLC(Core6502::CPU&, struct Instruction&);
-    void CLD(Core6502::CPU&, struct Instruction&);
-    void CLI(Core6502::CPU&, struct Instruction&);
-    void CLV(Core6502::CPU&, struct Instruction&);
-    void SEC(Core6502::CPU&, struct Instruction&);
-    void SED(Core6502::CPU&, struct Instruction&);
-    void SEI(Core6502::CPU&, struct Instruction&);
+    void CLC(Core6502::CPU&, Core6502::Instruction&);
+    void CLD(Core6502::CPU&, Core6502::Instruction&);
+    void CLI(Core6502::CPU&, Core6502::Instruction&);
+    void CLV(Core6502::CPU&, Core6502::Instruction&);
+    void SEC(Core6502::CPU&, Core6502::Instruction&);
+    void SED(Core6502::CPU&, Core6502::Instruction&);
+    void SEI(Core6502::CPU&, Core6502::Instruction&);
 
 }
 
