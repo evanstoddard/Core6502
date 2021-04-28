@@ -13,24 +13,21 @@ int main(int argc, char ** argv) {
 	Core6502::CPU cpu(mem);
 
 	// Create test values
-    uint8_t opCode = 0xC6;
-    uint16_t pcVal = 0x4000;
-    uint8_t absoluteUB = 0xCA;
-    uint8_t absoluteLB = 0xFE;
-	uint8_t xVal = 0x10;
-    uint16_t addr = 0xFF;
-    uint8_t testVal = 0x0F;
+    // Test Values
+	uint8_t opCode = 0xB0;
+	uint16_t pcVal = 0x4000;
+    int8_t offset = 0x40;
+	uint8_t flag = 0x0;
 
-    // Set Registers and memory
+	// Set memory and flags
     cpu.registers.PC = pcVal;
-	cpu.registers.X = xVal;
-    cpu.mem[addr] = testVal;
-    //cpu.mem[pcVal+1] = absoluteUB;
-    //cpu.mem[addr + xVal] = testVal;
-   
-    // Perform instruction
-    cpu.instructions[opCode].instructionFunction(cpu, cpu.instructions[opCode]);
-	std::cout << "Val: " << (uint16_t)cpu.mem[addr] << std::endl;
+	cpu.mem[pcVal] = offset;
+	cpu.status.CarryFlag = flag;
+
+	// Perform Instruction
+	cpu.instructions[opCode].instructionFunction(cpu, cpu.instructions[opCode]);
+
+	std::cout << "Val: " << std::hex << (uint16_t)cpu.registers.PC << std::endl;
 	
 
 	return 0;
