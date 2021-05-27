@@ -35,7 +35,7 @@ TEST_F(Core6502Tests_Core, Test_CPU_Reset) {
     EXPECT_EQ(cpu->registers.PC,0xCAFE);
 
     // Validate registers are set to default values
-    EXPECT_EQ(cpu->registers.SP, 0x0);
+    EXPECT_EQ(cpu->registers.SP, 0xFF);
     EXPECT_EQ(cpu->registers.A, 0x0);
     EXPECT_EQ(cpu->registers.X, 0x0);
     EXPECT_EQ(cpu->registers.Y, 0x0);
