@@ -163,6 +163,165 @@ void Core6502::EOR(Core6502::CPU& cpu, struct Instruction& op) {
 
 }
 
+// Rotate Operations
+void Core6502::ROL(Core6502::CPU& cpu, struct Instruction& op) {
+
+    uint16_t val;
+    uint16_t addr;
+
+    // Fetch value and address if applicable
+    if (op.addressFunction == Core6502::CPU::accumlatorAddr)
+        val = (uint8_t)op.addressFunction(cpu);
+    else {
+        addr = op.addressFunction(cpu);
+        val = (uint8_t)cpu.mem[addr];
+    }
+
+    // Capture temp carry flag and shift values
+    val = (val << 1) + cpu.status.bitfield.CarryFlag;  
+
+    // Set status
+    cpu.status.bitfield.CarryFlag = val & 0xFF00;
+    cpu.status.bitfield.ZeroFlag  = val == 0;
+    cpu.status.bitfield.NegativeFlag = (bool)val & 0x80;
+
+    if (op.addressFunction == Core6502::CPU::accumlatorAddr)
+        cpu.registers.A = (uint8_t)val;
+    else
+        cpu.mem[addr] = (uint8_t)val;
+
+}
+void Core6502::ROR(Core6502::CPU& cpu, struct Instruction& op) {
+
+    uint16_t val;
+    uint16_t addr;
+
+    // Fetch value and address if applicable
+    if (op.addressFunction == Core6502::CPU::accumlatorAddr)
+        val = (uint8_t)op.addressFunction(cpu);
+    else {
+        addr = op.addressFunction(cpu);
+        val = (uint8_t)cpu.mem[addr];
+    }
+
+    // Capture temp carry flag and shift values
+    bool carry = val & 0x1;
+    val = (val >> 1) + (cpu.status.bitfield.CarryFlag << 7);  
+
+    // Set status
+    cpu.status.bitfield.CarryFlag = carry;
+    cpu.status.bitfield.ZeroFlag  = val == 0;
+    cpu.status.bitfield.NegativeFlag = (bool)val & 0x80;
+
+    if (op.addressFunction == Core6502::CPU::accumlatorAddr)
+        cpu.registers.A = (uint8_t)val;
+    else
+        cpu.mem[addr] = (uint8_t)val;
+
+}
+
+// Shift Operations
+void Core6502::ASL(Core6502::CPU& cpu, struct Instruction& op) {
+
+    uint16_t val;
+    uint16_t addr;
+
+    // Fetch value and address if applicable
+    if (op.addressFunction == Core6502::CPU::accumlatorAddr)
+        val = (uint8_t)op.addressFunction(cpu);
+    else {
+        addr = op.addressFunction(cpu);
+        val = (uint8_t)cpu.mem[addr];
+    }
+    
+    // Shift left by 1
+    val == val << 1;
+
+    // Set flags
+    cpu.status.bitfield.CarryFlag = val & 0xFF00;
+    cpu.status.bitfield.NegativeFlag = (bool)val & 0xF0;
+    cpu.status.bitfield.ZeroFlag = val == 0;
+
+    // Write back
+    if (op.addressFunction == Core6502::CPU::accumlatorAddr)
+        cpu.registers.A = (uint8_t)val;
+    else
+        cpu.mem[addr] = (uint8_t)val;
+
+}
+void Core6502::LSR(Core6502::CPU& cpu, struct Instruction& op) {
+
+    uint16_t val;
+    uint16_t addr;
+
+    // Fetch value and address if applicable
+    if (op.addressFunction == Core6502::CPU::accumlatorAddr)
+        val = (uint8_t)op.addressFunction(cpu);
+    else {
+        addr = op.addressFunction(cpu);
+        val = (uint8_t)cpu.mem[addr];
+    }
+
+    // Shift left by 1
+    cpu.status.bitfield.CarryFlag = val & 0x1;
+    val == val >> 1;
+
+    // Set flags
+    cpu.status.bitfield.NegativeFlag = (bool)val & 0xF0;
+    cpu.status.bitfield.ZeroFlag = val == 0;
+
+    // Write back
+    if (op.addressFunction == Core6502::CPU::accumlatorAddr)
+        cpu.registers.A = (uint8_t)val;
+    else
+        cpu.mem[addr] = (uint8_t)val;
+
+}
+
+// Compare Operations
+void Core6502::CMP(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch value
+    uint8_t fetched = cpu.fetchFromMemory(op);
+
+    // Compare values
+    uint8_t compVal = cpu.registers.A - fetched;
+
+    // Set flags
+    cpu.status.bitfield.CarryFlag = cpu.registers.A >= fetched;
+    cpu.status.bitfield.ZeroFlag = !compVal;
+    cpu.status.bitfield.NegativeFlag = (bool)(compVal & 0x80);
+
+}
+void Core6502::CPX(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch value
+    uint8_t fetched = cpu.fetchFromMemory(op);
+
+    // Compare values
+    uint8_t compVal = cpu.registers.X - fetched;
+
+    // Set flags
+    cpu.status.bitfield.CarryFlag = cpu.registers.X >= fetched;
+    cpu.status.bitfield.ZeroFlag = !compVal;
+    cpu.status.bitfield.NegativeFlag = (bool)(compVal & 0x80);
+
+}
+void Core6502::CPY(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Fetch value
+    uint8_t fetched = cpu.fetchFromMemory(op);
+
+    // Compare values
+    uint8_t compVal = cpu.registers.Y - fetched;
+
+    // Set flags
+    cpu.status.bitfield.CarryFlag = cpu.registers.Y >= fetched;
+    cpu.status.bitfield.ZeroFlag = !compVal;
+    cpu.status.bitfield.NegativeFlag = (bool)(compVal & 0x80);
+
+}
+
 // INC Operations
 void Core6502::INC(Core6502::CPU& cpu, struct Instruction& op) {
 
@@ -265,6 +424,32 @@ void Core6502::JMP(Core6502::CPU& cpu, struct Instruction& op) {
     cpu.registers.PC = addr;
 
 }
+void Core6502::JSR(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Get absolute address
+    uint16_t addr = op.addressFunction(cpu);
+
+    // Current PC onto stack
+    cpu.mem[0x100 + cpu.registers.SP] = cpu.registers.PC >> 8;
+    cpu.registers.SP--;
+    cpu.mem[0x100 + cpu.registers.SP] = cpu.registers.PC & 0xFF;
+    cpu.registers.SP--;
+
+    // Set PC to fetched address
+    cpu.registers.PC = addr;
+
+}
+void Core6502::RTS(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Pop return address off stack
+    uint16_t addr = (cpu.mem[0x100 + cpu.registers.SP] & 0xFF) << 8;
+    cpu.registers.SP++;
+
+    addr += cpu.mem[0x100 + cpu.registers.SP] & 0xFF;
+
+    // Set PC to addr - 1
+    cpu.registers.PC = addr - 1;
+}
 
  // Branch Instructions
 void Core6502::BCC(Core6502::CPU& cpu, struct Instruction& op) {
@@ -357,14 +542,12 @@ void Core6502::TSX(Core6502::CPU& cpu, struct Instruction& op) {
     cpu.status.bitfield.NegativeFlag = (bool)(cpu.registers.X & 0b10000000);
     cpu.status.bitfield.ZeroFlag     = (bool)(cpu.registers.X == 0);
 }
-
 void Core6502::TXS(Core6502::CPU& cpu, struct Instruction& op) {
     // Copy register x value to stack pointer addr
     uint16_t addr  = cpu.registers.SP;
              addr += (0x01 << 8);
     cpu.mem[addr] = cpu.registers.X;
 }
-
 void Core6502::PHA(Core6502::CPU& cpu, struct Instruction& op) {
 
     // Write accumulator on stack
@@ -376,7 +559,6 @@ void Core6502::PHA(Core6502::CPU& cpu, struct Instruction& op) {
     cpu.registers.SP--;
 
 }
-
 void Core6502::PHP(Core6502::CPU& cpu, struct Instruction& op) {
 
     // Write status on stack
@@ -388,7 +570,6 @@ void Core6502::PHP(Core6502::CPU& cpu, struct Instruction& op) {
     cpu.registers.SP--;
 
 }
-
 void Core6502::PLA(Core6502::CPU& cpu, struct Instruction& op) {
 
     // Increment SP value
@@ -404,7 +585,6 @@ void Core6502::PLA(Core6502::CPU& cpu, struct Instruction& op) {
     cpu.status.bitfield.ZeroFlag     = (bool)(cpu.registers.A == 0);
 
 }
-
 void Core6502::PLP(Core6502::CPU& cpu, struct Instruction& op) {
 
     // Increment SP value
@@ -417,7 +597,6 @@ void Core6502::PLP(Core6502::CPU& cpu, struct Instruction& op) {
     cpu.status.raw = cpu.mem[addr];
 
 }
-
 
 void Core6502::NOP(Core6502::CPU& cpu, struct Instruction& op) {
     // Do nothing...

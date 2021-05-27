@@ -158,6 +158,9 @@ uint16_t Core6502::CPU::relativeAddr(Core6502::CPU &cpu) {
     return addr;
     
 }
+uint16_t Core6502::CPU::accumlatorAddr(Core6502::CPU &cpu) {
+    return cpu.registers.A;
+}
 
 void Core6502::CPU::setupInstructionMap() {
     
@@ -186,13 +189,13 @@ void Core6502::CPU::setupInstructionMap() {
     instructions[0xBC] = (Core6502::Instruction){0xBC, 4, Core6502::LDY , Core6502::CPU::absoluteXAddr};
 
     // STA Instructions
-     instructions[0x85] = (Core6502::Instruction){0x85, 3, Core6502::STA, Core6502::CPU::zeroPageAddr};
-     instructions[0x95] = (Core6502::Instruction){0x95, 4, Core6502::STA, Core6502::CPU::zeroPageXAddr};
-     instructions[0x8D] = (Core6502::Instruction){0x8D, 4, Core6502::STA, Core6502::CPU::absoluteAddr};
-     instructions[0x9D] = (Core6502::Instruction){0x9D, 5, Core6502::STA, Core6502::CPU::absoluteXAddr};
-     instructions[0x99] = (Core6502::Instruction){0x99, 5, Core6502::STA, Core6502::CPU::absoluteYAddr};
-     instructions[0x81] = (Core6502::Instruction){0x81, 6, Core6502::STA, Core6502::CPU::indirectXAddr};
-     instructions[0x91] = (Core6502::Instruction){0x91, 6, Core6502::STA, Core6502::CPU::indirectYAddr};
+    instructions[0x85] = (Core6502::Instruction){0x85, 3, Core6502::STA, Core6502::CPU::zeroPageAddr};
+    instructions[0x95] = (Core6502::Instruction){0x95, 4, Core6502::STA, Core6502::CPU::zeroPageXAddr};
+    instructions[0x8D] = (Core6502::Instruction){0x8D, 4, Core6502::STA, Core6502::CPU::absoluteAddr};
+    instructions[0x9D] = (Core6502::Instruction){0x9D, 5, Core6502::STA, Core6502::CPU::absoluteXAddr};
+    instructions[0x99] = (Core6502::Instruction){0x99, 5, Core6502::STA, Core6502::CPU::absoluteYAddr};
+    instructions[0x81] = (Core6502::Instruction){0x81, 6, Core6502::STA, Core6502::CPU::indirectXAddr};
+    instructions[0x91] = (Core6502::Instruction){0x91, 6, Core6502::STA, Core6502::CPU::indirectYAddr};
 
     // STX Instructions
     instructions[0x86] = (Core6502::Instruction){0x86, 3, Core6502::STX, Core6502::CPU::zeroPageAddr};
@@ -234,9 +237,57 @@ void Core6502::CPU::setupInstructionMap() {
     instructions[0x41] = (Core6502::Instruction){0x41, 6, Core6502::EOR, Core6502::CPU::indirectXAddr};
     instructions[0x51] = (Core6502::Instruction){0x51, 5, Core6502::EOR, Core6502::CPU::indirectYAddr};
 
+    // ROL Instructions
+    instructions[0x2A] = (Core6502::Instruction){0x2A, 2, Core6502::ROL, Core6502::CPU::accumlatorAddr};
+    instructions[0x26] = (Core6502::Instruction){0x26, 5, Core6502::ROL, Core6502::CPU::zeroPageAddr};
+    instructions[0x36] = (Core6502::Instruction){0x36, 6, Core6502::ROL, Core6502::CPU::zeroPageXAddr};
+    instructions[0x2E] = (Core6502::Instruction){0x2E, 6, Core6502::ROL, Core6502::CPU::absoluteAddr};
+    instructions[0x3E] = (Core6502::Instruction){0x3E, 7, Core6502::ROL, Core6502::CPU::absoluteXAddr};
+
+    // ROR Instructions
+    instructions[0x6A] = (Core6502::Instruction){0x6A, 2, Core6502::ROR, Core6502::CPU::accumlatorAddr};
+    instructions[0x66] = (Core6502::Instruction){0x66, 5, Core6502::ROR, Core6502::CPU::zeroPageAddr};
+    instructions[0x76] = (Core6502::Instruction){0x76, 6, Core6502::ROR, Core6502::CPU::zeroPageXAddr};
+    instructions[0x6E] = (Core6502::Instruction){0x6E, 6, Core6502::ROR, Core6502::CPU::absoluteAddr};
+    instructions[0x7E] = (Core6502::Instruction){0x7E, 7, Core6502::ROR, Core6502::CPU::absoluteXAddr};
+
+    // ASL Instructions
+    instructions[0x0A] = (Core6502::Instruction){0x0A, 2, Core6502::ASL, Core6502::CPU::accumlatorAddr};
+    instructions[0x06] = (Core6502::Instruction){0x06, 5, Core6502::ASL, Core6502::CPU::zeroPageAddr};
+    instructions[0x16] = (Core6502::Instruction){0x16, 6, Core6502::ASL, Core6502::CPU::zeroPageXAddr};
+    instructions[0x0E] = (Core6502::Instruction){0x0E, 6, Core6502::ASL, Core6502::CPU::absoluteAddr};
+    instructions[0x1E] = (Core6502::Instruction){0x1E, 7, Core6502::ASL, Core6502::CPU::absoluteXAddr};
+
+    // LSR Instructions
+    instructions[0x4A] = (Core6502::Instruction){0x4A, 2, Core6502::LSR, Core6502::CPU::accumlatorAddr};
+    instructions[0x46] = (Core6502::Instruction){0x46, 5, Core6502::LSR, Core6502::CPU::zeroPageAddr};
+    instructions[0x56] = (Core6502::Instruction){0x56, 6, Core6502::LSR, Core6502::CPU::zeroPageXAddr};
+    instructions[0x4E] = (Core6502::Instruction){0x4E, 6, Core6502::LSR, Core6502::CPU::absoluteAddr};
+    instructions[0x5E] = (Core6502::Instruction){0x5E, 7, Core6502::LSR, Core6502::CPU::absoluteXAddr};
+
     // BIT Instructions
     instructions[0x24] = (Core6502::Instruction){0x24, 3, Core6502::BIT, Core6502::CPU::zeroPageAddr};
     instructions[0x2C] = (Core6502::Instruction){0x2C, 4, Core6502::BIT, Core6502::CPU::absoluteAddr};
+
+    // CMP Instructions
+    instructions[0xC9] = (Core6502::Instruction){0xC9, 2, Core6502::CMP, Core6502::CPU::immediate};
+    instructions[0xC5] = (Core6502::Instruction){0xC5, 3, Core6502::CMP, Core6502::CPU::zeroPageAddr};
+    instructions[0xD5] = (Core6502::Instruction){0xD5, 4, Core6502::CMP, Core6502::CPU::zeroPageXAddr};
+    instructions[0xCD] = (Core6502::Instruction){0xCD, 4, Core6502::CMP, Core6502::CPU::absoluteAddr};
+    instructions[0xDD] = (Core6502::Instruction){0xDD, 4, Core6502::CMP, Core6502::CPU::absoluteXAddr};
+    instructions[0xD9] = (Core6502::Instruction){0xD9, 4, Core6502::CMP, Core6502::CPU::absoluteYAddr};
+    instructions[0xC1] = (Core6502::Instruction){0xC1, 6, Core6502::CMP, Core6502::CPU::indirectXAddr};
+    instructions[0xD1] = (Core6502::Instruction){0xD1, 5, Core6502::CMP, Core6502::CPU::indirectYAddr};
+
+    // CPX Instructions
+    instructions[0xE0] = (Core6502::Instruction){0xE0, 2, Core6502::CPX, Core6502::CPU::immediate};
+    instructions[0xE4] = (Core6502::Instruction){0xE4, 3, Core6502::CPX, Core6502::CPU::zeroPageAddr};
+    instructions[0xEC] = (Core6502::Instruction){0xEC, 4, Core6502::CPX, Core6502::CPU::absoluteAddr};
+
+    // CPY Instructions
+    instructions[0xC0] = (Core6502::Instruction){0xC0, 2, Core6502::CPY, Core6502::CPU::immediate};
+    instructions[0xC4] = (Core6502::Instruction){0xC4, 3, Core6502::CPY, Core6502::CPU::zeroPageAddr};
+    instructions[0xCC] = (Core6502::Instruction){0xCC, 4, Core6502::CPY, Core6502::CPU::absoluteAddr};
 
     // INC Instructions
     instructions[0xE6] = (Core6502::Instruction){0xE6, 5, Core6502::INC, Core6502::CPU::zeroPageAddr};
@@ -271,7 +322,9 @@ void Core6502::CPU::setupInstructionMap() {
     // JMP Instructions
     instructions[0x4C] = (Core6502::Instruction){0x4C, 3, Core6502::JMP, Core6502::CPU::absoluteAddr};
     instructions[0x6C] = (Core6502::Instruction){0x6C, 5, Core6502::JMP, Core6502::CPU::indirectAddr}; 
-    
+    instructions[0x20] = (Core6502::Instruction){0x20, 6, Core6502::JSR, Core6502::CPU::absoluteAddr};
+    instructions[0x60] = (Core6502::Instruction){0x60, 6, Core6502::RTS};
+
     // Branch Instructions
     instructions[0x90] = (Core6502::Instruction){0x90, 2, Core6502::BCC, Core6502::CPU::relativeAddr};
     instructions[0xB0] = (Core6502::Instruction){0xB0, 2, Core6502::BCS, Core6502::CPU::relativeAddr};

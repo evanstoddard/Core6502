@@ -76,7 +76,8 @@ namespace Core6502{
         static uint16_t indirectYAddr(Core6502::CPU&);
         static uint16_t indirectAddr(Core6502::CPU&);
         static uint16_t relativeAddr(Core6502::CPU&);
-
+        static uint16_t accumlatorAddr(Core6502::CPU&);
+        
     private:
         void setupInstructionMap();
  

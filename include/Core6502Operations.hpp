@@ -38,6 +38,17 @@ namespace Core6502 {
     void EOR(Core6502::CPU&, Core6502::Instruction&);
     void BIT(Core6502::CPU&, Core6502::Instruction&);
 
+    // Shift & Rotate
+    void ROL(Core6502::CPU&, Core6502::Instruction&);
+    void ROR(Core6502::CPU&, Core6502::Instruction&);
+    void ASL(Core6502::CPU&, Core6502::Instruction&);
+    void LSR(Core6502::CPU&, Core6502::Instruction&);
+
+    // Compare Instructions
+    void CMP(Core6502::CPU&, Core6502::Instruction&);
+    void CPX(Core6502::CPU&, Core6502::Instruction&);
+    void CPY(Core6502::CPU&, Core6502::Instruction&);
+
     // Increment Instructions
     void INC(Core6502::CPU&, Core6502::Instruction&);
     void INX(Core6502::CPU&, Core6502::Instruction&);
@@ -56,7 +67,9 @@ namespace Core6502 {
 
     // JMP Instructions
     void JMP(Core6502::CPU&, Core6502::Instruction&);
-   
+    void JSR(Core6502::CPU&, Core6502::Instruction&);
+    void RTS(Core6502::CPU&, Core6502::Instruction&);
+
     // Branch Instructions
     void BCC(Core6502::CPU&, Core6502::Instruction&);
     void BCS(Core6502::CPU&, Core6502::Instruction&);

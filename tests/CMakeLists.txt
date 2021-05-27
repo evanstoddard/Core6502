@@ -48,7 +48,13 @@ set (TEST_SOURCES
     "Core6502Tests_Decrement.cpp"
     "Core6502Tests_Jump.cpp"
     "Core6502Tests_Branch.cpp"
+    "Core6502Tests_CMP.cpp"
+    "Core6502Tests_CPX.cpp"
+    "Core6502Tests_CPY.cpp"
 )
+
+SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+SET(GCC_COVERAGE_LINK_FLAGS    "-lgcov")
 
 source_group("src" FILES ${TEST_SOURCES})
 add_executable(Core6502Tests ${TEST_SOURCES})
