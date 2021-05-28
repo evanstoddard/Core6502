@@ -413,7 +413,6 @@ void Core6502::BIT(Core6502::CPU& cpu, struct Instruction& op) {
     cpu.status.bitfield.ZeroFlag     = (bool)(val == 0);
 }
 
-
 // JMP Operations
 void Core6502::JMP(Core6502::CPU& cpu, struct Instruction& op) {
 
@@ -442,13 +441,14 @@ void Core6502::JSR(Core6502::CPU& cpu, struct Instruction& op) {
 void Core6502::RTS(Core6502::CPU& cpu, struct Instruction& op) {
 
     // Pop return address off stack
-    uint16_t addr = (cpu.mem[0x100 + cpu.registers.SP] & 0xFF) << 8;
+    uint16_t addr = (cpu.mem[0x100 + cpu.registers.SP]) << 8;
     cpu.registers.SP++;
 
     addr += cpu.mem[0x100 + cpu.registers.SP] & 0xFF;
-
+    cpu.registers.SP++;
+    
     // Set PC to addr - 1
-    cpu.registers.PC = addr - 1;
+    cpu.registers.PC = addr;
 }
 
  // Branch Instructions

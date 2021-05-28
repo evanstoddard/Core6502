@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "Core6502.hpp"
-
+#include <iomanip>
 class Core6502Tests_Jump : public testing::Test
 {
 public:
@@ -90,4 +90,58 @@ TEST_F(Core6502Tests_Jump, Test_JMP_Indirect_Bug) {
 
 	// Check test case
 	EXPECT_EQ(cpu->registers.PC, addr);
+}
+
+// JSR
+TEST_F(Core6502Tests_Jump, Test_JSR_IMPL) {
+
+	// Test Values
+	uint8_t opCode = 0x20;
+	uint16_t pcVal = 0xCAFC;
+	uint8_t addrUB = 0xBA;
+	uint8_t addrLB = 0xBE;
+	uint16_t addr = (addrUB << 8) | addrLB;
+	uint8_t SP = 0x41;
+	
+	// Set registers
+	cpu->registers.SP = SP;
+	cpu->registers.PC = pcVal;
+	cpu->mem[pcVal] = addrLB;
+	cpu->mem[pcVal + 1] = addrUB;
+
+	// Perform Instruction
+	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
+
+	// Check values
+	EXPECT_EQ(cpu->registers.PC, addr);
+	EXPECT_EQ(cpu->registers.SP, SP - 2);
+	EXPECT_EQ(cpu->mem[0x100 + SP], ((pcVal + 2) >> 8) & 0xFF);
+	EXPECT_EQ(cpu->mem[0x100 + SP - 1], ((pcVal + 2) & 0xFF));
+
+}
+
+// RTS
+TEST_F(Core6502Tests_Jump, Test_RTS_IMPL) {
+
+	// Test Values
+	uint8_t opCode = 0x60;
+	uint16_t pcVal = 0xBABE;
+	uint8_t addrUB = 0xCA;
+	uint8_t addrLB = 0xFE;
+	uint16_t addr = (addrUB << 8) | addrLB;
+	uint8_t SP = 0x39;
+	
+	// Set registers
+	cpu->registers.SP = SP;
+	cpu->registers.PC = pcVal;
+	cpu->mem[0x100 + SP] = addrUB;
+	cpu->mem[0x100 + SP + 1] = addrLB;
+
+	// Perform Instruction
+	cpu->instructions[opCode].instructionFunction(*cpu, cpu->instructions[opCode]);
+
+	// Check values
+	EXPECT_EQ(cpu->registers.PC, addr);
+	EXPECT_EQ(cpu->registers.SP, SP + 2);
+
 }
