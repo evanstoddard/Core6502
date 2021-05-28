@@ -178,12 +178,12 @@ void Core6502::ROL(Core6502::CPU& cpu, struct Instruction& op) {
     }
 
     // Capture temp carry flag and shift values
-    val = (val << 1) + cpu.status.bitfield.CarryFlag;  
+    val = (val << 1) | cpu.status.bitfield.CarryFlag;  
 
     // Set status
-    cpu.status.bitfield.CarryFlag = val & 0xFF00;
-    cpu.status.bitfield.ZeroFlag  = val == 0;
-    cpu.status.bitfield.NegativeFlag = (bool)val & 0x80;
+    cpu.status.bitfield.CarryFlag = (bool)(val & 0xFF00);
+    cpu.status.bitfield.ZeroFlag  = !(uint8_t)val;
+    cpu.status.bitfield.NegativeFlag = (bool)(val & 0x80);
 
     if (op.addressFunction == Core6502::CPU::accumlatorAddr)
         cpu.registers.A = (uint8_t)val;
@@ -205,13 +205,13 @@ void Core6502::ROR(Core6502::CPU& cpu, struct Instruction& op) {
     }
 
     // Capture temp carry flag and shift values
-    bool carry = val & 0x1;
+    bool carry = (bool)(val & 0x1);
     val = (val >> 1) + (cpu.status.bitfield.CarryFlag << 7);  
 
     // Set status
     cpu.status.bitfield.CarryFlag = carry;
-    cpu.status.bitfield.ZeroFlag  = val == 0;
-    cpu.status.bitfield.NegativeFlag = (bool)val & 0x80;
+    cpu.status.bitfield.ZeroFlag  = !(uint8_t)val;
+    cpu.status.bitfield.NegativeFlag = (bool)(val & 0x80);
 
     if (op.addressFunction == Core6502::CPU::accumlatorAddr)
         cpu.registers.A = (uint8_t)val;
