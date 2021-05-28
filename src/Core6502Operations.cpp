@@ -235,12 +235,12 @@ void Core6502::ASL(Core6502::CPU& cpu, struct Instruction& op) {
     }
     
     // Shift left by 1
-    val == val << 1;
+    val = val << 1;
 
     // Set flags
-    cpu.status.bitfield.CarryFlag = val & 0xFF00;
+    cpu.status.bitfield.CarryFlag = (bool)(val & 0xFF00);
     cpu.status.bitfield.NegativeFlag = (bool)val & 0xF0;
-    cpu.status.bitfield.ZeroFlag = val == 0;
+    cpu.status.bitfield.ZeroFlag = ((uint8_t)val == 0);
 
     // Write back
     if (op.addressFunction == Core6502::CPU::accumlatorAddr)
@@ -264,11 +264,11 @@ void Core6502::LSR(Core6502::CPU& cpu, struct Instruction& op) {
 
     // Shift left by 1
     cpu.status.bitfield.CarryFlag = val & 0x1;
-    val == val >> 1;
+    val = val >> 1;
 
     // Set flags
-    cpu.status.bitfield.NegativeFlag = (bool)val & 0xF0;
-    cpu.status.bitfield.ZeroFlag = val == 0;
+    cpu.status.bitfield.NegativeFlag = (bool)(val & 0x80);
+    cpu.status.bitfield.ZeroFlag = !val;
 
     // Write back
     if (op.addressFunction == Core6502::CPU::accumlatorAddr)
