@@ -55,6 +55,7 @@ set (TEST_SOURCES
     "Core6502Tests_ASL.cpp"
     "Core6502Tests_ROL.cpp"
     "Core6502Tests_ROR.cpp"
+    "Core6502Tests_ADC.cpp"
 )
 
 SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")

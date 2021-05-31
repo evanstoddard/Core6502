@@ -59,6 +59,10 @@ namespace Core6502 {
     void DEX(Core6502::CPU&, Core6502::Instruction&);
     void DEY(Core6502::CPU&, Core6502::Instruction&);
     
+    // Arithmatic Instructions
+    void ADC(Core6502::CPU&, Core6502::Instruction&);
+    void SBC(Core6502::CPU&, Core6502::Instruction&);
+
     // Transfer Instructions
     void TAX(Core6502::CPU&, Core6502::Instruction&);
     void TAY(Core6502::CPU&, Core6502::Instruction&);
