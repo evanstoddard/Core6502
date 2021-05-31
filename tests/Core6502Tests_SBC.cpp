@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "Core6502.hpp"
 
-class Core6502Tests_ADC : public testing::Test
+class Core6502Tests_SBC : public testing::Test
 {
 public:
     uint8_t mem[0xFFFF];
@@ -19,15 +19,15 @@ public:
 	}
 };
 
-TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_POSITIVE) {
+TEST_F(Core6502Tests_SBC, SBC_IMMEDIATE_POSITIVE) {
     
 	// Test values
-	uint8_t opCode = 0x69;
+	uint8_t opCode = 0xE9;
 	uint16_t pcVal = 0x4000;
-	uint8_t aVal = 0x10;
-	uint8_t testVal = 0x20;
+	uint8_t aVal = 0x20;
+	uint8_t testVal = 0x10;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 
 	// Set operations
 	cpu->registers.PC = pcVal;
@@ -40,26 +40,26 @@ TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_POSITIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 
 }
-TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_NEGATIVE) {
-    
+TEST_F(Core6502Tests_SBC, SBC_IMMEDIATE_NEGATIVE) {
+ 
 	// Test values
-	uint8_t opCode = 0x69;
+	uint8_t opCode = 0xE9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x85;
 	uint8_t testVal = 0x81;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 
 	// Set operations
 	cpu->registers.PC = pcVal;
@@ -72,25 +72,25 @@ TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_NEGATIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_POSITIVE_WITH_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_IMMEDIATE_POSITIVE_WITH_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x69;
+	uint8_t opCode = 0xE9;
 	uint16_t pcVal = 0x4000;
-	uint8_t aVal = 0x2;
+	uint8_t aVal = 0x5;
 	uint8_t testVal = 0x3;
 	uint8_t carryVal = 0x1;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 
 	// Set operations
 	cpu->registers.PC = pcVal;
@@ -103,25 +103,25 @@ TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_POSITIVE_WITH_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_NEGATIVE_WITH_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_IMMEDIATE_NEGATIVE_WITH_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x69;
+	uint8_t opCode = 0xE9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x82;
 	uint8_t testVal = 0x83;
 	uint8_t carryVal = 0x1;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 
 	// Set operations
 	cpu->registers.PC = pcVal;
@@ -134,25 +134,25 @@ TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_NEGATIVE_WITH_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_POSITIVE_NEGATIVE) {
+TEST_F(Core6502Tests_SBC, SBC_IMMEDIATE_POSITIVE_NEGATIVE) {
     
 	// Test values
-	uint8_t opCode = 0x69;
+	uint8_t opCode = 0xE9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x40;
 	uint8_t testVal = 0x80;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 
 	// Set operations
 	cpu->registers.PC = pcVal;
@@ -165,25 +165,25 @@ TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_POSITIVE_NEGATIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_NEGATIVE_POSITIVE) {
+TEST_F(Core6502Tests_SBC, SBC_IMMEDIATE_NEGATIVE_POSITIVE) {
     
 	// Test values
-	uint8_t opCode = 0x69;
+	uint8_t opCode = 0xE9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x80;
 	uint8_t testVal = 0x40;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 
 	// Set operations
 	cpu->registers.PC = pcVal;
@@ -196,25 +196,25 @@ TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_NEGATIVE_POSITIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_POSITIVE_OVERFLOW) {
+TEST_F(Core6502Tests_SBC, SBC_IMMEDIATE_POSITIVE_OVERFLOW) {
     
 	// Test values
-	uint8_t opCode = 0x69;
+	uint8_t opCode = 0xE9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x7F;
 	uint8_t testVal = 0x1;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 
 	// Set operations
 	cpu->registers.PC = pcVal;
@@ -227,25 +227,25 @@ TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_POSITIVE_OVERFLOW) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_NEGATIVE_OVERFLOW) {
+TEST_F(Core6502Tests_SBC, SBC_IMMEDIATE_NEGATIVE_OVERFLOW) {
     
 	// Test values
-	uint8_t opCode = 0x69;
+	uint8_t opCode = 0xE9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0xFF;
 	uint8_t testVal = 0x80;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 
 	// Set operations
 	cpu->registers.PC = pcVal;
@@ -258,25 +258,25 @@ TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_NEGATIVE_OVERFLOW) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_IMMEDIATE_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x69;
+	uint8_t opCode = 0xE9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0xFF;
 	uint8_t testVal = 0x1;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 
 	// Set operations
 	cpu->registers.PC = pcVal;
@@ -289,26 +289,26 @@ TEST_F(Core6502Tests_ADC, ADC_IMMEDIATE_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
 
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_POSITIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_POSITIVE) {
     
 	// Test values
-	uint8_t opCode = 0x65;
+	uint8_t opCode = 0xE5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x10;
 	uint8_t testVal = 0x20;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -325,26 +325,26 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_POSITIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_NEGATIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_NEGATIVE) {
     
 	// Test values
-	uint8_t opCode = 0x65;
+	uint8_t opCode = 0xE5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x85;
 	uint8_t testVal = 0x81;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -361,25 +361,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_NEGATIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_POSITIVE_WITH_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_POSITIVE_WITH_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x65;
+	uint8_t opCode = 0xE5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x2;
 	uint8_t testVal = 0x3;
 	uint8_t carryVal = 0x1;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -396,25 +396,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_POSITIVE_WITH_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_NEGATIVE_WITH_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_NEGATIVE_WITH_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x65;
+	uint8_t opCode = 0xE5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x82;
 	uint8_t testVal = 0x83;
 	uint8_t carryVal = 0x1;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -431,25 +431,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_NEGATIVE_WITH_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_POSITIVE_NEGATIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_POSITIVE_NEGATIVE) {
     
 	// Test values
-	uint8_t opCode = 0x65;
+	uint8_t opCode = 0xE5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x40;
 	uint8_t testVal = 0x80;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -466,25 +466,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_POSITIVE_NEGATIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_NEGATIVE_POSITIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_NEGATIVE_POSITIVE) {
     
 	// Test values
-	uint8_t opCode = 0x65;
+	uint8_t opCode = 0xE5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x80;
 	uint8_t testVal = 0x40;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -501,25 +501,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_NEGATIVE_POSITIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_POSITIVE_OVERFLOW) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_POSITIVE_OVERFLOW) {
     
 	// Test values
-	uint8_t opCode = 0x65;
+	uint8_t opCode = 0xE5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x7F;
 	uint8_t testVal = 0x1;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -536,25 +536,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_POSITIVE_OVERFLOW) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_NEGATIVE_OVERFLOW) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_NEGATIVE_OVERFLOW) {
     
 	// Test values
-	uint8_t opCode = 0x65;
+	uint8_t opCode = 0xE5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0xFF;
 	uint8_t testVal = 0x80;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -571,25 +571,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_NEGATIVE_OVERFLOW) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x65;
+	uint8_t opCode = 0xE5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0xFF;
 	uint8_t testVal = 0x1;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -606,26 +606,26 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
 
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_POSITIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_X_POSITIVE) {
     
 	// Test values
-	uint8_t opCode = 0x75;
+	uint8_t opCode = 0xF5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x10;
 	uint8_t testVal = 0x20;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -643,26 +643,26 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_POSITIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_NEGATIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_X_NEGATIVE) {
     
 	// Test values
-	uint8_t opCode = 0x75;
+	uint8_t opCode = 0xF5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x85;
 	uint8_t testVal = 0x81;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -680,25 +680,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_NEGATIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_POSITIVE_WITH_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_X_POSITIVE_WITH_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x75;
+	uint8_t opCode = 0xF5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x2;
 	uint8_t testVal = 0x3;
 	uint8_t carryVal = 0x1;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -716,25 +716,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_POSITIVE_WITH_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_NEGATIVE_WITH_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_X_NEGATIVE_WITH_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x75;
+	uint8_t opCode = 0xF5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x82;
 	uint8_t testVal = 0x83;
 	uint8_t carryVal = 0x1;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -752,25 +752,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_NEGATIVE_WITH_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_POSITIVE_NEGATIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_X_POSITIVE_NEGATIVE) {
     
 	// Test values
-	uint8_t opCode = 0x75;
+	uint8_t opCode = 0xF5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x40;
 	uint8_t testVal = 0x80;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -788,25 +788,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_POSITIVE_NEGATIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_NEGATIVE_POSITIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_X_NEGATIVE_POSITIVE) {
     
 	// Test values
-	uint8_t opCode = 0x75;
+	uint8_t opCode = 0xF5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x80;
 	uint8_t testVal = 0x40;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -824,25 +824,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_NEGATIVE_POSITIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_POSITIVE_OVERFLOW) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_X_POSITIVE_OVERFLOW) {
     
 	// Test values
-	uint8_t opCode = 0x75;
+	uint8_t opCode = 0xF5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x7F;
 	uint8_t testVal = 0x1;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -860,25 +860,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_POSITIVE_OVERFLOW) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_NEGATIVE_OVERFLOW) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_X_NEGATIVE_OVERFLOW) {
     
 	// Test values
-	uint8_t opCode = 0x75;
+	uint8_t opCode = 0xF5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0xFF;
 	uint8_t testVal = 0x80;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -896,25 +896,25 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_NEGATIVE_OVERFLOW) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ZERO_PAGE_X_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x75;
+	uint8_t opCode = 0xF5;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0xFF;
 	uint8_t testVal = 0x1;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint16_t addr = 0x40;
@@ -932,26 +932,26 @@ TEST_F(Core6502Tests_ADC, ADC_ZERO_PAGE_X_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
 
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_POSITIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_POSITIVE) {
     
 	// Test values
-	uint8_t opCode = 0x6D;
+	uint8_t opCode = 0xED;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x10;
 	uint8_t testVal = 0x20;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -972,26 +972,26 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_POSITIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_NEGATIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_NEGATIVE) {
     
 	// Test values
-	uint8_t opCode = 0x6D;
+	uint8_t opCode = 0xED;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x85;
 	uint8_t testVal = 0x81;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1012,25 +1012,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_NEGATIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_POSITIVE_WITH_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_POSITIVE_WITH_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x6D;
+	uint8_t opCode = 0xED;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x2;
 	uint8_t testVal = 0x3;
 	uint8_t carryVal = 0x1;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1051,25 +1051,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_POSITIVE_WITH_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_NEGATIVE_WITH_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_NEGATIVE_WITH_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x6D;
+	uint8_t opCode = 0xED;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x82;
 	uint8_t testVal = 0x83;
 	uint8_t carryVal = 0x1;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x00;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1090,25 +1090,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_NEGATIVE_WITH_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_POSITIVE_NEGATIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_POSITIVE_NEGATIVE) {
     
 	// Test values
-	uint8_t opCode = 0x6D;
+	uint8_t opCode = 0xED;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x40;
 	uint8_t testVal = 0x80;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1129,25 +1129,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_POSITIVE_NEGATIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_NEGATIVE_POSITIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_NEGATIVE_POSITIVE) {
     
 	// Test values
-	uint8_t opCode = 0x6D;
+	uint8_t opCode = 0xED;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x80;
 	uint8_t testVal = 0x40;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1168,25 +1168,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_NEGATIVE_POSITIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_POSITIVE_OVERFLOW) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_POSITIVE_OVERFLOW) {
     
 	// Test values
-	uint8_t opCode = 0x6D;
+	uint8_t opCode = 0xED;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x7F;
 	uint8_t testVal = 0x1;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1207,25 +1207,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_POSITIVE_OVERFLOW) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_NEGATIVE_OVERFLOW) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_NEGATIVE_OVERFLOW) {
     
 	// Test values
-	uint8_t opCode = 0x6D;
+	uint8_t opCode = 0xED;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0xFF;
 	uint8_t testVal = 0x80;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1246,25 +1246,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_NEGATIVE_OVERFLOW) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x6D;
+	uint8_t opCode = 0xED;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0xFF;
 	uint8_t testVal = 0x1;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1285,26 +1285,26 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
 
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_POSITIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_X_POSITIVE) {
     
 	// Test values
-	uint8_t opCode = 0x7D;
+	uint8_t opCode = 0xFD;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x10;
 	uint8_t testVal = 0x20;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1325,26 +1325,26 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_POSITIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_NEGATIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_X_NEGATIVE) {
     
 	// Test values
-	uint8_t opCode = 0x7D;
+	uint8_t opCode = 0xFD;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x85;
 	uint8_t testVal = 0x81;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1365,25 +1365,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_NEGATIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_POSITIVE_WITH_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_X_POSITIVE_WITH_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x7D;
+	uint8_t opCode = 0xFD;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x2;
 	uint8_t testVal = 0x3;
 	uint8_t carryVal = 0x1;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1404,25 +1404,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_POSITIVE_WITH_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_NEGATIVE_WITH_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_X_NEGATIVE_WITH_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x7D;
+	uint8_t opCode = 0xFD;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x82;
 	uint8_t testVal = 0x83;
 	uint8_t carryVal = 0x1;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1443,25 +1443,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_NEGATIVE_WITH_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_POSITIVE_NEGATIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_X_POSITIVE_NEGATIVE) {
     
 	// Test values
-	uint8_t opCode = 0x7D;
+	uint8_t opCode = 0xFD;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x40;
 	uint8_t testVal = 0x80;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1482,25 +1482,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_POSITIVE_NEGATIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_NEGATIVE_POSITIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_X_NEGATIVE_POSITIVE) {
     
 	// Test values
-	uint8_t opCode = 0x7D;
+	uint8_t opCode = 0xFD;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x80;
 	uint8_t testVal = 0x40;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1521,25 +1521,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_NEGATIVE_POSITIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_POSITIVE_OVERFLOW) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_X_POSITIVE_OVERFLOW) {
     
 	// Test values
-	uint8_t opCode = 0x7D;
+	uint8_t opCode = 0xFD;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x7F;
 	uint8_t testVal = 0x1;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1560,25 +1560,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_POSITIVE_OVERFLOW) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_NEGATIVE_OVERFLOW) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_X_NEGATIVE_OVERFLOW) {
     
 	// Test values
-	uint8_t opCode = 0x7D;
+	uint8_t opCode = 0xFD;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0xFF;
 	uint8_t testVal = 0x80;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1599,25 +1599,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_NEGATIVE_OVERFLOW) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_X_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x7D;
+	uint8_t opCode = 0xFD;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0xFF;
 	uint8_t testVal = 0x1;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x10;
 	uint8_t yVal = 0x0;
 	uint8_t addrUB = 0xCA;
@@ -1638,26 +1638,26 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_X_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
 
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_POSITIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_Y_POSITIVE) {
     
 	// Test values
-	uint8_t opCode = 0x79;
+	uint8_t opCode = 0xF9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x10;
 	uint8_t testVal = 0x20;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x10;
 	uint8_t addrUB = 0xCA;
@@ -1678,26 +1678,26 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_POSITIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_NEGATIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_Y_NEGATIVE) {
     
 	// Test values
-	uint8_t opCode = 0x79;
+	uint8_t opCode = 0xF9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x85;
 	uint8_t testVal = 0x81;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x10;
 	uint8_t addrUB = 0xCA;
@@ -1718,25 +1718,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_NEGATIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_POSITIVE_WITH_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_Y_POSITIVE_WITH_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x79;
+	uint8_t opCode = 0xF9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x2;
 	uint8_t testVal = 0x3;
 	uint8_t carryVal = 0x1;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x10;
 	uint8_t addrUB = 0xCA;
@@ -1757,25 +1757,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_POSITIVE_WITH_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_NEGATIVE_WITH_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_Y_NEGATIVE_WITH_CARRY) {
     
 	// Test values
-	uint8_t opCode = 0x79;
+	uint8_t opCode = 0xF9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x82;
 	uint8_t testVal = 0x83;
 	uint8_t carryVal = 0x1;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x10;
 	uint8_t addrUB = 0xCA;
@@ -1796,25 +1796,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_NEGATIVE_WITH_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_POSITIVE_NEGATIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_Y_POSITIVE_NEGATIVE) {
     
 	// Test values
-	uint8_t opCode = 0x79;
+	uint8_t opCode = 0xF9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x40;
 	uint8_t testVal = 0x80;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x10;
 	uint8_t addrUB = 0xCA;
@@ -1835,25 +1835,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_POSITIVE_NEGATIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_NEGATIVE_POSITIVE) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_Y_NEGATIVE_POSITIVE) {
     
 	// Test values
-	uint8_t opCode = 0x79;
+	uint8_t opCode = 0xF9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x80;
 	uint8_t testVal = 0x40;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x10;
 	uint8_t addrUB = 0xCA;
@@ -1874,25 +1874,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_NEGATIVE_POSITIVE) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_POSITIVE_OVERFLOW) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_Y_POSITIVE_OVERFLOW) {
     
 	// Test values
-	uint8_t opCode = 0x79;
+	uint8_t opCode = 0xF9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0x7F;
 	uint8_t testVal = 0x1;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x10;
 	uint8_t addrUB = 0xCA;
@@ -1913,25 +1913,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_POSITIVE_OVERFLOW) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_NEGATIVE_OVERFLOW) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_Y_NEGATIVE_OVERFLOW) {
     
 	// Test values
-	uint8_t opCode = 0x79;
+	uint8_t opCode = 0xF9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0xFF;
 	uint8_t testVal = 0x80;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x10;
 	uint8_t addrUB = 0xCA;
@@ -1952,25 +1952,25 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_NEGATIVE_OVERFLOW) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }
-TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_CARRY) {
+TEST_F(Core6502Tests_SBC, SBC_ABSOLUTE_Y_CARRY) {
     
-	// Test values
-	uint8_t opCode = 0x79;
+	//Test values
+	uint8_t opCode = 0xF9;
 	uint16_t pcVal = 0x4000;
 	uint8_t aVal = 0xFF;
 	uint8_t testVal = 0x1;
 	uint8_t carryVal = 0x0;
-	uint16_t addedVal = aVal + testVal + carryVal;
+	uint16_t subVal = aVal - testVal - carryVal;
 	uint8_t xVal = 0x0;
 	uint8_t yVal = 0x10;
 	uint8_t addrUB = 0xCA;
@@ -1991,13 +1991,13 @@ TEST_F(Core6502Tests_ADC, ADC_ABSOLUTE_Y_CARRY) {
 
 	// Overflow Check
 	bool overflow = false;
-	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(addedVal & 0x80));
-    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (addedVal & 0x80));
+	overflow =  (bool)((aVal & 0x80) & (testVal & 0x80) & ~(subVal & 0x80));
+    overflow |= (bool)(~(aVal & 0x80) & ~(testVal & 0x80) & (subVal & 0x80));
 
 	// Check values
-	EXPECT_EQ(cpu->registers.A, (uint8_t)addedVal);
-	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(addedVal) > 255));
-	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(addedVal) == 0x0));
-	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(addedVal) & 0x80));
+	EXPECT_EQ(cpu->registers.A, (uint8_t)(subVal));
+	EXPECT_EQ(cpu->status.bitfield.CarryFlag, (bool)((uint16_t)(subVal) > 255));
+	EXPECT_EQ(cpu->status.bitfield.ZeroFlag, (bool)((uint8_t)(subVal) == 0x0));
+	EXPECT_EQ(cpu->status.bitfield.NegativeFlag, (bool)((uint8_t)(subVal) & 0x80));
 	EXPECT_EQ(cpu->status.bitfield.OverflowFlag, overflow);
 }

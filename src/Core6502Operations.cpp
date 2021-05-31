@@ -421,10 +421,27 @@ void Core6502::ADC(Core6502::CPU& cpu, struct Instruction& op) {
 
 }
 
-// // SBC Operation
-// void Core6502::SBC(Core6502::CPU& cpu, struct Instruction& op) {
+// SBC Operation
+void Core6502::SBC(Core6502::CPU& cpu, struct Instruction& op) {
 
-// }
+    // Fetch value & invert value
+    uint8_t val = cpu.fetchFromMemory(op);
+
+    // Perform calculation
+    uint16_t tmp = cpu.registers.A - val - cpu.status.bitfield.CarryFlag;
+    
+    // Set some flags
+    cpu.status.bitfield.ZeroFlag = (bool)((tmp & 0xFF) == 0);
+    cpu.status.bitfield.CarryFlag = (bool)((tmp > 0xFF));
+    
+    cpu.status.bitfield.OverflowFlag =  (bool)((cpu.registers.A & 0x80) & (val & 0x80) & ~(tmp & 0x80));
+    cpu.status.bitfield.OverflowFlag |= (bool)(~(cpu.registers.A & 0x80) & ~(val & 0x80) & (tmp & 0x80));
+    cpu.status.bitfield.NegativeFlag = (bool)(tmp & 0x80);
+
+    // Update accumulator
+    cpu.registers.A = (uint8_t)tmp;
+
+}
 
 // BIT Operations
 void Core6502::BIT(Core6502::CPU& cpu, struct Instruction& op) {
