@@ -49,6 +49,9 @@ void Core6502::CPU::reset() {
     uint16_t effective_addr  = fetchByte() | (fetchByte() << 8);
     registers.PC = effective_addr;
 
+    // Reset internals
+    cyclesRemaining = 0;
+
 }
 
 uint8_t Core6502::CPU::fetchByte() {
@@ -68,6 +71,71 @@ uint8_t Core6502::CPU::fetchFromMemory(Core6502::Instruction &instruction) {
         return mem[instruction.addressFunction(*this)];
     else
         return instruction.addressFunction(*this);
+
+}
+
+void Core6502::CPU::clock() {
+
+    // If cycles remaining is zero, fetch opcode and execute
+    if (!cyclesRemaining) {
+        
+        // Set instruction and remaining cycles
+        Core6502::Instruction & inst = instructions[fetchByte()];
+        cyclesRemaining = inst.cycles - 1;
+
+        // Execute instruction
+        inst.instructionFunction(*this, inst);
+
+    } else {
+
+        // Decrement cycles remaining
+        cyclesRemaining--;
+    }
+
+}
+
+void Core6502::CPU::irq() {
+
+    // Interrupt if enabled
+    if (!status.bitfield.InterruptDisable) {
+        // Push PC onto stack
+        mem[registers.SP] = (uint8_t)(registers.PC >> 8);
+        registers.SP--;
+        mem[registers.SP] = (uint8_t)(registers.PC & 0xFF);
+        registers.SP--;
+
+        // Push cpu status onto stack
+        mem[registers.SP] = status.raw;
+        registers.SP--;
+
+        // Set PC to IRQ vector
+        registers.PC =  mem[0xFFFF] << 8;
+        registers.PC |= mem[0xFFFE];
+
+        // Set break status
+        status.bitfield.BreakCommand = 0x1;
+    }
+
+}
+
+void Core6502::CPU::nmi() {
+
+    // Push PC onto stack
+    mem[registers.SP] = (uint8_t)(registers.PC >> 8);
+    registers.SP--;
+    mem[registers.SP] = (uint8_t)(registers.PC & 0xFF);
+    registers.SP--;
+
+    // Push cpu status onto stack
+    mem[registers.SP] = status.raw;
+    registers.SP--;
+
+    // Set PC to IRQ vector
+    registers.PC =  mem[0xFFFB];
+    registers.PC |= mem[0xFFFA] << 8;
+
+    // Set break status
+    status.bitfield.BreakCommand = 0x1;
 
 }
 
@@ -371,6 +439,10 @@ void Core6502::CPU::setupInstructionMap() {
     instructions[0x08] = (Core6502::Instruction){0x08, 3, Core6502::PHP};
     instructions[0x68] = (Core6502::Instruction){0x68, 4, Core6502::PLA};
     instructions[0x28] = (Core6502::Instruction){0x28, 4, Core6502::PLP};
+
+    // Break/RTI
+    instructions[0x00] = (Core6502::Instruction){0x00, 7, Core6502::BRK};
+    instructions[0x40] = (Core6502::Instruction){0x40, 6, Core6502::RTI};
 
     // Misc.
     instructions[0xEA] = (Core6502::Instruction){0xEA, 2, Core6502::NOP};

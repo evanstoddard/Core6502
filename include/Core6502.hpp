@@ -21,7 +21,6 @@ namespace Core6502{
     public:
         CPU();
         CPU(uint8_t * memPtr);
-
     // Internals
     public:
         // Map of operations.  Can be used to overload default operations or add functionality
@@ -54,6 +53,8 @@ namespace Core6502{
 
         volatile uint8_t * mem;
 
+        uint8_t cyclesRemaining;
+
     // Fetch Methods
     public:
         uint8_t fetchByte();                            // Fetches current byte and increments PC
@@ -61,6 +62,9 @@ namespace Core6502{
 
     // Control Methods
     public:
+        void clock();               // Clocks processor
+        void irq();                 // Interrupts processor if enabled
+        void nmi();                 // Performs interrupt regardless of interrupt enabled status
         void reset();               // Resets Processor
     
     // Addressing methods
@@ -80,7 +84,6 @@ namespace Core6502{
         
     private:
         void setupInstructionMap();
- 
     };
 
 

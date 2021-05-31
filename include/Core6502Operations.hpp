@@ -101,6 +101,10 @@ namespace Core6502 {
     void PLA(Core6502::CPU&, Core6502::Instruction&);
     void PLP(Core6502::CPU&, Core6502::Instruction&);
 
+    // Interrupt/Break
+    void BRK(Core6502::CPU&, Core6502::Instruction&);
+    void RTI(Core6502::CPU&, Core6502::Instruction&);
+
     void NOP(Core6502::CPU&, Core6502::Instruction&);
 }
 

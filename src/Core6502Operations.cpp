@@ -642,6 +642,41 @@ void Core6502::PLP(Core6502::CPU& cpu, struct Instruction& op) {
 
 }
 
+// RTI/Break Operations
+void Core6502::BRK(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Push PC onto stack
+    cpu.mem[cpu.registers.SP] = (uint8_t)(cpu.registers.PC >> 8);
+    cpu.registers.SP--;
+    cpu.mem[cpu.registers.SP] = (uint8_t)(cpu.registers.PC & 0xFF);
+    cpu.registers.SP--;
+
+    // Push cpu status onto stack
+    cpu.mem[cpu.registers.SP] = cpu.status.raw;
+    cpu.registers.SP--;
+
+    // Set PC to IRQ vector
+    cpu.registers.PC =  cpu.mem[0xFFFF];
+    cpu.registers.PC |= cpu.mem[0xFFFE] << 8;
+
+    // Set break status
+    cpu.status.bitfield.BreakCommand = 0x1;
+
+}
+void Core6502::RTI(Core6502::CPU& cpu, struct Instruction& op) {
+
+    // Pop status from stack
+    cpu.status.raw = cpu.mem[cpu.registers.SP];
+    cpu.registers.SP++;
+
+    // Pop PC from stack
+    cpu.registers.PC = cpu.mem[cpu.registers.SP];
+    cpu.registers.SP++;
+    cpu.registers.PC |= cpu.mem[cpu.registers.SP] << 8;
+    cpu.registers.SP++;
+
+}
+
 void Core6502::NOP(Core6502::CPU& cpu, struct Instruction& op) {
     // Do nothing...
 }
