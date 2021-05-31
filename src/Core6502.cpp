@@ -87,7 +87,6 @@ void Core6502::CPU::clock() {
         inst.instructionFunction(*this, inst);
 
     } else {
-
         // Decrement cycles remaining
         cyclesRemaining--;
     }
