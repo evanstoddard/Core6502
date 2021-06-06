@@ -10,7 +10,7 @@
 
 Core6502::CPU::CPU() {
     // Create memory
-    mem = new uint8_t[0xFFFF];
+    mem = new uint8_t[0x10000];
 
     // Setup instruction map
     setupInstructionMap();
